@@ -19,10 +19,10 @@ import custom_CNN as cnn_models
 from asl_image_dataset import ASLImageDataset
 
 
-input_csv = 'output/data_alpha.csv'
-output_model = 'output/model_alpha.pth'
-output_accuracy = 'output/accuracy_alpha.png'
-output_loss = 'output/loss_alpha.png'
+input_csv = '../output/data_alpha.csv'
+output_model = '../output/model_alpha.pth'
+output_accuracy = '../output/accuracy_alpha.png'
+output_loss = '../output/loss_alpha.png'
 # Number of training cycles / pass
 epochs = 10
 # Random generator seed

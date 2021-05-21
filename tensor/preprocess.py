@@ -9,8 +9,8 @@ import cv2
 from tqdm import tqdm
 
 num_images = 3000
-training_path = '../kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train'
-output_path = 'output/preprocessed_image'
+training_path = '../../kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train'
+output_path = '../output/preprocessed_image'
 
 print(f"Pre-processing images from {training_path}")
 print(f"Analysing {num_images} images from each category")

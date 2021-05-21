@@ -12,13 +12,13 @@ aug = albumentations.Compose([
 ])
 
 # load label binarizer and model
-lb = joblib.load('output/lb_alpha.pkl')
+lb = joblib.load('../output/lb_alpha.pkl')
 model = custom_CNN.CustomCNN().cuda()
-model.load_state_dict(torch.load('output/model_alpha.pth'))
+model.load_state_dict(torch.load('../output/model_alpha.pth'))
 print(model)
 print('Model loaded')
 
-image = cv2.imread(f"../kaggle_gestures_akash/asl_alphabet_test/asl_alphabet_test/{img}")
+image = cv2.imread(f"../../kaggle_gestures_akash/asl_alphabet_test/asl_alphabet_test/{img}")
 image_copy = image.copy()
 
 # Load and prepare image

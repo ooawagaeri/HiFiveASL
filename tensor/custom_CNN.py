@@ -9,7 +9,7 @@ import joblib
 
 # Load binarized labels
 print('Loading label binarizer...')
-lb = joblib.load('output/lb_alpha.pkl')
+lb = joblib.load('../output/lb_alpha.pkl')
 
 
 class CustomCNN(nn.Module):

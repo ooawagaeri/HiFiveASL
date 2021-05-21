@@ -11,9 +11,9 @@ from sklearn.preprocessing import LabelBinarizer
 from tqdm import tqdm
 from imutils import paths
 
-input_path = 'output/preprocessed_image'
-output_csv = 'output/data_alpha.csv'
-output_pkl = 'output/lb_alpha.pkl'
+input_path = '../output/preprocessed_image'
+output_csv = '../output/data_alpha.csv'
+output_pkl = '../output/lb_alpha.pkl'
 
 # Get all subdirectories within pre-processed directory
 preprocessed_paths = list(paths.list_images(input_path))
