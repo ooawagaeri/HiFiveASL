@@ -1,3 +1,9 @@
+"""
+with_img.py
+Used to conduct basic testing given image file on model
+"""
+
+
 import time
 import albumentations
 import cv2
@@ -22,7 +28,7 @@ print('Model loaded')
 
 # Target image directory location
 image = cv2.imread(f"D:/5-NUS/Orbital/kaggle_gestures_akash/asl_alphabet_test/asl_alphabet_test/{img}")
-image_copy = image.copy()
+# image_copy = image.copy()
 
 # Load and prepare image
 image = aug(image=np.array(image))['image']
@@ -35,7 +41,7 @@ print(image.shape)
 start = time.time()
 outputs = model(image)
 _, prediction = torch.max(outputs.data, 1)
-print( 'Predicted Object: ', prediction)
+print('Predicted Object: ', prediction)
 print(f"Predicted Output: {lb.classes_[prediction]}")
 end = time.time()
 print(f"{(end - start):.3f} seconds")

@@ -1,6 +1,6 @@
 """
 with_camera.py
-Used to conduct basic testing on generated model
+Used to conduct basic testing given camera feed on model
 """
 
 
