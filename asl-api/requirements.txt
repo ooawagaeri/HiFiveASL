@@ -1,4 +1,4 @@
-# This file may be used to create an environment using: wwwww
+# This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
 # platform: win-64
 albumentations=0.5.2=pyhd8ed1ab_0
