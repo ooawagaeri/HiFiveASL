@@ -20,7 +20,7 @@ def hand_area(img):
 
 # Load label & model
 lb = joblib.load('output/lb_alpha.pkl')
-model = custom_CNN.CustomCNN().cuda()
+model = custom_CNN.CustomCNN("output/lb_alpha.pkl").cuda()
 model.load_state_dict(torch.load('output/model_alpha.pth'))
 print(model)
 print('Loading model...')
