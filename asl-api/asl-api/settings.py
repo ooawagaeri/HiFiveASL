@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-9op#*6&4(nmteco)u-0wmjcv)=esm^#u7_-js7dw*60zd9ec9x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.56']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -28,7 +28,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -36,6 +35,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -115,7 +116,22 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# List of origins authorized to make HTTP requests (Whitelist)
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:19000",
+#     "http://localhost:19002",
+#     "http://localhost:19006"
+# ]
+
+
 # Media storage
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+import dj_database_url
+prob_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prob_db)
