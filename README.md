@@ -1,6 +1,6 @@
 # Orbital Apollo 11: HI Five
 
-![](README Resources/logo.png)   
+![](/README Resources/logo.png)   
 
 ## _American Sign Language Application_
 
@@ -89,9 +89,9 @@ Do visit our [production server](http://45-126-126-89.cloud-xip.io/api/asl)
 and any form of API test service such as [POSTMAN](https://www.postman.com/) and your own hand gesture images to get your own ASL prediction
 {multipart/form-data, "image": <your file>} 
 
-![](README Resources/postman_get.png)
-![](README Resources/postman_open.png)
-![](README Resources/postman_post.png)
+![](/README Resources/postman_get.png)
+![](/README Resources/postman_open.png)
+![](/README Resources/postman_post.png)
 
 ## License
 
