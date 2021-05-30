@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import {Card, FAB} from 'react-native-paper'
+import './Global.js'
 
 
 function APITest() {
@@ -8,7 +9,7 @@ function APITest() {
   const [data, setData] = useState([{id:1, name:"temp"}])
 
   useEffect(() => {
-    fetch( 'http://192.168.86.113:8000/api/asl', {
+    fetch(ASL_API, {
       method:"GET"
     })
     .then(resp => resp.json())

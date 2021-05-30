@@ -1,43 +1,61 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, Image} from 'react-native';
+import { Alert, StyleSheet, Text, View, Button, Image} from 'react-native';
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import './Global.js'
+
 
 function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
-    const [image, setImage] = useState(null);
-    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [name, setName] = useState({name:"Answer"})
+    const [type, setType] = useState(Camera.Constants.Type.front);
     const isFocused = useIsFocused();
+
 
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
+            setHasPermission(status === 'granted'); 
         })();
     }, []);
 
     const takePicture = async () => {
         if (camera) {
+            if (!previewVisible) {
+                setPreviewVisible(true);
+            }
+            console.log('snip');
             const data = await camera.takePictureAsync(null);
-            console.log(data.uri)
-            setPreviewVisible(true)
-            setImage(data.uri)
+            newImage(data);
         }
     }
 
-    const newImage = () => {
-        const uploadData = new FormData();
-        uploadData.append('image',image);
+    const newImage = (result) => {
+        let localUri = result.uri;
+        let filename = localUri.split('/').pop();
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
 
-        fetch('http://192.168.86.113:8000/api/asl', {
+        const uploadData = new FormData();
+        uploadData.append('image', { uri: localUri, name: filename, type });
+        fetch(ASL_API, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
             body: uploadData
         })
-            .then(res => console.log(res))
-            .catch(error => console.log(error))
+        .then((response) => response.json())
+        .then((responseJson) => {
+            setName(responseJson)
+        })
+        .then(() => takePicture());
+        // .catch((error) => {
+        //     console.error(error);
+        // });
     }
 
     if (hasPermission === null) {
@@ -77,8 +95,7 @@ function CameraScreen() {
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                     style={styles.bottom}>
-                <Text style={styles.ansText}>Answer</Text>
-                    <Text>{image}</Text>
+                <Text style={styles.ansText}>{name.name}</Text>
                 </LinearGradient>
         </View>
         );
