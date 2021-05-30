@@ -1,5 +1,9 @@
 # Orbital Apollo 11: HI Five
+
+![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/logo.png?raw=true)   
+
 ## _American Sign Language Application_
+
 
 An Orbital NUS Project involving computer vision, machine learning and visual design to translate and teach American Sign Language to a greater audience.
 
@@ -16,35 +20,45 @@ An Orbital NUS Project involving computer vision, machine learning and visual de
 HI Five uses an assortment of environments and open source projects to develop this application:
 - [React Native] - A JavaScript framework for writing native-like mobile applications on iOS and Android platforms
 - [Font Awesome] - Awesome font-based vector icons incorporated into the user interface
+- [Kamatera] - A cloud-based platform for server deployments, hosting the Django server container 
 - [Docker] - Using containers to make building, deploying and operating simpler for publication in a single package.
 - [Django REST Framework] - A REST framework for building APIs to transfer information to and fro frontend and backend
 - [Python] - Backend of the application, using Torch and Keras to generate and train a predictive ASL model
 
-## Installation
+## Installation & Staging Deployment
 
 HI Five requires [Node.js] 12 LTS or greater to operate the front-end and [Anaconda 3] or [Docker] for the back-end.
 
 ###Front-End
-Install the dependencies
 
+Install the dependencies for React Native from package.json
 ```sh
 cd hifive
 npm install
 ```
-Start application
+Start the application, opening the Expo CLI web interface  
 ```sh
-npm start  // or yarn start or expo start
+npm start
 ```
+After opening the Expo CLI web interface, scan the provided QR Code using the Expo Go
+on both the [App Store] and [Google Play]
 
 ###Back-End (Anaconda 3)
-Install the dependencies via requirements.txt 
+
+Install the dependencies for the Python environment via requirements.txt 
 ```sh
 cd asl-api
 conda config --add channels pytorch
 conda install --file requirements-conda.txt
 pip install -r requirements.txt
 ```
-Start server
+Alternatively, via environment.yml by creating a new environment
+```
+conda env create -f environment.yml
+conda activate venv
+```
+
+Start the Django REST API server using manage.py
 ```sh
 python manage.py runserver <your ip address>:8000
 ```
@@ -55,130 +69,43 @@ Install the dependencies via Dockerfile
 cd asl-api
 docker build -t django-asl:latest .
 ```
-Start server
+Start the Django REST API server using Docker
 ```sh
 docker run -p 8000:8000 -e PORT=8000 django-asl:latest
 ```
 
-## Plugins
+After either backend deployment:
 
-Dillinger is currently extended with the following plugins.
-Instructions on how to use them in your own application are linked below.
-
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
-
-## Development
-
-Want to contribute? Great!
-
-Dillinger uses Gulp + Webpack for fast developing.
-Make a change in your file and instantaneously see your updates!
-
-Open your favorite Terminal and run these commands.
-
-First Tab:
-
-```sh
-node app
-```
-
-Second Tab:
-
-```sh
-gulp watch
-```
-
-(optional) Third:
-
-```sh
-karma test
-```
-
-#### Building for source
-
-For production release:
-
-```sh
-gulp build --prod
-```
-
-Generating pre-built zip archives for distribution:
-
-```sh
-gulp build dist --prod
-```
-
-## Docker
-
-Dillinger is very easy to install and deploy in a Docker container.
-
-By default, the Docker will expose port 8080, so change this within the
-Dockerfile if necessary. When ready, simply use the Dockerfile to
-build the image.
-
-```sh
-cd dillinger
-docker build -t <youruser>/dillinger:${package.json.version} .
-```
-
-This will create the dillinger image and pull in the necessary dependencies.
-Be sure to swap out `${package.json.version}` with the actual
-version of Dillinger.
-
-Once done, run the Docker image and map the port to whatever you wish on
-your host. In this example, we simply map port 8000 of the host to
-port 8080 of the Docker (or whatever port was exposed in the Dockerfile):
-
-```sh
-docker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger <youruser>/dillinger:${package.json.version}
-```
-
-> Note: `--capt-add=SYS-ADMIN` is required for PDF rendering.
-
-Verify the deployment by navigating to your server address in
-your preferred browser.
-
+Verify the deployment by navigating to your server address in your preferred browser.
 ```sh
 127.0.0.1:8000
 ```
+
+## Public Production Deployment
+
+For a live preview of the backend Django REST API server:
+
+Do visit our [production server](http://45-126-126-89.cloud-xip.io/api/asl)
+and any form of API test service such as [POSTMAN](https://www.postman.com/) and your own hand gesture images to get your own ASL prediction
+{multipart/form-data, "image": <your file>} 
+
+![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_get.png?raw=true)
+![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_open.png?raw=true)
+![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_post.png?raw=true)
 
 ## License
 
 MIT
 
-**Free Software, Hell Yeah!**
 
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+[//]: #
    [React Native]: <https://reactnative.dev/>
    [Font Awesome]: <https://fontawesome.com/>
    [Django REST Framework]: <https://www.django-rest-framework.org/>
    [Python]: <https://www.python.org/>
+   [Kamatera]: <https://www.kamatera.com/express/compute/>
    [Docker]: <https://www.docker.com/>
    [Node.js]: <http://nodejs.org>
    [Anaconda 3]: <https://www.anaconda.com/>
-
-   [dill]: <https://github.com/joemccann/dillinger>
-   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
-   [john gruber]: <http://daringfireball.net>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [markdown-it]: <https://github.com/markdown-it/markdown-it>
-   [Ace Editor]: <http://ace.ajax.org>
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [jQuery]: <http://jquery.com>
-   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
-   [express]: <http://expressjs.com>
-   [AngularJS]: <http://angularjs.org>
-   [Gulp]: <http://gulpjs.com>
-   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
-   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
-   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
-   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
-   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
-   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
+   [App Store]:<https://itunes.apple.com/app/apple-store/id982107779>
+   [Google Play]:<https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www>
