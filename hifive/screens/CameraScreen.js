@@ -95,7 +95,7 @@ function CameraScreen() {
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                     style={styles.bottom}>
-                <Text style={styles.ansText}>{name.name}</Text>
+                    <Text style={styles.ansText}>{name.name}</Text>
                 </LinearGradient>
         </View>
         );

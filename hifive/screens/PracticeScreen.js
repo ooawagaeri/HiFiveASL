@@ -11,7 +11,7 @@ function PracticeScreen() {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [image, setImage] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-    const [ans, setAns] = useState(true)
+    const [ans, setAns] = useState(null)
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     bottom: {
-        flex: 0.25,
+        flex: 0.3,
         borderWidth: 0,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     top: {
-        flex: 0.50,
+        flex: 0.55,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
