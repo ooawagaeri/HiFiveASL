@@ -35,7 +35,7 @@ image = aug(image=np.array(image))['image']
 image = np.transpose(image, (2, 0, 1)).astype(np.float32)
 image = torch.tensor(image, dtype=torch.float).cuda()
 image = image.unsqueeze(0)
-print(image.shape)
+# print(image.shape)
 
 # Predict image class
 start = time.time()

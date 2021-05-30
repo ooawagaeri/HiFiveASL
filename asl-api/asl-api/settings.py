@@ -4,9 +4,8 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9op#*6&4(nmteco)u-0wmjcv)=esm^#u7_-js7dw*60zd9ec9x'
+SECRET_KEY = "django-insecure-9op#*6&4(nmteco)u-0wmjcv)=esm^#u7_-js7dw*60zd9ec9x"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -107,17 +106,15 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# List of origins authorized to make HTTP requests (Whitelist)
+# List of origins authorized
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:19000",
@@ -126,7 +123,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ]
 
 
-# Media storage
+# Media storage (image upload, download)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

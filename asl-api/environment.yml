@@ -1,0 +1,26 @@
+name: venv
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.8.10
+  - pip
+  - torchvision
+  - cudatoolkit
+  - pytorch
+  - pip:
+    - imutils
+    - scikit-learn==0.24.1
+    - tqdm
+    - pandas
+    - Django
+    - django-cors-headers
+    - django-environ
+    - djangorestframework
+    - dj_database_url
+    - gunicorn
+    - whitenoise
+    - opencv-python
+    - albumentations
+    - joblib
+    - numpy

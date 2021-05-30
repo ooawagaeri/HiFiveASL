@@ -1,5 +1,4 @@
 from django.db import models
-
 import albumentations
 import cv2
 import joblib
@@ -19,11 +18,13 @@ class ASL(models.Model):
 
 class Predictor:
     aug = albumentations.Compose([albumentations.Resize(224, 224, always_apply=True), ])
+    # Allocate computation device
+    device = 'cpu'
 
     # Load label binarizer and model
     lb = joblib.load('engine/tensor/output/lb_alpha.pkl')
-    model = custom_CNN.CustomCNN("engine/tensor/output/lb_alpha.pkl").cuda()
-    model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth'))
+    model = custom_CNN.CustomCNN("engine/tensor/output/lb_alpha.pkl").to(device)
+    model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth', map_location=device))
 
     @classmethod
     def predict(self, request):
@@ -36,7 +37,7 @@ class Predictor:
         # Load and prepare image
         image = self.aug(image=np.array(image))['image']
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
-        image = torch.tensor(image, dtype=torch.float).cuda()
+        image = torch.tensor(image, dtype=torch.float).to(self.device)
         image = image.unsqueeze(0)
 
         # Output
