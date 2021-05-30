@@ -8,7 +8,7 @@ function APITest() {
   const [data, setData] = useState([{id:1, name:"temp"}])
 
   useEffect(() => {
-    fetch('http://192.168.1.56:8000/api/asl', {
+    fetch( 'http://192.168.86.113:8000/api/asl', {
       method:"GET"
     })
     .then(resp => resp.json())
