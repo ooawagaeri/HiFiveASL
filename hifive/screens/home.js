@@ -1,50 +1,60 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons' ;
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { createStackNavigator } from '@react-navigation/stack';
 import APITest from './API'
+import CameraScreen from "./CameraScreen";
+import QuizScreen from "./QuizScreen";
+import TranslatorScreen from "./TranslatorScreen";
+import PracticeScreen from "./PracticeScreen";
+import VideosScreen from "./VideosScreen";
 
-function CameraScreen() {
+const CamStack = createStackNavigator();
+const PracStack = createStackNavigator();
+const QuizStack = createStackNavigator();
+const TransStack = createStackNavigator();
+const VideosStack = createStackNavigator();
+
+
+function CamStackScreen() {
     return (
-        <APITest/>
-        // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        //     <Text> Translation!</Text>
-            
-        // </View>
+        <CamStack.Navigator>
+            <CamStack.Screen name="Sign to Text" component={CameraScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        </CamStack.Navigator>
     );
 }
 
-function QuizScreen() {
+function QuizStackScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Quiz!</Text>
-        </View>
+        <QuizStack.Navigator>
+            <QuizStack.Screen name="Quiz" component={QuizScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        </QuizStack.Navigator>
     );
 }
 
-function TranslatorScreen() {
+function TransStackScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Translator!</Text>
-        </View>
+        <TransStack.Navigator>
+            <TransStack.Screen name="Text to Sign" component={TranslatorScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        </TransStack.Navigator>
     );
 }
 
-function PracticeScreen() {
+function PracStackScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Practice!</Text>
-        </View>
+        <PracStack.Navigator>
+            <PracStack.Screen name="Gesture Practice" component={PracticeScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        </PracStack.Navigator>
     );
 }
 
-function VideosScreen() {
+function VideosStackScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text>Videos!</Text>
-        </View>
+        <VideosStack.Navigator>
+            <VideosStack.Screen name="Video Resources" component={VideosScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        </VideosStack.Navigator>
     );
 }
 
@@ -61,7 +71,7 @@ const Home = () => {
             >
                 <Tab.Screen
                     name="Practice"
-                    component={PracticeScreen}
+                    component={PracStackScreen}
                     options={{tabBarLabel: 'Practice', tabBarIcon: ({ color, size }) => (
                             <FontAwesome name="hand-paper-o" color={color} size={size} />
                         ),
@@ -69,7 +79,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Quiz"
-                    component={QuizScreen}
+                    component={QuizStackScreen}
                     options={{tabBarLabel: 'Quiz', tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="thought-bubble" color={color} size={size} />
                         ),
@@ -77,7 +87,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Camera"
-                    component={CameraScreen}
+                    component={CamStackScreen}
                     options={{tabBarLabel: 'Camera', tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="enhance-photo-translate" color={color} size={size} />
                         ),
@@ -85,7 +95,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Translator"
-                    component={TranslatorScreen}
+                    component={TransStackScreen}
                     options={{tabBarLabel: 'Translator', tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="translate" color={color} size={size} />
                         ),
@@ -93,7 +103,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Videos"
-                    component={VideosScreen}
+                    component={VideosStackScreen}
                     options={{tabBarLabel: 'Videos', tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="youtube" color={color} size={size} />
                         ),

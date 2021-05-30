@@ -8,9 +8,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 const Page = ({ title }) => {
     return (
         <LinearGradient
-            colors={["#ff7538","#ffd26c"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            colors={["#feb157","#ffd26c"]}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
             style={{flex:1}}
         >
         <View
@@ -22,7 +22,7 @@ const Page = ({ title }) => {
         >
             <Image source={require('./logo.png')} />
             <View style={{ marginTop: 16 }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: "center" }}>
                     {title}
                 </Text>
             </View>
