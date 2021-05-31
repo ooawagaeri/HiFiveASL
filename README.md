@@ -29,7 +29,7 @@ HI Five uses an assortment of environments and open source projects to develop t
 
 HI Five requires [Node.js] 12 LTS or greater to operate the front-end and [Anaconda 3] or [Docker] for the back-end.
 
-###Front-End
+**Front-End**
 
 Install the dependencies for React Native from package.json
 ```sh
@@ -43,7 +43,7 @@ npm start
 After opening the Expo CLI web interface, scan the provided QR Code using the Expo Go
 on both the [App Store] and [Google Play]
 
-###Back-End (Anaconda 3)
+**Back-End (Anaconda 3)**
 
 Install the dependencies for the Python environment via requirements.txt 
 ```sh
@@ -63,7 +63,7 @@ Start the Django REST API server using manage.py
 python manage.py runserver <your ip address>:8000
 ```
 
-###Back-End (Docker)
+**Back-End (Docker)**
 Install the dependencies via Dockerfile
 ```sh
 cd asl-api
@@ -87,11 +87,10 @@ For a live preview of the backend Django REST API server:
 
 Do visit our [production server](http://45-126-126-89.cloud-xip.io/api/asl)
 and any form of API test service such as [POSTMAN](https://www.postman.com/) and your own hand gesture images to get your own ASL prediction
-{multipart/form-data, "image": <your file>} 
+(NOTE: POST feature is only avaliable with our React Native App)
 
 ![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_get.png?raw=true)
-![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_open.png?raw=true)
-![](https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/postman_post.png?raw=true)
+
 
 ## License
 

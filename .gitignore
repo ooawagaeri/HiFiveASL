@@ -227,3 +227,5 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
+
+asl-api/media/post_images/
