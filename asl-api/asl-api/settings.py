@@ -131,3 +131,5 @@ MEDIA_URL = '/media/'
 import dj_database_url
 prob_db = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(prob_db)
+
+FILE_UPLOAD_HANDLERS = ['django.core.files.uploadhandler.TemporaryFileUploadHandler',]

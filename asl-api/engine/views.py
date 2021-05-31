@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 import os
 
-
-from .models import ASL, Predictor
+from .models import ASL
 from .serializers import ASLSerializer
 
 
@@ -27,11 +26,11 @@ class ASLViewSet(viewsets.ViewSet):
 
     # POST
     def create(self, request):
-        modified_request = Predictor.predict(request)
-        asl_serializer = ASLSerializer(data=modified_request.data)
+        asl_serializer = ASLSerializer(data=request.data)
         if asl_serializer.is_valid():
             asl_serializer.save()
 
+            # Delete oldest record
             sync_to_async(del_oldest(), thread_sensitive=True)
 
             return Response(asl_serializer.data, status=status.HTTP_201_CREATED)

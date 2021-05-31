@@ -41,6 +41,7 @@ function CameraScreen() {
 
         const uploadData = new FormData();
         uploadData.append('image', { uri: localUri, name: filename, type });
+        
         fetch(ASL_API, {
             method: 'POST',
             headers: {
@@ -48,14 +49,18 @@ function CameraScreen() {
             },
             body: uploadData
         })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            setName(responseJson)
+        .then(response => {
+            if(response.ok) return response.json();
+            throw new Error('Network response was not ok');
         })
-        .then(() => takePicture());
-        // .catch((error) => {
-        //     console.error(error);
-        // });
+        .then((responseJson) => {
+            setName(responseJson);
+        })
+        .catch((error) => {
+            console.error(error);
+        })  
+        .then(() => takePicture())
+        ;
     }
 
     if (hasPermission === null) {
