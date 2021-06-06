@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, viewsets, filters
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 import os
 
-from .models import ASL
-from .serializers import ASLSerializer
+from .models import ASL, PractiseQuestion, UserPractise, Gesture
+from .serializers import ASLSerializer, PractiseQuestionSerializer, UserPractiseSerializer, GestureSerializer
 
 
 # Async Delete oldest record
@@ -18,7 +17,7 @@ def del_oldest():
 
 
 class ASLViewSet(viewsets.ViewSet):
-    # GET ALL
+    # GET (LIST)
     def list(self, request):
         asl = ASL.objects.all()
         asl_serializer = ASLSerializer(asl, many=True)
@@ -42,3 +41,20 @@ class ASLViewSet(viewsets.ViewSet):
         asl = get_object_or_404(asl_queryset, pk=pk)
         asl_serializer = ASLSerializer(asl)
         return Response(asl_serializer.data)
+
+
+class PractiseQuestionViewSet(viewsets.ModelViewSet):
+    queryset = PractiseQuestion.objects.all()
+    serializer_class = PractiseQuestionSerializer
+
+
+class UserPractiseViewSet(viewsets.ModelViewSet):
+    queryset = UserPractise.objects.all()
+    serializer_class = UserPractiseSerializer
+
+
+class GestureViewSet(viewsets.ModelViewSet):
+    search_fields = ['name']
+    filter_backends = (filters.SearchFilter,)
+    queryset = Gesture.objects.all()
+    serializer_class = GestureSerializer

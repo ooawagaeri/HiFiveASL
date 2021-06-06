@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import ASL
-
+from .models import ASL, PractiseQuestion, UserPractise, Gesture
 
 import albumentations
 import cv2
@@ -8,9 +7,6 @@ import joblib
 import numpy as np
 import torch
 from .tensor import custom_CNN
-import os.path
-import time
-
 
 aug = albumentations.Compose([albumentations.Resize(224, 224, always_apply=True), ])
 # Allocate computation device
@@ -27,7 +23,7 @@ class ASLSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ASL
-        fields = ('id', 'name', 'image', 'created_at')
+        fields = ('name', 'image', 'created_at')
 
     def get_name(self, obj):
         # Read image bytes into CV2
@@ -44,7 +40,25 @@ class ASLSerializer(serializers.ModelSerializer):
         outputs = model(image)
         _, prediction = torch.max(outputs.data, 1)
         answer = lb.classes_[prediction]
-        if (answer == "nothing"):
+        if answer == "nothing":
             answer = ""
 
         return answer
+
+
+class PractiseQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PractiseQuestion
+        fields = ('answer',)
+
+
+class UserPractiseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserPractise
+        fields = ('response', 'practise_question', 'created_at', 'is_correct')
+
+
+class GestureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gesture
+        fields = '__all__'
