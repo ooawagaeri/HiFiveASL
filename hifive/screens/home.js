@@ -8,7 +8,7 @@ import APITest from './API'
 import CameraScreen from "./CameraScreen";
 import QuizScreen from "./QuizScreen";
 import TranslatorScreen from "./TranslatorScreen";
-import PracticeScreen from "./PracticeScreen";
+import PractiseScreen from "./PractiseScreen";
 import VideosScreen from "./VideosScreen";
 
 const CamStack = createStackNavigator();
@@ -45,7 +45,7 @@ function TransStackScreen() {
 function PracStackScreen() {
     return (
         <PracStack.Navigator>
-            <PracStack.Screen name="Gesture Practice" component={PracticeScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+            <PracStack.Screen name="Gesture Practise" component={PractiseScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
         </PracStack.Navigator>
     );
 }
@@ -70,9 +70,9 @@ const Home = () => {
                 }}
             >
                 <Tab.Screen
-                    name="Practice"
+                    name="Practise"
                     component={PracStackScreen}
-                    options={{tabBarLabel: 'Practice', tabBarIcon: ({ color, size }) => (
+                    options={{tabBarLabel: 'Practise', tabBarIcon: ({ color, size }) => (
                             <FontAwesome name="hand-paper-o" color={color} size={size} />
                         ),
                     }}

@@ -6,7 +6,7 @@ from .views import ASLViewSet, PractiseQuestionViewSet, UserPractiseViewSet, Ges
 router = DefaultRouter()
 router.register('asl', ASLViewSet, basename='asl')
 router.register('practiseQns', PractiseQuestionViewSet, basename='practiseQns')
-router.register('practiseUser', UserPractiseViewSet, basename='practiseUser')
+router.register('practiseAns', UserPractiseViewSet, basename='practiseAns')
 router.register('gesture', GestureViewSet, basename='gesture')
 
 urlpatterns = [

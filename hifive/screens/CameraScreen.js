@@ -10,7 +10,7 @@ function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
-    const [name, setName] = useState({name:"Answer"})
+    const [name, setName] = useState(null)
     const [type, setType] = useState(Camera.Constants.Type.front);
     const isFocused = useIsFocused();
 
@@ -29,11 +29,11 @@ function CameraScreen() {
             }
             console.log('snip');
             const data = await camera.takePictureAsync(null);
-            newImage(data);
+            postASL(data);
         }
     }
 
-    const newImage = (result) => {
+    const postASL = (result) => {
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
         let match = /\.(\w+)$/.exec(filename);
@@ -53,13 +53,12 @@ function CameraScreen() {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
         })
-        .then((responseJson) => {
-            setName(responseJson);
+        .then(responseJson => {
+            setName(responseJson.name);
         })
-        .catch((error) => {
+        .catch(error => {
             console.error(error);
-        })  
-        .then(() => takePicture())
+        })
         ;
     }
 
@@ -100,7 +99,7 @@ function CameraScreen() {
                     start={{ x: 0, y: 0.5 }}
                     end={{ x: 1, y: 0.5 }}
                     style={styles.bottom}>
-                    <Text style={styles.ansText}>{name.name}</Text>
+                    <Text style={styles.ansText}>{name}</Text>
                 </LinearGradient>
         </View>
         );

@@ -1,17 +1,19 @@
 import * as React from 'react';
 import {useState, useEffect, useRef} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Alert, Button, StyleSheet, Text, View} from 'react-native';
 import {Camera} from "expo-camera";
 import {useIsFocused} from "@react-navigation/native";
 import {LinearGradient} from "expo-linear-gradient";
+import './Global.js'
 
-function PracticeScreen() {
+function PractiseScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
-    const [image, setImage] = useState(null);
-    const [type, setType] = useState(Camera.Constants.Type.back);
-    const [ans, setAns] = useState(null)
+    const [type, setType] = useState(Camera.Constants.Type.front);
+    const [ans, setAns] = useState(null);
+    const [qns, setQns] = useState(null);
+    const [dictonary, setDictonary] = useState(null); // Array of possible answers
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -19,22 +21,101 @@ function PracticeScreen() {
             const {status} = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
         })();
+        getQns();
     }, []);
 
     const takePicture = async () => {
         if (camera) {
+            if (!previewVisible) {
+                setPreviewVisible(true);
+            }
+            console.log('snip');
             const data = await camera.takePictureAsync(null);
-            console.log(data.uri)
-            setPreviewVisible(true)
-            setImage(data.uri)
+            postASL(data);
         }
     }
 
-    function nextQn() {
-        setImage(null)
-        setAns(null)
-        // new question
+    const postASL = (result) => {
+        let localUri = result.uri;
+        let filename = localUri.split('/').pop();
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        const uploadData = new FormData();
+        uploadData.append('image', { uri: localUri, name: filename, type });
+        
+        fetch(ASL_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            body: uploadData
+        })
+        .then(response => {
+            if(response.ok) return response.json();
+            throw new Error('Network response was not ok');
+        })
+        .then(responseJson => {  
+            const answer = responseJson.name; 
+            // Get question no.   
+            const question = dictonary.findIndex(obj => obj.answer === qns) + 1;
+            // Send user response to server to validate ans
+            postAns(answer, question);
+        })
+        .catch(error => {
+            console.error(error);
+        })
+        ;
     }
+
+    // POST user response and return is_correct
+    function postAns(ans, qns) {
+        const uploadData = new FormData();
+        uploadData.append('response', ans);
+        uploadData.append('practise_question', qns);
+
+        fetch(PRACTICE_ANS_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            body: uploadData
+        })
+        .then(response => {
+            if(response.ok) return response.json();
+            throw new Error('Network response was not ok');
+        })
+        .then(responseJson => {
+            setAns(responseJson.is_correct);
+        })
+        .catch(error => {
+            // When answer is not in possible answer
+            setAns(false);
+        })
+        ;
+    }
+
+    function getRandNumber(min, max){
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    // GET practise 
+    function getQns() {
+        fetch(PRACTICE_QNS_API, {
+            method:"GET"
+        })
+        .then(response => response.json())
+        .then(responseJson => {
+            // Get random question from json array
+            var answer = responseJson[getRandNumber(0, responseJson.length - 1)].answer;
+            // Store possible answers
+            setDictonary(responseJson);
+            // Set question
+            setQns(answer);
+        })
+        .catch(error => Alert.alert("error", error.message))
+    }
+
 
     if (hasPermission === null) {
         return <View/>;
@@ -51,7 +132,7 @@ function PracticeScreen() {
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
                 <Text style={styles.prompt}>Show us the sign language to this letter!</Text>
-                <Text style={styles.qnText}>Question</Text>
+                <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
@@ -77,7 +158,7 @@ function PracticeScreen() {
                 { ans === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
                     : ans === false ? (<Text style={styles.markingFalse}>Wrong!</Text>)
                     : (<Text style={styles.markingTrue}>Correct!</Text>)}
-                { ans === true ? <Button title="Next Question" onPress={() => nextQn()}/> : null}
+                <Button title="Next Question" onPress={() => getQns()}/>
             </LinearGradient>
         </View>
     );
@@ -220,4 +301,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PracticeScreen
+export default PractiseScreen
