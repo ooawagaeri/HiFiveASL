@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-9op#*6&4(nmteco)u-0wmjcv)=esm^#u7_-js7dw*60zd9ec9x"
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'engine',
     'rest_framework',
     'corsheaders',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [
@@ -106,8 +107,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
 
 # Default primary key field type
 

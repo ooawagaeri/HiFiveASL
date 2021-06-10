@@ -15,6 +15,7 @@ dependencies:
     - pandas
     - Django
     - django-cors-headers
+    - django-cleanup
     - django-environ
     - djangorestframework
     - dj_database_url
@@ -24,3 +25,4 @@ dependencies:
     - albumentations
     - joblib
     - numpy
+    - nltk

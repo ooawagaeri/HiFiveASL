@@ -1,18 +1,34 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
+import { Alert, Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
+import './Global.js'
 
 function TranslatorScreen() {
     const [ans, setAns] = useState(null)
     const [marking, setMarking] = useState(null)
-    const [image, setImage] = useState('./a.gif')
+
+    const [image, setImage] = useState(null)
     var photo = './a.gif'
 
+    // function checkAns() {
+    //     //if ans is correct to picture,
+    //     setMarking(null) // else false
+    // }
+
+    // POST user response and return is_correct
     function checkAns() {
-        //if ans is correct to picture,
-        setMarking(null) // else false
+        fetch(TRANSLATOR_API + ans,{
+            method:"GET"
+        })
+        .then(response => response.json())
+        .then(responseJson => {
+            console.log(responseJson[0].image);
+            setImage(responseJson[0].image);
+        })
+        .catch(error => Alert.alert("error", error.message))
     }
+
 
     function nextQn() {
         setImage(null)
@@ -38,6 +54,8 @@ function TranslatorScreen() {
                     <Button title="Submit" onPress={() => checkAns()}/>
                 </View>
                 <Image style={{width:300,height:300}} source={require(photo)}/>
+                <Image source={{ uri: 'http://192.168.1.56:8000/media/get_images/A.png', }} style={{ width: 40, height: 40 }}/>
+                <Image source={{image}} style={{ width: 40, height: 40 }}/>
             </LinearGradient>
         </View>
     )}

@@ -10,9 +10,10 @@ function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
-    const [name, setName] = useState(null)
     const [type, setType] = useState(Camera.Constants.Type.front);
     const isFocused = useIsFocused();
+
+    const [name, setName] = useState(null)
 
 
     useEffect(() => {

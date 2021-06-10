@@ -8,7 +8,23 @@ import numpy as np
 import torch
 from .tensor import custom_CNN
 
-aug = albumentations.Compose([albumentations.Resize(224, 224, always_apply=True), ])
+
+def square_crop(img):
+    height, width, _ = img.shape
+    if width == height:
+        return img
+    img = np.array(img)
+    offset = int(abs(height - width) / 2)
+    if width > height:
+        img = img[:, offset:(width - offset), :]
+    else:
+        img = img[offset:(height - offset), :, :]
+    return img
+
+
+aug = albumentations.Compose([
+    albumentations.Resize(224, 224, always_apply=True),
+])
 # Allocate computation device
 device = 'cpu'
 
@@ -31,6 +47,7 @@ class ASLSerializer(serializers.ModelSerializer):
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
         # Load and prepare image
+        image = square_crop(image)
         image = aug(image=np.array(image))['image']
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
         image = torch.tensor(image, dtype=torch.float).to(device)
@@ -42,6 +59,9 @@ class ASLSerializer(serializers.ModelSerializer):
         answer = lb.classes_[prediction]
         if answer == "nothing":
             answer = ""
+
+        # Close read file
+        obj.image.close()
 
         return answer
 
@@ -61,4 +81,4 @@ class UserPractiseSerializer(serializers.ModelSerializer):
 class GestureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gesture
-        fields = '__all__'
+        fields = ('name', 'image')

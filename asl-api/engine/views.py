@@ -1,23 +1,30 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets, filters
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
-import os
 
 from .models import ASL, PractiseQuestion, UserPractise, Gesture
 from .serializers import ASLSerializer, PractiseQuestionSerializer, UserPractiseSerializer, GestureSerializer
+import nltk
+from nltk.corpus import wordnet
+
+
+# Download latest word dictionary (for word check)
+nltk.download('wordnet', quiet=True)
 
 
 # Async Delete oldest record
 def del_oldest():
-    obj = ASL.objects.first()
-    image = getattr(obj, "image")
-    os.remove(image.url[1:])
-    obj.delete()
+    count = ASL.objects.count()
+    # Keep to track
+    if count > 5:
+        obj = ASL.objects.order_by('created_at')[0]
+        obj.delete()
 
 
 class ASLViewSet(viewsets.ViewSet):
-    # GET (LIST)
+    # GET List
     def list(self, request):
         asl = ASL.objects.all()
         asl_serializer = ASLSerializer(asl, many=True)
@@ -54,7 +61,20 @@ class UserPractiseViewSet(viewsets.ModelViewSet):
 
 
 class GestureViewSet(viewsets.ModelViewSet):
-    search_fields = ['name']
-    filter_backends = (filters.SearchFilter,)
-    queryset = Gesture.objects.all()
     serializer_class = GestureSerializer
+
+    # GET Search
+    def get_queryset(self):
+        queryset = Gesture.objects.all().order_by('name')
+        search = self.request.GET.get('search', '').upper()
+
+        if search:
+            if not wordnet.synsets(search):
+                return []
+
+            characters = list(search)
+            query = Q()
+            for char in characters:
+                query = query | Q(name=char)
+            queryset = queryset.filter(query)
+        return queryset

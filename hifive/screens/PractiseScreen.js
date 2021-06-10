@@ -11,11 +11,13 @@ function PractiseScreen() {
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
     const [type, setType] = useState(Camera.Constants.Type.front);
+    const isFocused = useIsFocused();
+    
     const [ans, setAns] = useState(null);
     const [qns, setQns] = useState(null);
     const [dictonary, setDictonary] = useState(null); // Array of possible answers
-    const isFocused = useIsFocused();
 
+    
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
@@ -108,10 +110,9 @@ function PractiseScreen() {
         .then(responseJson => {
             // Get random question from json array
             var answer = responseJson[getRandNumber(0, responseJson.length - 1)].answer;
-            // Store possible answers
-            setDictonary(responseJson);
-            // Set question
-            setQns(answer);
+            
+            setDictonary(responseJson); // Store possible answers
+            setQns(answer); // Set question
         })
         .catch(error => Alert.alert("error", error.message))
     }
