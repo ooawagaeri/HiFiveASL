@@ -80,7 +80,7 @@ class GestureViewSet(viewsets.ModelViewSet):
         queryset = Gesture.objects.all().order_by('name')
         search = self.request.GET.get('search', '').upper()
 
-        if search or search == '':
+        if search:
             if not wordnet.synsets(search):
                 return []
 

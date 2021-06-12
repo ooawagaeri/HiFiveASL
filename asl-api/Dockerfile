@@ -4,7 +4,11 @@ FROM continuumio/miniconda3
 # Set the working directory
 WORKDIR /app
 
-# Create environment
+# Update Docker environment
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+
+# Create Conda environment
 COPY environment.yml .
 RUN conda update -n base -c defaults conda
 RUN conda env create -f environment.yml
@@ -19,7 +23,5 @@ ENV PYTHONUNBUFFERED 1
 
 ADD . .
 
-# EXPOSE 8000
-
-# Gunicorn run server
+# Gunicorn run server at {PORT}
 CMD gunicorn asl-api.wsgi:application --bind 0.0.0.0:$PORT
