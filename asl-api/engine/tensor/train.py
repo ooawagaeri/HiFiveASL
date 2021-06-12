@@ -20,26 +20,27 @@ from asl_image_dataset import ASLImageDataset
 
 
 input_csv = 'output/data_alpha.csv'
+input_pkl = 'output/lb_alpha.pkl'
 output_model = 'output/model_alpha.pth'
 output_accuracy = 'output/accuracy_alpha.png'
 output_loss = 'output/loss_alpha.png'
 # Number of training cycles / pass
 epochs = 10
 # Random generator seed
-seed = 42
+random_seed = 42
 
 
-# Set seed for reproducible results
-def set_seed(SEED=42):
-    random.seed(SEED)
-    np.random.seed(SEED)
-    torch.manual_seed(SEED)
-    torch.cuda.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)
+# Set random_seed for reproducible results
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.benchmark = True
 
 
-set_seed(SEED=seed)
+set_seed(seed=random_seed)
 
 # Set computation device to CPU or GPU (if available)
 device = ('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -65,7 +66,7 @@ train_loader = DataLoader(train_data, batch_size=32, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
 
 # Initialize CNN w/ computation device
-model = cnn_models.CustomCNN().to(device)
+model = cnn_models.CustomCNN(input_pkl).to(device)
 # print(f"\nCNN model: {model}")
 
 # Get total number of parameters from model

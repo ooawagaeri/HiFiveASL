@@ -1,20 +1,13 @@
 import * as React from 'react';
-import { Alert, Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
+import { Alert, Text, View, StyleSheet, Image, TextInput, Button, ImageStore, FlatList} from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
 import './Global.js'
 
 function TranslatorScreen() {
     const [ans, setAns] = useState(null)
-    const [marking, setMarking] = useState(null)
-
-    const [image, setImage] = useState(null)
-    var photo = './a.gif'
-
-    // function checkAns() {
-    //     //if ans is correct to picture,
-    //     setMarking(null) // else false
-    // }
+    const [image, setImage] = useState([])
+    
 
     // POST user response and return is_correct
     function checkAns() {
@@ -23,18 +16,23 @@ function TranslatorScreen() {
         })
         .then(response => response.json())
         .then(responseJson => {
-            console.log(responseJson[0].image);
-            setImage(responseJson[0].image);
+            setImage(responseJson)
         })
         .catch(error => Alert.alert("error", error.message))
     }
 
-
-    function nextQn() {
-        setImage(null)
-        setAns(null)
-        // new question
+    // Display multiple Images from API
+    function showImage() {
+        return image.map((img, index) => (
+            <Image source={{uri: img.image}} style={{width:300,height:300}} key={index}/>
+        ));
     }
+
+    const renderData = (item, index) => {
+        return (
+            <Image source={{uri: item.image}} style={{width:300,height:300}} key={index}/>
+        )
+      }
 
     return (
         <View style={styles.container}>
@@ -53,10 +51,14 @@ function TranslatorScreen() {
                 <View style={styles.submitButton}>
                     <Button title="Submit" onPress={() => checkAns()}/>
                 </View>
-                <Image style={{width:300,height:300}} source={require(photo)}/>
-                <Image source={{ uri: 'http://192.168.1.56:8000/media/get_images/A.png', }} style={{ width: 40, height: 40 }}/>
-                <Image source={{image}} style={{ width: 40, height: 40 }}/>
-            </LinearGradient>
+                <FlatList
+                    data = {image}
+                    keyExtractor={(item, index)=> item.id.toString()}
+                    renderItem={({item})=>{
+                        return renderData(item);
+                    }}
+                />
+                </LinearGradient>
         </View>
     )}
 

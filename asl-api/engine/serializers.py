@@ -81,4 +81,4 @@ class UserPractiseSerializer(serializers.ModelSerializer):
 class GestureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gesture
-        fields = ('name', 'image')
+        fields = '__all__'

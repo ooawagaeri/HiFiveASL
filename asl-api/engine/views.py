@@ -15,11 +15,20 @@ nltk.download('wordnet', quiet=True)
 
 
 # Async Delete oldest record
-def del_oldest():
+def del_oldest_asl():
     count = ASL.objects.count()
     # Keep to track
     if count > 5:
         obj = ASL.objects.order_by('created_at')[0]
+        obj.delete()
+
+
+# Async Delete oldest record
+def del_oldest_practise():
+    count = UserPractise.objects.count()
+    # Keep to track
+    if count > 5:
+        obj = UserPractise.objects.order_by('created_at')[0]
         obj.delete()
 
 
@@ -35,10 +44,8 @@ class ASLViewSet(viewsets.ViewSet):
         asl_serializer = ASLSerializer(data=request.data)
         if asl_serializer.is_valid():
             asl_serializer.save()
-
             # Delete oldest record
-            sync_to_async(del_oldest(), thread_sensitive=True)
-
+            sync_to_async(del_oldest_asl(), thread_sensitive=True)
             return Response(asl_serializer.data, status=status.HTTP_201_CREATED)
         return Response(asl_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -59,6 +66,11 @@ class UserPractiseViewSet(viewsets.ModelViewSet):
     queryset = UserPractise.objects.all()
     serializer_class = UserPractiseSerializer
 
+    def create(self, request, **kwargs):
+        # Delete oldest record
+        sync_to_async(del_oldest_practise(), thread_sensitive=True)
+        return super().create(request)
+
 
 class GestureViewSet(viewsets.ModelViewSet):
     serializer_class = GestureSerializer
@@ -68,7 +80,7 @@ class GestureViewSet(viewsets.ModelViewSet):
         queryset = Gesture.objects.all().order_by('name')
         search = self.request.GET.get('search', '').upper()
 
-        if search:
+        if search or search == '':
             if not wordnet.synsets(search):
                 return []
 
