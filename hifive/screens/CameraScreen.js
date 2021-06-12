@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, View, Button, Image} from 'react-native';
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
 
 
@@ -10,11 +11,10 @@ function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
+    const [name, setName] = useState('Answer')
     const [type, setType] = useState(Camera.Constants.Type.front);
+    const [loading,setLoading] = useState(false)
     const isFocused = useIsFocused();
-
-    const [name, setName] = useState(null)
-
 
     useEffect(() => {
         (async () => {
@@ -29,6 +29,7 @@ function CameraScreen() {
                 setPreviewVisible(true);
             }
             console.log('snip');
+            setLoading(true);
             const data = await camera.takePictureAsync(null);
             postASL(data);
         }
@@ -57,6 +58,7 @@ function CameraScreen() {
         .then(responseJson => {
             setName(responseJson.name);
         })
+        .then(() => setLoading(false))
         .catch(error => {
             console.error(error);
         })
@@ -77,9 +79,11 @@ function CameraScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
+                <Text style={styles.header}>Sign to Text Translation</Text>
                 <Text style={styles.prompt}>Show us the sign language to translate!</Text>
             </LinearGradient>
                 <View style={styles.cameraContainer}>
+                    <Spinner visible={loading} textContent={'Loading...'}/>
                     {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                         <View>
                             <Button title="Flip Camera" onPress={() => {
@@ -171,10 +175,23 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
     },
-    prompt: {
-        marginTop: 20,
+    header: {
+        marginTop: 60,
         width: 350,
-        padding: 10,
+        padding: 0,
+        borderWidth: 0,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "transparent",
+        color: "#20232a",
+        textAlign: "left",
+        fontSize: 15,
+        fontWeight: "bold",
+    },
+    prompt: {
+        marginTop: 30,
+        width: 350,
+        padding: 15,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -192,7 +209,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     top: {
-        flex: 0.50,
+        flex: 0.7,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,

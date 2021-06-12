@@ -20,7 +20,7 @@ const VideosStack = createStackNavigator();
 
 function CamStackScreen() {
     return (
-        <CamStack.Navigator>
+        <CamStack.Navigator headerMode="none">
             <CamStack.Screen name="Sign to Text" component={CameraScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
         </CamStack.Navigator>
     );
