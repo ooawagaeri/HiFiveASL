@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import { Alert, StyleSheet, Text, View, Button, Image} from 'react-native';
+import { Alert, StyleSheet, Text, View, Image} from 'react-native';
+import { Button } from 'react-native-elements';
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
-
+import { Ionicons } from '@expo/vector-icons';
 
 function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
@@ -56,13 +57,14 @@ function CameraScreen() {
             throw new Error('Network response was not ok');
         })
         .then(responseJson => {
+            if (responseJson.name === '') throw new Error('No letter');
             setName(responseJson.name);
+            setLoading(false);
         })
-        .then(() => setLoading(false))
         .catch(error => {
             console.error(error);
-        })
-        ;
+            takePicture()
+        });
     }
 
     if (hasPermission === null) {
@@ -79,24 +81,32 @@ function CameraScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
-                <Text style={styles.header}>Sign to Text Translation</Text>
+                <Text style={styles.header}>SIGN-TO-TEXT</Text>
+                <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Show us the sign language to translate!</Text>
             </LinearGradient>
                 <View style={styles.cameraContainer}>
                     <Spinner visible={loading} textContent={'Loading...'}/>
                     {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
-                        <View>
-                            <Button title="Flip Camera" onPress={() => {
-                                setType(
-                                    type === Camera.Constants.Type.back
-                                        ? Camera.Constants.Type.front
-                                        : Camera.Constants.Type.back
-                                );
-                            }}/>
+                        <View style={styles.flip}>
+                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="black" />}
+                                    type={"clear"}
+                                    buttonStyle={{ justifyContent: 'flex-start' }}
+                                    onPress={() => {
+                                        setType(
+                                            type === Camera.Constants.Type.back
+                                                ? Camera.Constants.Type.front
+                                                : Camera.Constants.Type.back
+                                        );
+                            }}>
+                            </Button>
                         </View>
                     </Camera>}
-                    <View style={styles.fixToText}>
-                        <Button title="Take picture" onPress={() => takePicture()}/>
+                    <View style={styles.shutter}>
+                        <Button icon={<Ionicons name="camera-outline" size={40} color="black" />}
+                                type={"clear"}
+                                buttonStyle={{ justifyContent: 'center' }}
+                                onPress={() => takePicture()}/>
                     </View>
                 </View>
                 <LinearGradient
@@ -140,14 +150,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
     },
-    fixToText: {
+    flip: {
+        bottom: 0,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        justifyContent: 'flex-start'
+    },
+    shutter: {
         position: 'absolute',
         bottom: 0,
         flexDirection: 'row',
         flex: 1,
         width: '100%',
-        paddingLeft: 150,
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     previewBox:{
         justifyContent: "center",
@@ -176,7 +192,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     header: {
-        marginTop: 60,
+        marginTop: 50,
         width: 350,
         padding: 0,
         borderWidth: 0,
@@ -185,13 +201,22 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "left",
-        fontSize: 15,
+        fontSize: 30,
         fontWeight: "bold",
     },
+    rectangle: {
+        marginTop:10,
+        width:240,
+        height:10,
+        backgroundColor:'white',
+        alignSelf:'flex-start',
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+
+    },
     prompt: {
-        marginTop: 30,
         width: 350,
-        padding: 15,
+        padding: 23,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -199,10 +224,9 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
-        fontWeight: "bold",
     },
     bottom: {
-        flex: 0.5,
+        flex: 0.45,
         borderWidth: 0,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,

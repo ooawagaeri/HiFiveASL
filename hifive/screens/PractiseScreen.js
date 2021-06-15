@@ -1,9 +1,13 @@
 import * as React from 'react';
 import {useState, useEffect, useRef} from 'react';
-import {Alert, Button, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
+import { Button } from 'react-native-elements';
 import {Camera} from "expo-camera";
 import {useIsFocused} from "@react-navigation/native";
 import {LinearGradient} from "expo-linear-gradient";
+import Spinner from 'react-native-loading-spinner-overlay';
+import { Ionicons } from '@expo/vector-icons';
+
 import './Global.js'
 
 function PractiseScreen() {
@@ -12,8 +16,12 @@ function PractiseScreen() {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [type, setType] = useState(Camera.Constants.Type.front);
     const isFocused = useIsFocused();
-    
-    const [ans, setAns] = useState(null);
+    const [loading,setLoading] = useState(false)
+    const [counterCheck, setCounter] = useState(false)
+    const [qnLen, setQnLen] = useState(null)
+    const [letter, setLetter] = useState("")
+
+    const [marking, setMarking] = useState(null);
     const [qns, setQns] = useState(null);
     const [dictonary, setDictonary] = useState(null); // Array of possible answers
 
@@ -32,6 +40,7 @@ function PractiseScreen() {
                 setPreviewVisible(true);
             }
             console.log('snip');
+            setLoading(true)
             const data = await camera.takePictureAsync(null);
             postASL(data);
         }
@@ -57,17 +66,27 @@ function PractiseScreen() {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
         })
-        .then(responseJson => {  
-            const answer = responseJson.name; 
-            // Get question no.   
-            const question = dictonary.findIndex(obj => obj.answer === qns) + 1;
-            // Send user response to server to validate ans
-            postAns(answer, question);
+        .then(responseJson => {
+            console.log(responseJson.name);
+            setLetter(prevletter => (prevletter + responseJson.name))
+            console.log(letter)
+            setLoading(false);
+            if ((letter.length+1) === qnLen) {
+                 setCounter(true)
+            }
         })
         .catch(error => {
             console.error(error);
         })
         ;
+    }
+
+    function ansToPost() {
+        // Get question no.
+        const question = dictonary.findIndex(obj => obj.answer === qns) + 1;
+        // Send user response to server to validate ans
+        postAns(letter, question);
+        setLetter("")
     }
 
     // POST user response and return is_correct
@@ -88,11 +107,11 @@ function PractiseScreen() {
             throw new Error('Network response was not ok');
         })
         .then(responseJson => {
-            setAns(responseJson.is_correct);
+            setMarking(responseJson.is_correct);
         })
         .catch(error => {
             // When answer is not in possible answer
-            setAns(false);
+            setMarking(false);
         })
         ;
     }
@@ -103,6 +122,9 @@ function PractiseScreen() {
 
     // GET practise 
     function getQns() {
+        setMarking(null)
+        setCounter(false)
+        setLetter("")
         fetch(PRACTICE_QNS_API, {
             method:"GET"
         })
@@ -113,10 +135,10 @@ function PractiseScreen() {
             
             setDictonary(responseJson); // Store possible answers
             setQns(answer); // Set question
+            setQnLen(answer.length)
         })
         .catch(error => Alert.alert("error", error.message))
     }
-
 
     if (hasPermission === null) {
         return <View/>;
@@ -132,23 +154,33 @@ function PractiseScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
+                <Text style={styles.header}> PRACTISE </Text>
+                <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Show us the sign language to this letter!</Text>
                 <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
+                <Spinner visible={loading} textContent={'Loading...'}/>
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
-                    <View>
-                        <Button title="Flip Camera" onPress={() => {
-                            setType(
-                                type === Camera.Constants.Type.back
-                                    ? Camera.Constants.Type.front
-                                    : Camera.Constants.Type.back
-                            );
-                        }}/>
+                    <View style={styles.flip}>
+                        <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="black" />}
+                                type={"clear"}
+                                buttonStyle={{ justifyContent: 'flex-start' }}
+                                onPress={() => {
+                                    setType(
+                                        type === Camera.Constants.Type.back
+                                            ? Camera.Constants.Type.front
+                                            : Camera.Constants.Type.back
+                                    );
+                                }}>
+                        </Button>
                     </View>
                 </Camera>}
-                <View style={styles.fixToText}>
-                    <Button title="Take picture" onPress={() => takePicture()}/>
+                <View style={styles.shutter}>
+                    <Button icon={<Ionicons name="camera-outline" size={40} color="black" />}
+                            type={"clear"}
+                            buttonStyle={{ justifyContent: 'center' }}
+                            onPress={() => takePicture()}/>
                 </View>
             </View>
             <LinearGradient
@@ -156,10 +188,20 @@ function PractiseScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.bottom}>
-                { ans === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
-                    : ans === false ? (<Text style={styles.markingFalse}>Wrong!</Text>)
-                    : (<Text style={styles.markingTrue}>Correct!</Text>)}
-                <Button title="Next Question" onPress={() => getQns()}/>
+                <View style={styles.botButton}>
+                    <Button disabled={!counterCheck}
+                            buttonStyle={{marginRight:20}}
+                            onPress={() => ansToPost()}
+                            title="Submit"/>
+                    <Button buttonStyle={{marginLeft:20}} title="Next Question"
+                        // disabled={!ans}
+                            onPress={() => getQns()}/>
+                </View>
+                <View>
+                    { marking === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
+                        : marking === false ? (<Text style={styles.markingFalse}>Try again!</Text>)
+                            : (<Text style={styles.markingTrue}>Correct!</Text>)}
+                </View>
             </LinearGradient>
         </View>
     );
@@ -169,7 +211,7 @@ function PractiseScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eaeaea'
+        backgroundColor: 'transparent'
     },
     cameraContainer: {
         flex: 1,
@@ -219,9 +261,9 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     qnText: {
-        marginTop: 3,
+        marginTop: 0,
         width: 350,
-        padding: 10,
+        padding: 5,
         borderWidth: 4,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -232,7 +274,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     markingNull: {
-        marginTop: 10,
+        marginTop: 15,
         width: 250,
         padding: 8,
         borderWidth: 0,
@@ -245,7 +287,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     markingTrue: {
-        marginTop: 10,
+        marginTop: 15,
         width: 200,
         padding: 8,
         borderWidth: 0,
@@ -258,7 +300,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     markingFalse: {
-        marginTop: 10,
+        marginTop: 15,
         width: 200,
         padding: 8,
         borderWidth: 0,
@@ -270,8 +312,51 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    botButton: {
+        marginTop:10,
+        flexDirection:'row',
+        alignContent: 'space-around',
+    },
+    bottom: {
+        flex: 0.45,
+        borderWidth: 0,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        alignItems:'center',
+        paddingLeft: 10,
+        // justifyContent: 'space-around',
+    },
+    top: {
+        flex: 1.1,
+        borderWidth: 0,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
+        alignItems:'center',
+    },
+    header: {
+        marginTop: 50,
+        width: 350,
+        padding: 0,
+        borderWidth: 0,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "transparent",
+        color: "#20232a",
+        textAlign: "left",
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    rectangle: {
+        marginTop:10,
+        width:190,
+        height:10,
+        backgroundColor:'white',
+        alignSelf:'flex-start',
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+
+    },
     prompt: {
-        marginTop: 0,
         width: 350,
         padding: 10,
         borderWidth: 0,
@@ -281,24 +366,21 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
-        fontWeight: "bold",
     },
-    bottom: {
-        flex: 0.3,
-        borderWidth: 0,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        alignItems:'center',
-        flexDirection:'row',
-        paddingLeft: 10,
-        justifyContent: 'space-around',
+    flip: {
+        bottom: 0,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        justifyContent: 'flex-start'
     },
-    top: {
-        flex: 0.55,
-        borderWidth: 0,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
-        alignItems:'center',
+    shutter: {
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        flex: 1,
+        width: '100%',
+        justifyContent: 'center'
     },
 });
 

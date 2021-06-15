@@ -41,12 +41,13 @@ function TranslatorScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
+                <Text style={styles.header}>Dictionary Look Up</Text>
                 <Text style={styles.prompt}>Key in the letter to translate into ASL!</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
                     value={ans}
-                    placeholder="Your answer"
+                    placeholder="Letter/Word"
                 />
                 <View style={styles.submitButton}>
                     <Button title="Submit" onPress={() => checkAns()}/>
@@ -65,13 +66,34 @@ function TranslatorScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eaeaea'
+        backgroundColor: 'transparent'
+    },
+    header: {
+        marginTop: 50,
+        width: 350,
+        padding: 0,
+        borderWidth: 0,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "transparent",
+        color: "#20232a",
+        textAlign: "left",
+        fontSize: 30,
+        fontWeight: "bold",
+    },
+    rectangle: {
+        marginTop:10,
+        width:240,
+        height:10,
+        backgroundColor:'white',
+        alignSelf:'flex-start',
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+
     },
     prompt: {
-        marginTop: 20,
-        marginBottom:0,
         width: 350,
-        padding: 10,
+        padding: 30,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -79,7 +101,6 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
-        fontWeight: "bold",
     },
     top: {
         flex: 1,
@@ -104,7 +125,7 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         marginBottom:20
-    }
+    },
 })
 
 export default TranslatorScreen
