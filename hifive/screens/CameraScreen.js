@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Alert, StyleSheet, Text, View, Button, Image} from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,7 +19,7 @@ function CameraScreen() {
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted'); 
+            setHasPermission(status == 'granted'); 
         })();
     }, []);
 
@@ -56,9 +56,9 @@ function CameraScreen() {
             throw new Error('Network response was not ok');
         })
         .then(responseJson => {
+            setLoading(false);
             setName(responseJson.name);
         })
-        .then(() => setLoading(false))
         .catch(error => {
             console.error(error);
         })

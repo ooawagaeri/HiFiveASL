@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image, TextInput, Button, SafeAreaView} from 'react-native';
+import {Text, View, StyleSheet } from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
-import {useState} from "react";
 import {Thumbnail} from "react-native-thumbnail-video";
 
 function VideosScreen() {

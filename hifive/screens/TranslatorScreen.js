@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Text, View, StyleSheet, Image, TextInput, Button, ImageStore, FlatList} from 'react-native';
+import { Alert, Text, View, StyleSheet, Image, TextInput, Button, FlatList} from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
 import './Global.js'
@@ -19,13 +19,6 @@ function TranslatorScreen() {
             setImage(responseJson)
         })
         .catch(error => Alert.alert("error", error.message))
-    }
-
-    // Display multiple Images from API
-    function showImage() {
-        return image.map((img, index) => (
-            <Image source={{uri: img.image}} style={{width:300,height:300}} key={index}/>
-        ));
     }
 
     const renderData = (item, index) => {

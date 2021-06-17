@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons' ;
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import APITest from './API'
 import CameraScreen from "./CameraScreen";
 import QuizScreen from "./QuizScreen";
 import TranslatorScreen from "./TranslatorScreen";

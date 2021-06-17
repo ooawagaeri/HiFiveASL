@@ -6,7 +6,7 @@ import {useState} from "react";
 function QuizScreen() {
     const [ans, setAns] = useState(null)
     const [marking, setMarking] = useState(null)
-    const [image, setImage] = useState('./a.gif')
+    const [image, setImage] = useState('')
     var photo = './a.gif'
 
     function checkAns() {
@@ -28,7 +28,7 @@ function QuizScreen() {
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
-                <Image style={{width:300,height:300}} source={require(photo)}/>
+                {/* <Image style={{width:300,height:300}} source={require(photo)}/> */}
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect } from 'react';
 import {Alert, Button, StyleSheet, Text, View} from 'react-native';
 import {Camera} from "expo-camera";
 import {useIsFocused} from "@react-navigation/native";
@@ -21,7 +21,7 @@ function PractiseScreen() {
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
+            setHasPermission(status == 'granted');
         })();
         getQns();
     }, []);
@@ -57,7 +57,7 @@ function PractiseScreen() {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
         })
-        .then(responseJson => {  
+        .then(responseJson => {
             const answer = responseJson.name; 
             // Get question no.   
             const question = dictonary.findIndex(obj => obj.answer === qns) + 1;
@@ -88,6 +88,7 @@ function PractiseScreen() {
             throw new Error('Network response was not ok');
         })
         .then(responseJson => {
+            console.log(responseJson.wrong_letters);
             setAns(responseJson.is_correct);
         })
         .catch(error => {
