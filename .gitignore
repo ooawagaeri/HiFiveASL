@@ -231,5 +231,5 @@ buck-out/
 asl-api/media/post_images/
 
 # Expo CLI
-hifive/.expo/
-hifive/.expo-shared/
+hifive/.expo
+hifive/.expo-shared

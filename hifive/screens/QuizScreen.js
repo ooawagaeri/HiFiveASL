@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
+import {Text, View, StyleSheet, TextInput, Button} from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
 
@@ -7,7 +7,6 @@ function QuizScreen() {
     const [ans, setAns] = useState(null)
     const [marking, setMarking] = useState(null)
     const [image, setImage] = useState('')
-    var photo = './a.gif'
 
     function checkAns() {
         //if ans is correct to picture,
@@ -28,7 +27,6 @@ function QuizScreen() {
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
-                {/* <Image style={{width:300,height:300}} source={require(photo)}/> */}
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
@@ -50,7 +48,7 @@ function QuizScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eaeaea'
+        backgroundColor: 'transparent'
     },
     prompt: {
         marginTop: 20,
