@@ -22,6 +22,7 @@ function PractiseScreen() {
     const [letter, setLetter] = useState("")
 
     const [marking, setMarking] = useState(null);
+    const [wrong, setWrong] = useState([])
     const [qns, setQns] = useState(null);
     const [dictonary, setDictonary] = useState(null); // Array of possible answers
 
@@ -40,6 +41,7 @@ function PractiseScreen() {
                 setPreviewVisible(true);
             }
             console.log('snip');
+            setMarking(null)
             setLoading(true)
             const data = await camera.takePictureAsync(null);
             postASL(data);
@@ -87,6 +89,7 @@ function PractiseScreen() {
         // Send user response to server to validate ans
         postAns(letter, question);
         setLetter("")
+        console.log(question)
     }
 
     // POST user response and return is_correct
@@ -108,6 +111,7 @@ function PractiseScreen() {
         })
         .then(responseJson => {
             setMarking(responseJson.is_correct);
+            setWrong(responseJson.wrong_letters)
         })
         .catch(error => {
             // When answer is not in possible answer
@@ -199,7 +203,7 @@ function PractiseScreen() {
                 </View>
                 <View>
                     { marking === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
-                        : marking === false ? (<Text style={styles.markingFalse}>Try again!</Text>)
+                        : marking === false ? (<Text style={styles.markingFalse}>Try {wrong} again!</Text>)
                             : (<Text style={styles.markingTrue}>Correct!</Text>)}
                 </View>
             </LinearGradient>

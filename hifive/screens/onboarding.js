@@ -23,21 +23,23 @@ const Onboarding = () => {
                     <Footer
                         backgroundColor="#feb157"
                         rightButtonLabel="Next"
-                        rightButtonPress={() => {handlePageChange(1);}}
-                    />
-                </View>
-                <View key="2">
-                    <Page
-                        title="Get started on our camera translator!"
-                    />
-                    <Footer
-                        backgroundColor="#feb157"
-                        rightButtonLabel="Next"
                         rightButtonPress={() => {
                             navigation.navigate('Home');
                         }}
                     />
                 </View>
+                {/*<View key="2">*/}
+                {/*    <Page*/}
+                {/*        title="Get started on our camera translator!"*/}
+                {/*    />*/}
+                {/*    <Footer*/}
+                {/*        backgroundColor="#feb157"*/}
+                {/*        rightButtonLabel="Next"*/}
+                {/*        rightButtonPress={() => {*/}
+                {/*            navigation.navigate('Home');*/}
+                {/*        }}*/}
+                {/*    />*/}
+                {/*</View>*/}
             </PagerView>
     );
 };
