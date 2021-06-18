@@ -52,7 +52,8 @@ df = pd.read_csv(input_csv)
 X = df.sub_path.values
 y = df.target.values
 # Split dataset into random train and test subsets
-(xtrain, xtest, ytrain, ytest) = (train_test_split(X, y, test_size=0.15, random_state=42))
+(xtrain, xtest, ytrain, ytest) = (train_test_split(X, y, test_size=0.15,
+                                                   random_state=42))
 
 print(f"Training on {len(xtrain)} images")
 print(f"Validating on {len(xtest)} images")
@@ -93,7 +94,8 @@ def train(current_model, data_loader):
     running_loss = 0.0
     running_correct = 0
     # Iterate through data from data loader in batches
-    for _, data in tqdm(enumerate(data_loader), total=int(len(train_data) / data_loader.batch_size)):
+    for _, data in tqdm(enumerate(data_loader),
+                        total=int(len(train_data) / data_loader.batch_size)):
         # Assign data and value to computation device
         data, target = data[0].to(device), data[1].to(device)
         # Set gradient to zero before starting new back pass
@@ -130,7 +132,8 @@ def validate(current_model, data_loader):
     # Disables gradient calculation, used for inference / validation
     with torch.no_grad():
         # Iterate through data from data loader in batches
-        for _, data in tqdm(enumerate(data_loader), total=int(len(test_data) / data_loader.batch_size)):
+        for _, data in tqdm(enumerate(data_loader),
+                            total=int(len(test_data) / data_loader.batch_size)):
             # Assign data and value to computation device
             data, target = data[0].to(device), data[1].to(device)
             outputs = current_model(data)
@@ -145,7 +148,8 @@ def validate(current_model, data_loader):
         validate_loss = running_loss / len(data_loader.dataset)
         # Validation accuracy, measurement of the Validation performance
         validate_accuracy = 100. * running_correct / len(data_loader.dataset)
-        print(f'Validate Loss: {validate_loss:.4f}, Validate Accuracy: {validate_accuracy:.2f}')
+        print(f'Validate Loss: {validate_loss:.4f},'
+              f'Validate Accuracy: {validate_accuracy:.2f}')
 
         return validate_loss, validate_accuracy
 

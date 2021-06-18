@@ -9,7 +9,8 @@ import cv2
 from tqdm import tqdm
 
 num_images = 3000
-training_path = '../../../../kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train'
+training_path = '../../../../' \
+                'kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train'
 output_path = 'output/preprocessed_image'
 
 print(f"Pre-processing images from {training_path}")
@@ -21,7 +22,8 @@ training_sub_paths = os.listdir(training_path)
 training_sub_paths.sort()
 
 # Iterate through all files
-for index, sub_path in tqdm(enumerate(training_sub_paths), total=len(training_sub_paths)):
+for index, sub_path in tqdm(enumerate(training_sub_paths),
+                            total=len(training_sub_paths)):
     # Get all images within subdirectories
     all_images = os.listdir(f"{training_path}/{sub_path}")
     # Create subdirectories in output path

@@ -98,8 +98,7 @@ function CameraScreen() {
                                                 ? Camera.Constants.Type.front
                                                 : Camera.Constants.Type.back
                                         );
-                            }}>
-                            </Button>
+                            }}/>
                         </View>
                     </Camera>}
                     <View style={styles.shutter}>

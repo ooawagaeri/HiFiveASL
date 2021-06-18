@@ -3,7 +3,6 @@ asl_image_dataset.py
 Used to augment dataset images in order to better CNN performance
 """
 
-
 import albumentations
 import cv2
 import numpy as np
@@ -30,4 +29,5 @@ class ASLImageDataset(Dataset):
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
         label = self.y[i]
         # Create tensors
-        return torch.tensor(image, dtype=torch.float), torch.tensor(label, dtype=torch.long)
+        return torch.tensor(image, dtype=torch.float), \
+               torch.tensor(label, dtype=torch.long)

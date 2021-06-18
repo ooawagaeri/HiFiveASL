@@ -89,7 +89,7 @@ function TranslatorScreen() {
             const index = event.nativeEvent.contentOffset.x / slideSize;
             const roundIndex = Math.round(index);
             const distance = Math.abs(roundIndex - index);
-            const isNoMansLand = 0.4 < distance;
+            const isNoMansLand = distance > 0.4;
             if (roundIndex !== indexRef.current && !isNoMansLand) {
                 setIndex(roundIndex);
             }

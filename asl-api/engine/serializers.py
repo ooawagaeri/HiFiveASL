@@ -31,7 +31,8 @@ device = 'cpu'
 # Load label binarizer and model
 lb = joblib.load('engine/tensor/output/lb_alpha.pkl')
 model = custom_CNN.CustomCNN("engine/tensor/output/lb_alpha.pkl").to(device)
-model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth', map_location=device))
+model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth',
+                                 map_location=device))
 
 
 class ASLSerializer(serializers.ModelSerializer):
@@ -76,7 +77,8 @@ class PractiseQuestionSerializer(serializers.ModelSerializer):
 class PractiseAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = PractiseAnswer
-        fields = ('id', 'response', 'practise_question', 'created_at', 'is_correct', 'wrong_letters')
+        fields = ('id', 'response', 'practise_question', 'created_at',
+                  'is_correct', 'wrong_letters')
 
 
 class GestureSerializer(serializers.ModelSerializer):

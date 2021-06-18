@@ -1,11 +1,12 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets, filters
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 
 from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
-from .serializers import ASLSerializer, PractiseQuestionSerializer, PractiseAnswerSerializer, GestureSerializer
+from .serializers import ASLSerializer, PractiseQuestionSerializer,\
+    PractiseAnswerSerializer, GestureSerializer
 import nltk
 from nltk.corpus import wordnet
 
