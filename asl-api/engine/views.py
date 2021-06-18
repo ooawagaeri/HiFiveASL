@@ -5,11 +5,10 @@ from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 
 from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
-from .serializers import ASLSerializer, PractiseQuestionSerializer,\
+from .serializers import ASLSerializer, PractiseQuestionSerializer, \
     PractiseAnswerSerializer, GestureSerializer
 import nltk
 from nltk.corpus import wordnet
-
 
 # Download latest word dictionary (for word check)
 nltk.download('wordnet', quiet=True)

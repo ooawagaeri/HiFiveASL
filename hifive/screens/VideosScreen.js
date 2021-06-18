@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Text, View, StyleSheet } from 'react-native';
-import {LinearGradient} from "expo-linear-gradient";
-import {Thumbnail} from "react-native-thumbnail-video";
+import { LinearGradient } from "expo-linear-gradient";
+import { Text, View, StyleSheet } from 'react-native';
+import { Thumbnail } from "react-native-thumbnail-video";
 
 function VideosScreen() {
     return (
@@ -11,26 +11,35 @@ function VideosScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
-                <Text style={styles.prompt}>Here are some videos to aid our ASL learning.<br/>Click on the thumbnail to play!  </Text>
+                <Text style={styles.prompt}>
+                    Here are some videos to aid our ASL learning.<br/>Click on the thumbnail to play!
+                </Text>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=betAZeKRpR8'}/>
-                    <Text style={styles.des}>The Story of ASL </Text>
+                    <Text style={styles.des}>
+                        The Story of ASL
+                    </Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=u3HoC9_ir3s'}/>
-                    <Text style={styles.des}>The ASL Alphabet: <br/>American Sign Language<br/>Letters A-Z</Text>
+                    <Text style={styles.des}>
+                        The ASL Alphabet: <br/>American Sign Language<br/>Letters A-Z
+                    </Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=v1desDduz5M'}/>
-                    <Text style={styles.des}>Basic Sign Language<br/>Phrases for Beginners </Text>
+                    <Text style={styles.des}>
+                        Basic Sign Language<br/>Phrases for Beginners
+                    </Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=pDA_EXFTpxo'}/>
-                    <Text style={styles.des}>Dos and Don'ts of<br/>Interacting with the<br/>Deaf Community [CC]
+                    <Text style={styles.des}>
+                        Dos and Don&apos;ts of<br/>Interacting with the<br/>Deaf Community [CC]
                     </Text>
                 </View>
             </LinearGradient>

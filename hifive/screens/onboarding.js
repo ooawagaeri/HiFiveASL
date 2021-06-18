@@ -1,10 +1,9 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
-
+import { useNavigation } from "@react-navigation/native";
+import Footer from '../components/footer.js';
 import Page from '../components/page.js';
 import PagerView from "react-native-pager-view";
-import Footer from '../components/footer.js';
-import { useNavigation } from "@react-navigation/native";
 
 const Onboarding = () => {
     const navigation = useNavigation();

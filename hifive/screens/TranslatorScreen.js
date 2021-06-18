@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { Alert, Text, View, StyleSheet, Image, TextInput, Button, FlatList } from 'react-native';
-import {LinearGradient} from "expo-linear-gradient";
-import {useState, useCallback, useRef} from "react";
+import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Alert, Text, View, StyleSheet, Image, TextInput, Button, FlatList } from 'react-native';
+import { useState, useCallback, useRef } from "react";
 import './Global.js'
 
 function TranslatorScreen() {
     const [ans, setAns] = useState('')
     const [letters, setLetters] = useState([])
     const [isWord,setIsWord] = useState(null)
-    var holdLetters =[]
-    var holdImage = []
+    let holdLetters =[]
+    let holdImage = []
 
     // POST user response and return is_correct
     function checkAns() {
         fetch(TRANSLATOR_API + ans,{
             method:"GET"
-        })
-        .then(response => response.json())
-        .then(responseJson => {
-            // setImage(responseJson)
+        }).
+        then(response => response.json()).
+        then(responseJson => {
             holdImage = responseJson
             sortLetter(ans,holdImage)
             if (holdImage.length === 0) {
@@ -27,21 +26,22 @@ function TranslatorScreen() {
             } else {
                 setIsWord(true)
             }
-        })
-        .catch(error => Alert.alert("error", error.message))
+        }).
+        catch(error => Alert.alert("error", error.message))
     }
 
     function sortLetter(ans,image) {
         holdLetters=[]
-        for (var i = 0; i < ans.length; i++) {
-            for (var j = 0; j < image.length; j++) {
+        let i;
+        let j;
+        for (i = 0; i < ans.length; i++) {
+            for (j = 0; j < image.length; j++) {
                 if (ans[i].toUpperCase() === image[j].name){
                     holdLetters.push({id:i,title: image[j].name, url: image[j].image})
                 }
             }
         }
         setLetters(holdLetters)
-        console.log({holdLetters})
     }
 
     function Slide({ data }) {
@@ -100,8 +100,8 @@ function TranslatorScreen() {
                           keyExtractor={(item, index)=> item.id.toString()}
                           style={{ flex: 1 }}
                           renderItem={renderItem}
-                          horizontal={true}
-                          pagingEnabled={true}
+                          horizontal
+                          pagingEnabled
                           showsHorizontalScrollIndicator={false}
                           onScroll={onScroll}
                 />

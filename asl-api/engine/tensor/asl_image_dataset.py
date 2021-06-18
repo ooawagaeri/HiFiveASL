@@ -29,5 +29,4 @@ class ASLImageDataset(Dataset):
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
         label = self.y[i]
         # Create tensors
-        return torch.tensor(image, dtype=torch.float), \
-               torch.tensor(label, dtype=torch.long)
+        return torch.tensor(image, dtype=torch.float), torch.tensor(label, dtype=torch.long)

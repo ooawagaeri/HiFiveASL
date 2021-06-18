@@ -1,14 +1,14 @@
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import { Button } from 'react-native-elements';
-import {Camera} from "expo-camera";
-import {useIsFocused} from "@react-navigation/native";
-import {LinearGradient} from "expo-linear-gradient";
-import Spinner from 'react-native-loading-spinner-overlay';
+import { Camera } from "expo-camera";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from '@expo/vector-icons';
-
+import { useState, useEffect} from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { useIsFocused } from "@react-navigation/native";
 import './Global.js'
+
 
 function PractiseScreen() {
     const [hasPermission, setHasPermission] = useState(null);
@@ -30,7 +30,7 @@ function PractiseScreen() {
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status == 'granted');
+            setHasPermission(status === 'granted');
         })();
         getQns();
     }, []);
@@ -40,7 +40,6 @@ function PractiseScreen() {
             if (!previewVisible) {
                 setPreviewVisible(true);
             }
-            console.log('snip');
             setMarking(null)
             setLoading(true)
             const data = await camera.takePictureAsync(null);
@@ -63,24 +62,19 @@ function PractiseScreen() {
                 'Content-Type': 'multipart/form-data',
             },
             body: uploadData
-        })
-        .then(response => {
+        }).
+        then(response => {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
-        })
-        .then(responseJson => {
-            console.log(responseJson.name);
+        }).
+        then(responseJson => {
             setLetter(prevletter => (prevletter + responseJson.name))
-            console.log(letter)
             setLoading(false);
             if ((letter.length+1) === qnLen) {
                  setCounter(true)
             }
-        })
-        .catch(error => {
-            console.error(error);
-        })
-        ;
+        }).
+        catch(error => Alert.alert("error", error.message));
     }
 
     function ansToPost() {
@@ -89,7 +83,6 @@ function PractiseScreen() {
         // Send user response to server to validate ans
         postAns(letter, question);
         setLetter("")
-        console.log(question)
     }
 
     // POST user response and return is_correct
@@ -104,18 +97,17 @@ function PractiseScreen() {
                 'Content-Type': 'multipart/form-data',
             },
             body: uploadData
-        })
-        .then(response => {
+        }).
+        then(response => {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
-        })
-        .then(responseJson => {
+        }).
+        then(responseJson => {
             setMarking(responseJson.is_correct);
             setWrong(responseJson.wrong_letters)
-        })
-        .catch(error => {
-            // When answer is not in possible answer
-            setMarking(false);
+        }).
+        catch(() => {
+            setMarking(false); // When answer is not in possible answer
         })
         ;
     }
@@ -131,17 +123,20 @@ function PractiseScreen() {
         setLetter("")
         fetch(PRACTICE_QNS_API, {
             method:"GET"
-        })
-        .then(response => response.json())
-        .then(responseJson => {
+        }).
+        then(response => response.json()).
+        then(responseJson => {
             // Get random question from json array
-            var answer = responseJson[getRandNumber(0, responseJson.length - 1)].answer;
+            let {answer} = responseJson[getRandNumber(0, responseJson.length - 1)];
 
             setDictonary(responseJson); // Store possible answers
             setQns(answer); // Set question
             setQnLen(answer.length)
-        })
-        .catch(error => Alert.alert("error", error.message))
+        }).
+        catch(error => {
+            setLoading(false);
+            Alert.alert("error", error.message)
+        });    
     }
 
     if (hasPermission === null) {
@@ -210,7 +205,7 @@ function PractiseScreen() {
     );
 }
 
-
+// skipcq
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -327,7 +322,6 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 30,
         alignItems:'center',
         paddingLeft: 10,
-        // justifyContent: 'space-around',
     },
     top: {
         flex: 1.1,

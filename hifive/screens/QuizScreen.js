@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, TextInput, Button} from 'react-native';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
+import {Text, View, StyleSheet, TextInput, Button} from 'react-native';
 
 function QuizScreen() {
     const [ans, setAns] = useState(null)

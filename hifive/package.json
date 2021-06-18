@@ -40,9 +40,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "eslint": "^7.28.0",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-sonarjs": "^0.8.0-125",
     "react-navigation": "^4.4.4"
   },
   "private": true
