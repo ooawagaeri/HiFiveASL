@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons' ;
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import APITest from './API'
+import {StyleSheet} from "react-native";
 import CameraScreen from "./CameraScreen";
 import QuizScreen from "./QuizScreen";
 import TranslatorScreen from "./TranslatorScreen";
@@ -36,15 +36,15 @@ function QuizStackScreen() {
 
 function TransStackScreen() {
     return (
-        <TransStack.Navigator>
-            <TransStack.Screen name="Text to Sign" component={TranslatorScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        <TransStack.Navigator headerMode="none">
+            <TransStack.Screen name="Dictionary Look Up" component={TranslatorScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
         </TransStack.Navigator>
     );
 }
 
 function PracStackScreen() {
     return (
-        <PracStack.Navigator>
+        <PracStack.Navigator headerMode="none">
             <PracStack.Screen name="Gesture Practise" component={PractiseScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
         </PracStack.Navigator>
     );
@@ -67,7 +67,9 @@ const Home = () => {
                 tabBarOptions={{
                     activeTintColor: 'tomato',
                     inactiveTintColor: 'grey',
+                    style: styles.container
                 }}
+                theme={theme}
             >
                 <Tab.Screen
                     name="Practise"
@@ -114,3 +116,18 @@ const Home = () => {
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+    container: {
+        borderTopWidth: 0,
+        elevation:0,
+        shadowOffset:{width:0,height:0},
+        backgroundColor:'transparent',
+    },
+})
+
+const theme = { //like this
+    colors: {
+        background: "transparent",
+    },
+};

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hifive-1",
-    "slug": "hifive-1",
+    "name": "HI Five",
+    "slug": "hi-five",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,7 +14,7 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "*/"
     ],
     "ios": {
       "supportsTablet": true
@@ -27,6 +27,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "An Orbital NUS Project involving computer vision, machine learning and visual design to translate and teach American Sign Language to a greater audience."
   }
 }

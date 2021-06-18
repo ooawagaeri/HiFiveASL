@@ -4,8 +4,8 @@ from rest_framework import status, viewsets, filters
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 
-from .models import ASL, PractiseQuestion, UserPractise, Gesture
-from .serializers import ASLSerializer, PractiseQuestionSerializer, UserPractiseSerializer, GestureSerializer
+from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
+from .serializers import ASLSerializer, PractiseQuestionSerializer, PractiseAnswerSerializer, GestureSerializer
 import nltk
 from nltk.corpus import wordnet
 
@@ -25,10 +25,10 @@ def del_oldest_asl():
 
 # Async Delete oldest record
 def del_oldest_practise():
-    count = UserPractise.objects.count()
+    count = PractiseAnswer.objects.count()
     # Keep to track
     if count > 5:
-        obj = UserPractise.objects.order_by('created_at')[0]
+        obj = PractiseAnswer.objects.order_by('created_at')[0]
         obj.delete()
 
 
@@ -65,9 +65,9 @@ class PractiseQuestionViewSet(viewsets.ModelViewSet):
     serializer_class = PractiseQuestionSerializer
 
 
-class UserPractiseViewSet(viewsets.ModelViewSet):
-    queryset = UserPractise.objects.all()
-    serializer_class = UserPractiseSerializer
+class PractiseAnswerViewSet(viewsets.ModelViewSet):
+    queryset = PractiseAnswer.objects.all()
+    serializer_class = PractiseAnswerSerializer
 
     def create(self, request, **kwargs):
         # Delete oldest record
