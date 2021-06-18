@@ -69,7 +69,7 @@ class ASLSerializer(serializers.ModelSerializer):
 class PractiseQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PractiseQuestion
-        fields = ('answer',)
+        fields = '__all__'
 
 
 class PractiseAnswerSerializer(serializers.ModelSerializer):
