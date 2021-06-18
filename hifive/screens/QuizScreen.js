@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image, TextInput, Button} from 'react-native';
+import {Text, View, StyleSheet, Image, TextInput} from 'react-native';
+import { Button } from 'react-native-elements';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
 
@@ -27,6 +28,8 @@ function QuizScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
+                <Text style={styles.header}>QUIZ</Text>
+                <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
                 <Image style={{width:300,height:300}} source={require(photo)}/>
                 <TextInput
@@ -35,7 +38,7 @@ function QuizScreen() {
                     value={ans}
                     placeholder="Your answer"
                 />
-                <Button title="Submit" onPress={() => checkAns()}/>
+                <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
                 { marking === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
                     : marking === false ? (<Text style={styles.markingFalse}>Wrong!{"\n"}Please try again!</Text>)
                         : (<Text style={styles.markingTrue}>Correct!</Text>)}
@@ -52,19 +55,40 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent'
     },
-    prompt: {
-        marginTop: 20,
-        marginBottom:20,
+    header: {
+        marginTop: 50,
         width: 350,
-        padding: 10,
+        padding: 0,
+        borderWidth: 0,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "transparent",
+        color: "#20232a",
+        textAlign: "left",
+        fontSize: 30,
+        fontFamily:"FuturaPTDemi",
+    },
+    rectangle: {
+        marginTop:10,
+        width:120,
+        height:10,
+        backgroundColor:'white',
+        alignSelf:'flex-start',
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+
+    },
+    prompt: {
+        width: 350,
+        padding: 23,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
-        fontWeight: "bold",
+        fontSize: 17,
+        fontFamily:"FuturaPTBook",
     },
     top: {
         flex: 1,
@@ -84,7 +108,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     next: {
         marginTop:10
@@ -100,7 +124,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     markingTrue: {
         marginTop: 20,
@@ -113,7 +137,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     markingFalse: {
         marginTop: 20,
@@ -126,8 +150,11 @@ const styles = StyleSheet.create({
         color: "#eaeaea",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
+    butText:{
+        fontFamily:"FuturaPTDemi",
+    }
 })
 
 export default QuizScreen

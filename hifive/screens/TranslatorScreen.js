@@ -6,9 +6,9 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    Button,
     FlatList,
     } from 'react-native';
+import { Button } from 'react-native-elements';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState, useCallback, useEffect, useRef} from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -144,7 +144,7 @@ function TranslatorScreen() {
                     placeholder="Letter/Word"
                 />
                 <View style={styles.submitButton}>
-                    <Button title="Submit" onPress={() => checkAns()}/>
+                    <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
                 </View>
                 {(ans === '') ? (<Text style={styles.markingNull}>No word submitted</Text>)
                     : (isWord === false) ? (<Text style={styles.noSuchWord}>No such word</Text>)
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "left",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     rectangle: {
         marginTop:10,
@@ -192,6 +192,8 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
+        fontFamily:"FuturaPTBook",
+
     },
     top: {
         flex: 1,
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     submitButton: {
         marginBottom:20
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     noSuchWord: {
         width: 250,
@@ -254,8 +256,11 @@ const styles = StyleSheet.create({
         color: "#eaeaea",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
+    butText:{
+        fontFamily:"FuturaPTDemi",
+    }
 })
 
 export default TranslatorScreen

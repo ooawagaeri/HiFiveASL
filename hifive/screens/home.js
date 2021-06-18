@@ -21,15 +21,15 @@ const VideosStack = createStackNavigator();
 function CamStackScreen() {
     return (
         <CamStack.Navigator headerMode="none">
-            <CamStack.Screen name="Sign to Text" component={CameraScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+            <CamStack.Screen name="Sign to Text" component={CameraScreen}/>
         </CamStack.Navigator>
     );
 }
 
 function QuizStackScreen() {
     return (
-        <QuizStack.Navigator>
-            <QuizStack.Screen name="Quiz" component={QuizScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        <QuizStack.Navigator headerMode="none">
+            <QuizStack.Screen name="Quiz" component={QuizScreen}/>
         </QuizStack.Navigator>
     );
 }
@@ -37,7 +37,7 @@ function QuizStackScreen() {
 function TransStackScreen() {
     return (
         <TransStack.Navigator headerMode="none">
-            <TransStack.Screen name="Dictionary Look Up" component={TranslatorScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+            <TransStack.Screen name="Dictionary Look Up" component={TranslatorScreen}/>
         </TransStack.Navigator>
     );
 }
@@ -45,15 +45,15 @@ function TransStackScreen() {
 function PracStackScreen() {
     return (
         <PracStack.Navigator headerMode="none">
-            <PracStack.Screen name="Gesture Practise" component={PractiseScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+            <PracStack.Screen name="Gesture Practise" component={PractiseScreen}/>
         </PracStack.Navigator>
     );
 }
 
 function VideosStackScreen() {
     return (
-        <VideosStack.Navigator>
-            <VideosStack.Screen name="Video Resources" component={VideosScreen} options={{headerLeft:null,headerStyle:{backgroundColor: '#ffd26c'},}}/>
+        <VideosStack.Navigator headerMode="none">
+            <VideosStack.Screen name="Video Resources" component={VideosScreen}/>
         </VideosStack.Navigator>
     );
 }
@@ -67,7 +67,12 @@ const Home = () => {
                 tabBarOptions={{
                     activeTintColor: 'tomato',
                     inactiveTintColor: 'grey',
-                    style: styles.container
+                    style: styles.container,
+                    labelStyle: {
+                        fontFamily:"FuturaPTDemi",
+                        fontSize:12
+
+                    },
                 }}
                 theme={theme}
             >
@@ -126,7 +131,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const theme = { //like this
+const theme = {
     colors: {
         background: "transparent",
     },

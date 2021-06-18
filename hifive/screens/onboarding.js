@@ -28,18 +28,6 @@ const Onboarding = () => {
                         }}
                     />
                 </View>
-                {/*<View key="2">*/}
-                {/*    <Page*/}
-                {/*        title="Get started on our camera translator!"*/}
-                {/*    />*/}
-                {/*    <Footer*/}
-                {/*        backgroundColor="#feb157"*/}
-                {/*        rightButtonLabel="Next"*/}
-                {/*        rightButtonPress={() => {*/}
-                {/*            navigation.navigate('Home');*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</View>*/}
             </PagerView>
     );
 };

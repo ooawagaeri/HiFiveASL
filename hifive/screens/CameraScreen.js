@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     header: {
         marginTop: 50,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "left",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     rectangle: {
         marginTop:10,
@@ -223,7 +223,8 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
+        fontFamily:"FuturaPTBook",
     },
     bottom: {
         flex: 0.45,
