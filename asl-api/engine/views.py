@@ -34,13 +34,15 @@ def del_oldest_practise():
 
 class ASLViewSet(viewsets.ViewSet):
     # GET List
-    def list(self, request):
+    @staticmethod
+    def list(request):
         asl = ASL.objects.all()
         asl_serializer = ASLSerializer(asl, many=True)
         return Response(asl_serializer.data)
 
     # POST
-    def create(self, request):
+    @staticmethod
+    def create(request):
         asl_serializer = ASLSerializer(data=request.data)
         if asl_serializer.is_valid():
             asl_serializer.save()
@@ -50,7 +52,8 @@ class ASLViewSet(viewsets.ViewSet):
         return Response(asl_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # GET
-    def retrieve(self, request, pk=None):
+    @staticmethod
+    def retrieve(request, pk=None):
         asl_queryset = ASL.objects.all()
         asl = get_object_or_404(asl_queryset, pk=pk)
         asl_serializer = ASLSerializer(asl)

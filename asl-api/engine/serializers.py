@@ -41,7 +41,8 @@ class ASLSerializer(serializers.ModelSerializer):
         model = ASL
         fields = ('name', 'image', 'created_at')
 
-    def get_name(self, obj):
+    @staticmethod
+    def get_name(obj):
         # Read image bytes into CV2
         nparr = np.fromstring(obj.image.read(), np.uint8)
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
