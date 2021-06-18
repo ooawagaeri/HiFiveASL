@@ -77,7 +77,8 @@ print(f"Number of parameters: {total_params:,}")
 total_trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 print(f"Number of trainable parameters: {total_trainable_params:,}")
 
-# Adam optimization algorithm (stochastic gradient descent) to update network weights in training data
+# Adam optimization algorithm (stochastic gradient descent) to
+# update network weights in training data
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 # Cross Entropy Loss function to solve classification problem
 criterion = nn.CrossEntropyLoss()
@@ -92,7 +93,7 @@ def train(current_model, data_loader):
     running_loss = 0.0
     running_correct = 0
     # Iterate through data from data loader in batches
-    for i, data in tqdm(enumerate(data_loader), total=int(len(train_data) / data_loader.batch_size)):
+    for _, data in tqdm(enumerate(data_loader), total=int(len(train_data) / data_loader.batch_size)):
         # Assign data and value to computation device
         data, target = data[0].to(device), data[1].to(device)
         # Set gradient to zero before starting new back pass
@@ -129,7 +130,7 @@ def validate(current_model, data_loader):
     # Disables gradient calculation, used for inference / validation
     with torch.no_grad():
         # Iterate through data from data loader in batches
-        for i, data in tqdm(enumerate(data_loader), total=int(len(test_data) / data_loader.batch_size)):
+        for _, data in tqdm(enumerate(data_loader), total=int(len(test_data) / data_loader.batch_size)):
             # Assign data and value to computation device
             data, target = data[0].to(device), data[1].to(device)
             outputs = current_model(data)

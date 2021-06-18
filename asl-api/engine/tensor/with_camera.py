@@ -3,7 +3,6 @@ with_camera.py
 Used to conduct basic testing given camera feed on model
 """
 
-
 import torch
 import joblib
 import numpy as np
@@ -33,7 +32,8 @@ if not cap.isOpened():
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 # Setting codec and record camera
-#out = cv2.VideoWriter('output/asl.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (frame_width, frame_height))
+# out = cv2.VideoWriter('output/asl.mp4', cv2.VideoWriter_fourcc(*'mp4v'),
+#                       30, (frame_width, frame_height))
 
 # Read until end of video
 while cap.isOpened():
@@ -52,7 +52,7 @@ while cap.isOpened():
     cv2.putText(frame, lb.classes_[prediction], (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
     cv2.imshow('image', frame)
     # Save camera recording
-    #out.write(frame)
+    # out.write(frame)
 
     if cv2.waitKey(27) & 0xFF == ord('q'):  # `Q` to exit
         break

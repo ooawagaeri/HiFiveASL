@@ -76,7 +76,7 @@ class PractiseQuestionSerializer(serializers.ModelSerializer):
 class PractiseAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = PractiseAnswer
-        fields = ('id','response', 'practise_question', 'created_at', 'is_correct', 'wrong_letters')
+        fields = ('id', 'response', 'practise_question', 'created_at', 'is_correct', 'wrong_letters')
 
 
 class GestureSerializer(serializers.ModelSerializer):

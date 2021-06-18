@@ -29,7 +29,8 @@ for index, sub_path in tqdm(enumerate(training_sub_paths), total=len(training_su
 
     # Limit on number of images to preprocess (for each category)
     for i in range(num_images):
-        # Randomize selection of images for pre-processed dataset (applicable for limit set)
+        # Randomize selection of images for pre-processed dataset
+        # (applicable for limit set)
         rand_id = (random.randint(0, 2999))
         image = cv2.imread(f"{training_path}/{sub_path}/{all_images[rand_id]}")
         # Standardized image size & faster training on smaller images

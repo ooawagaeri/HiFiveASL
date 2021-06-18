@@ -26,8 +26,9 @@ class CustomCNN(nn.Module):
         self.fc2 = nn.Linear(256, len(lb.classes_))
 
         # Applies 2D max pooling over input
-        # Calculates maximum value in each patch of the feature map and down-samples input,
-        # reducing dimensionality / parameters for better assumptions / predictions
+        # Calculates maximum value in each patch of the feature map and
+        # down-samples input, reducing dimensionality / parameters for
+        # better assumptions / predictions
         self.pool = nn.MaxPool2d(2, 2)
 
     # Feed-forward network. Feeds input through several layer
@@ -38,7 +39,8 @@ class CustomCNN(nn.Module):
         x = self.pool(func.relu(self.conv3(x)))
         x = self.pool(func.relu(self.conv4(x)))
         bs, _, _, _ = x.shape
-        # Applies a 2D adaptive average pooling over an input signal composed of several input planes.
+        # Applies a 2D adaptive average pooling over an input signal
+        # composed of several input planes.
         x = func.adaptive_avg_pool2d(x, 1).reshape(bs, -1)
         x = func.relu(self.fc1(x))
         x = self.fc2(x)

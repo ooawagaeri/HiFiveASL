@@ -12,4 +12,3 @@ router.register('gesture', GestureViewSet, basename='gesture')
 urlpatterns = [
     path('', include(router.urls)),
 ]
-
