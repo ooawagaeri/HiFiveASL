@@ -23,7 +23,8 @@ data = pd.DataFrame()
 labels = []
 
 # Iterate through all files
-for index, sub_path in tqdm(enumerate(preprocessed_paths), total=len(preprocessed_paths)):
+for index, sub_path in tqdm(enumerate(preprocessed_paths),
+                            total=len(preprocessed_paths)):
     # Get alphabet label
     label = sub_path.split(os.path.sep)[-2]
     # Store relative path for mapping image to label

@@ -17,7 +17,7 @@ class PractiseQuestion(models.Model):
         return self.answer
 
 
-class UserPractise(models.Model):
+class PractiseAnswer(models.Model):
     response = models.CharField(max_length=10)
     practise_question = models.ForeignKey(PractiseQuestion, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,6 +25,18 @@ class UserPractise(models.Model):
     @property
     def is_correct(self):
         return self.practise_question.answer == self.response
+
+    @property
+    def wrong_letters(self):
+        rep = self.response
+        ans = self.practise_question.answer
+
+        wrongs = []
+        for index in range(0, len(ans)):
+            if rep[index] != ans[index]:
+                wrongs.append(ans[index])
+
+        return wrongs
 
 
 class Gesture(models.Model):

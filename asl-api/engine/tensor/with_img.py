@@ -13,7 +13,8 @@ import torch
 import custom_CNN
 
 # Individual image name
-img = 'A_test.jpg'
+img = 'D:/5-NUS/Orbital/kaggle_gestures_akash/asl_alphabet_test/' \
+      'asl_alphabet_test/A_test.jpg'
 
 aug = albumentations.Compose([
     albumentations.Resize(224, 224, always_apply=True),
@@ -26,7 +27,7 @@ model.load_state_dict(torch.load('output/model_alpha.pth'))
 print('Model loaded')
 
 # Target image directory location
-image = cv2.imread(f"D:/5-NUS/Orbital/kaggle_gestures_akash/asl_alphabet_test/asl_alphabet_test/{img}")
+image = cv2.imread(img)
 
 # Load and prepare image
 image = aug(image=np.array(image))['image']

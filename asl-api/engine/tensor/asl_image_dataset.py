@@ -3,7 +3,6 @@ asl_image_dataset.py
 Used to augment dataset images in order to better CNN performance
 """
 
-
 import albumentations
 import cv2
 import numpy as np

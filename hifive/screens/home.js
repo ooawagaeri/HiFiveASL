@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons' ;
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import {StyleSheet} from "react-native";
 import CameraScreen from "./CameraScreen";
+import PractiseScreen from "./PractiseScreen";
 import QuizScreen from "./QuizScreen";
 import TranslatorScreen from "./TranslatorScreen";
-import PractiseScreen from "./PractiseScreen";
 import VideosScreen from "./VideosScreen";
+
 
 const CamStack = createStackNavigator();
 const PracStack = createStackNavigator();
@@ -78,6 +77,7 @@ const Home = () => {
             >
                 <Tab.Screen
                     name="Practise"
+                    displayName="Practise"
                     component={PracStackScreen}
                     options={{tabBarLabel: 'Practise', tabBarIcon: ({ color, size }) => (
                             <FontAwesome name="hand-paper-o" color={color} size={size} />
@@ -86,6 +86,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Quiz"
+                    displayName="Quiz"
                     component={QuizStackScreen}
                     options={{tabBarLabel: 'Quiz', tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="thought-bubble" color={color} size={size} />
@@ -94,6 +95,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Camera"
+                    displayName="Camera"
                     component={CamStackScreen}
                     options={{tabBarLabel: 'Camera', tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="enhance-photo-translate" color={color} size={size} />
@@ -102,6 +104,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Translator"
+                    displayName="Translator"
                     component={TransStackScreen}
                     options={{tabBarLabel: 'Translator', tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="translate" color={color} size={size} />
@@ -110,6 +113,7 @@ const Home = () => {
                 />
                 <Tab.Screen
                     name="Videos"
+                    displayName="Videos"
                     component={VideosStackScreen}
                     options={{tabBarLabel: 'Videos', tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="youtube" color={color} size={size} />

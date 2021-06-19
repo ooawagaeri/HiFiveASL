@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ASL, PractiseQuestion, UserPractise, Gesture
+from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
 
 import albumentations
 import cv2
@@ -31,7 +31,8 @@ device = 'cpu'
 # Load label binarizer and model
 lb = joblib.load('engine/tensor/output/lb_alpha.pkl')
 model = custom_CNN.CustomCNN("engine/tensor/output/lb_alpha.pkl").to(device)
-model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth', map_location=device))
+model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth',
+                                 map_location=device))
 
 
 class ASLSerializer(serializers.ModelSerializer):
@@ -41,7 +42,8 @@ class ASLSerializer(serializers.ModelSerializer):
         model = ASL
         fields = ('name', 'image', 'created_at')
 
-    def get_name(self, obj):
+    @staticmethod
+    def get_name(obj):
         # Read image bytes into CV2
         nparr = np.fromstring(obj.image.read(), np.uint8)
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -69,13 +71,14 @@ class ASLSerializer(serializers.ModelSerializer):
 class PractiseQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PractiseQuestion
-        fields = ('answer',)
+        fields = '__all__'
 
 
-class UserPractiseSerializer(serializers.ModelSerializer):
+class PractiseAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserPractise
-        fields = ('response', 'practise_question', 'created_at', 'is_correct')
+        model = PractiseAnswer
+        fields = ('id', 'response', 'practise_question', 'created_at',
+                  'is_correct', 'wrong_letters')
 
 
 class GestureSerializer(serializers.ModelSerializer):

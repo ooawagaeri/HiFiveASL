@@ -12,24 +12,24 @@ import { Button } from 'react-native-elements';
 import {LinearGradient} from "expo-linear-gradient";
 import {useState, useCallback, useEffect, useRef} from "react";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Alert, Text, View, StyleSheet, Image, TextInput, Button, FlatList } from 'react-native';
+import { useState, useCallback, useRef } from "react";
 import './Global.js'
 
 function TranslatorScreen() {
     const [ans, setAns] = useState('')
-    const [image, setImage] = useState([])
     const [letters, setLetters] = useState([])
     const [isWord,setIsWord] = useState(null)
-    var holdLetters =[]
-    var holdImage = []
+    let holdLetters =[]
+    let holdImage = []
 
     // POST user response and return is_correct
     function checkAns() {
         fetch(TRANSLATOR_API + ans,{
             method:"GET"
-        })
-        .then(response => response.json())
-        .then(responseJson => {
-            // setImage(responseJson)
+        }).
+        then(response => response.json()).
+        then(responseJson => {
             holdImage = responseJson
             sortLetter(ans,holdImage)
             if (holdImage.length === 0) {
@@ -37,28 +37,29 @@ function TranslatorScreen() {
             } else {
                 setIsWord(true)
             }
-        })
-        .catch(error => Alert.alert("error", error.message))
+        }).
+        catch(error => Alert.alert("error", error.message))
     }
 
     function sortLetter(ans,image) {
         holdLetters=[]
-        for (var i = 0; i < ans.length; i++) {
-            for (var j = 0; j < image.length; j++) {
+        let i;
+        let j;
+        for (i = 0; i < ans.length; i++) {
+            for (j = 0; j < image.length; j++) {
                 if (ans[i].toUpperCase() === image[j].name){
                     holdLetters.push({id:i,title: image[j].name, url: image[j].image})
                 }
             }
         }
         setLetters(holdLetters)
-        console.log({holdLetters})
     }
 
     function Slide({ data }) {
         return (
             <View
                 style={{
-                    height:300,
+                    height:350,
                     width:300,
                     justifyContent: "center",
                     alignItems: "center",
@@ -99,23 +100,19 @@ function TranslatorScreen() {
             const index = event.nativeEvent.contentOffset.x / slideSize;
             const roundIndex = Math.round(index);
             const distance = Math.abs(roundIndex - index);
-            const isNoMansLand = 0.4 < distance;
+            const isNoMansLand = distance > 0.4;
             if (roundIndex !== indexRef.current && !isNoMansLand) {
                 setIndex(roundIndex);
             }
         }, []);
-        // Use the index
-        // useEffect(() => {
-        //     console.warn(index);
-        // }, [index]);
         return (
             <View style={{flex:1,height:300,width:300}}>
                 <FlatList data={letters}
                           keyExtractor={(item, index)=> item.id.toString()}
                           style={{ flex: 1 }}
                           renderItem={renderItem}
-                          horizontal={true}
-                          pagingEnabled={true}
+                          horizontal
+                          pagingEnabled
                           showsHorizontalScrollIndicator={false}
                           onScroll={onScroll}
                 />

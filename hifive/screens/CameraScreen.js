@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import { Alert, StyleSheet, Text, View, Image} from 'react-native';
-import { Button } from 'react-native-elements';
 import { Camera } from 'expo-camera';
-import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Spinner from 'react-native-loading-spinner-overlay';
-import './Global.js'
 import { Ionicons } from '@expo/vector-icons';
+import React, {useState, useEffect} from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { useIsFocused } from '@react-navigation/native';
+import './Global.js'
 
 function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
@@ -20,7 +20,7 @@ function CameraScreen() {
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted'); 
+            setHasPermission(status === 'granted');
         })();
     }, []);
 
@@ -29,7 +29,6 @@ function CameraScreen() {
             if (!previewVisible) {
                 setPreviewVisible(true);
             }
-            console.log('snip');
             setLoading(true);
             const data = await camera.takePictureAsync(null);
             postASL(data);
@@ -44,26 +43,26 @@ function CameraScreen() {
 
         const uploadData = new FormData();
         uploadData.append('image', { uri: localUri, name: filename, type });
-        
+
         fetch(ASL_API, {
             method: 'POST',
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
             body: uploadData
-        })
-        .then(response => {
+        }).
+        then(response => {
             if(response.ok) return response.json();
             throw new Error('Network response was not ok');
-        })
-        .then(responseJson => {
+        }).
+        then(responseJson => {
             if (responseJson.name === '') throw new Error('No letter');
             setName(responseJson.name);
             setLoading(false);
-        })
-        .catch(error => {
-            console.error(error);
-            takePicture()
+        }).
+        catch(error => {
+            setLoading(false);
+            Alert.alert("error", error.message)
         });
     }
 
@@ -98,8 +97,7 @@ function CameraScreen() {
                                                 ? Camera.Constants.Type.front
                                                 : Camera.Constants.Type.back
                                         );
-                            }}>
-                            </Button>
+                            }}/>
                         </View>
                     </Camera>}
                     <View style={styles.shutter}>
@@ -120,7 +118,7 @@ function CameraScreen() {
         );
     }
 
-
+// skipcq
 const styles = StyleSheet.create({
     container: {
         flex: 1,

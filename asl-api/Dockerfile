@@ -24,4 +24,4 @@ ENV PYTHONUNBUFFERED 1
 ADD . .
 
 # Gunicorn run server at {PORT}
-CMD gunicorn asl-api.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn asl-api.wsgi:application --bind 0.0.0.0:$PORT --workers=2

@@ -229,3 +229,13 @@ buck-out/
 */fastlane/screenshots
 
 asl-api/media/post_images/
+
+# Expo CLI
+.expo
+.expo-shared
+hifive/.expo
+hifive/.expo-shared
+
+# VS Code
+.vscode
+hifive/.vscode

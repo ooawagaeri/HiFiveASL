@@ -3,7 +3,6 @@ with_camera.py
 Used to conduct basic testing given camera feed on model
 """
 
-
 import torch
 import joblib
 import numpy as np
@@ -33,13 +32,15 @@ if not cap.isOpened():
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 # Setting codec and record camera
-#out = cv2.VideoWriter('output/asl.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (frame_width, frame_height))
+# out = cv2.VideoWriter('output/asl.mp4', cv2.VideoWriter_fourcc(*'mp4v'),
+#                       30, (frame_width, frame_height))
 
 # Read until end of video
 while cap.isOpened():
     ret, frame = cap.read()  # Each frame of video
 
-    cv2.rectangle(frame, (100, 100), (324, 324), (20, 34, 255), 2)  # Draw on camera, hand box
+    # Draw on camera, hand box
+    cv2.rectangle(frame, (100, 100), (324, 324), (20, 34, 255), 2)
     image = hand_area(frame)
 
     image = np.transpose(image, (2, 0, 1)).astype(np.float32)
@@ -49,10 +50,11 @@ while cap.isOpened():
     outputs = model(image)
     _, prediction = torch.max(outputs.data, 1)
 
-    cv2.putText(frame, lb.classes_[prediction], (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+    cv2.putText(frame, lb.classes_[prediction], (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
     cv2.imshow('image', frame)
     # Save camera recording
-    #out.write(frame)
+    # out.write(frame)
 
     if cv2.waitKey(27) & 0xFF == ord('q'):  # `Q` to exit
         break

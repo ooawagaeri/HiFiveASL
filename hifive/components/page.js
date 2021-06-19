@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import {Image} from 'react-native' ;
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { View, Text, Image } from 'react-native';
 
 
 const Page = ({ title }) => {
