@@ -1,11 +1,11 @@
+import React, {useState, useEffect} from 'react';
 import { Camera } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import React, {useState, useEffect} from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { useIsFocused } from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
 
 function CameraScreen() {
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     header: {
         marginTop: 50,
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "left",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     rectangle: {
         marginTop:10,
@@ -221,7 +221,8 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
+        fontFamily:"FuturaPTBook",
     },
     bottom: {
         flex: 0.45,

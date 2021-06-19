@@ -5,8 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState, useEffect} from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { useIsFocused } from "@react-navigation/native";
+import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
 
 
@@ -188,10 +188,13 @@ function PractiseScreen() {
                 style={styles.bottom}>
                 <View style={styles.botButton}>
                     <Button disabled={!counterCheck}
-                            buttonStyle={{marginRight:20}}
+                            buttonStyle={{marginRight:20,}}
                             onPress={() => ansToPost()}
+                            titleStyle={styles.butText}
                             title="Submit"/>
-                    <Button buttonStyle={{marginLeft:20}} title="Next Question"
+                    <Button buttonStyle={{marginLeft:20}}
+                            title="Next Question"
+                            titleStyle={styles.butText}
                         // disabled={!ans}
                             onPress={() => getQns()}/>
                 </View>
@@ -269,7 +272,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     markingNull: {
         marginTop: 15,
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     markingTrue: {
         marginTop: 15,
@@ -295,7 +298,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     markingFalse: {
         marginTop: 15,
@@ -308,7 +311,7 @@ const styles = StyleSheet.create({
         color: "#eaeaea",
         textAlign: "center",
         fontSize: 20,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     botButton: {
         marginTop:10,
@@ -341,7 +344,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "left",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTDemi",
     },
     rectangle: {
         marginTop:10,
@@ -363,6 +366,8 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
+        fontFamily:"FuturaPTBook",
+
     },
     flip: {
         bottom: 0,
@@ -379,6 +384,9 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center'
     },
+    butText:{
+        fontFamily:"FuturaPTDemi",
+    }
 });
 
 export default PractiseScreen

@@ -11,35 +11,28 @@ function VideosScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
-                <Text style={styles.prompt}>
-                    Here are some videos to aid our ASL learning.<br/>Click on the thumbnail to play!
-                </Text>
+                <Text style={styles.header}>VIDEOS</Text>
+                <View style={styles.rectangle}/>
+                <Text style={styles.prompt}>{"Here are some videos to aid our ASL learning.\nClick on the thumbnail to play!"}</Text>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=betAZeKRpR8'}/>
-                    <Text style={styles.des}>
-                        The Story of ASL
-                    </Text>
+                    <Text style={styles.des}>{"The Story of ASL"}</Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=u3HoC9_ir3s'}/>
-                    <Text style={styles.des}>
-                        The ASL Alphabet: <br/>American Sign Language<br/>Letters A-Z
-                    </Text>
+                    <Text style={styles.des}>{"The ASL Alphabet:\nAmerican Sign Language\nLetters A-Z"}</Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=v1desDduz5M'}/>
-                    <Text style={styles.des}>
-                        Basic Sign Language<br/>Phrases for Beginners
-                    </Text>
+                    <Text style={styles.des}>{"Basic Sign Language\nPhrases for Beginners"}</Text>
                 </View>
                 <View style={styles.videoDes}>
                     <Thumbnail style={styles.videoSize} iconStyle={styles.play} containerStyle={styles.videoShape}
                                url={'https://www.youtube.com/watch?v=pDA_EXFTpxo'}/>
-                    <Text style={styles.des}>
-                        Dos and Don&apos;ts of<br/>Interacting with the<br/>Deaf Community [CC]
+                    <Text style={styles.des}>{"Dos and Don'ts of\nInteracting with the\nDeaf Community [CC]"}
                     </Text>
                 </View>
             </LinearGradient>
@@ -51,9 +44,30 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent'
     },
+    header: {
+        marginTop: 50,
+        width: 350,
+        padding: 0,
+        borderWidth: 0,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "transparent",
+        color: "#20232a",
+        textAlign: "left",
+        fontSize: 30,
+        fontFamily:"FuturaPTDemi",
+    },
+    rectangle: {
+        marginTop:10,
+        width:150,
+        height:10,
+        backgroundColor:'white',
+        alignSelf:'flex-start',
+        borderTopRightRadius: 50,
+        borderBottomRightRadius: 50,
+
+    },
     prompt: {
-        marginTop: 0,
-        marginBottom:0,
         width: 350,
         padding: 10,
         borderWidth: 0,
@@ -63,7 +77,7 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 15,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTBook",
     },
     top: {
         flex: 1,
@@ -84,13 +98,14 @@ const styles = StyleSheet.create({
         color: "#20232a",
         textAlign: "center",
         fontSize: 30,
-        fontWeight: "bold",
+        fontFamily:"FuturaPTBook",
     },
     videoDes: {
         flexDirection:'row',
         alignItems: 'center',
         alignSelf: 'flex-start',
-        marginBottom:5
+        marginBottom:5,
+        marginLeft:8
     },
     videoSize: {
         width:180,
@@ -106,7 +121,7 @@ const styles = StyleSheet.create({
     des: {
         paddingLeft:10,
         fontSize: 15,
-        fontWeight: "bold"
+        fontFamily:"FuturaPTDemi",
     }
 })
 

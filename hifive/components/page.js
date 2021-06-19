@@ -20,7 +20,7 @@ const Page = ({ title }) => {
         >
             <Image source={require('./logo.png')} />
             <View style={{ marginTop: 16 }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', textAlign: "center" }}>
+                <Text style={{ fontSize: 24, color: 'white', textAlign: "center", fontFamily:"FuturaPTDemi" }}>
                     {title}
                 </Text>
             </View>
