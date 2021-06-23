@@ -56,6 +56,8 @@ function TranslatorScreen() {
                 }}>
                 <Image resizeMode={"contain"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
                 <Text style={{fontSize: 24 }}>{data.title}</Text>
+                <MaterialCommunityIcons style={{marginTop:30}} name="gesture-swipe-horizontal" size={24} color="black" />
+
             </View>
         );
     }
@@ -76,7 +78,6 @@ function TranslatorScreen() {
                         />
                     );
                 })}
-                <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
             </View>
         );
     }
@@ -123,7 +124,7 @@ function TranslatorScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>DICTIONARY LOOKUP</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Key in the word to translate into ASL!{"\n"}Swipe the pictures!</Text>
+                <Text style={styles.prompt}>Key in a letter or word to translate into ASL!{"\n"}Swipe the pictures!</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
@@ -139,7 +140,8 @@ function TranslatorScreen() {
                 }
             </LinearGradient>
         </View>
-    )}
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
         marginBottom:20
     },
     pagination: {
-        bottom: 120,
+        bottom: 130,
         width: "100%",
         justifyContent: "center",
         flexDirection: "row",

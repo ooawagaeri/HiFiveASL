@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from '@expo/vector-icons';
+import {FontAwesome5, Ionicons} from '@expo/vector-icons';
 import { useState, useEffect} from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -155,14 +155,14 @@ function PractiseScreen() {
                 style={styles.top}>
                 <Text style={styles.header}> PRACTISE </Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Show us the sign language to this letter!</Text>
+                <Text style={styles.prompt}>Take pictures of the sign language to this question one letter at a time! Press on the circle to shoot.</Text>
                 <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
                 <Spinner visible={loading} textContent={'Loading...'}/>
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                     <View style={styles.flip}>
-                        <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="black" />}
+                        <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
                                 type={"clear"}
                                 buttonStyle={{ justifyContent: 'flex-start' }}
                                 onPress={() => {
@@ -175,7 +175,7 @@ function PractiseScreen() {
                     </View>
                 </Camera>}
                 <View style={styles.shutter}>
-                    <Button icon={<Ionicons name="camera-outline" size={40} color="black" />}
+                    <Button icon={<FontAwesome5 name="circle" size={40} color="white" />}
                             type={"clear"}
                             buttonStyle={{ justifyContent: 'center' }}
                             onPress={() => takePicture()}/>
@@ -199,9 +199,12 @@ function PractiseScreen() {
                             onPress={() => getQns()}/>
                 </View>
                 <View>
-                    { marking === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
-                        : marking === false ? (<Text style={styles.markingFalse}>Try {wrong} again!</Text>)
-                            : (<Text style={styles.markingTrue}>Correct!</Text>)}
+                    { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>No answer submitted</Text>)
+                        : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>Please submit answer.</Text>)
+                            : marking === false ? (<Text style={styles.markingFalse}>Try {wrong} again!</Text>)
+                            : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
+                                    : null
+                    }
                 </View>
             </LinearGradient>
         </View>
@@ -262,9 +265,9 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     qnText: {
-        marginTop: 0,
+        marginTop: 2,
         width: 350,
-        padding: 5,
+        padding: 2,
         borderWidth: 4,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -327,7 +330,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     top: {
-        flex: 1.1,
+        flex: 1,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
@@ -358,7 +361,8 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        padding: 10,
+        marginTop:5,
+        padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,

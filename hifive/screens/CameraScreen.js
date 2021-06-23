@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Camera } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import {FontAwesome5, Ionicons} from '@expo/vector-icons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
@@ -82,13 +82,13 @@ function CameraScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>SIGN-TO-TEXT</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Show us the sign language to translate!</Text>
+                <Text style={styles.prompt}>Take a picture showing us the sign language letter to translate!{"\n"}Press on the circle to shoot.</Text>
             </LinearGradient>
                 <View style={styles.cameraContainer}>
                     <Spinner visible={loading} textContent={'Loading...'}/>
                     {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                         <View style={styles.flip}>
-                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="black" />}
+                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
                                     type={"clear"}
                                     buttonStyle={{ justifyContent: 'flex-start' }}
                                     onPress={() => {
@@ -101,7 +101,7 @@ function CameraScreen() {
                         </View>
                     </Camera>}
                     <View style={styles.shutter}>
-                        <Button icon={<Ionicons name="camera-outline" size={40} color="black" />}
+                        <Button icon={<FontAwesome5 name="circle" size={40} color="white" />}
                                 type={"clear"}
                                 buttonStyle={{ justifyContent: 'center' }}
                                 onPress={() => takePicture()}/>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         width: '100%',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     previewBox:{
         justifyContent: "center",
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        padding: 23,
+        marginTop:20,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     top: {
-        flex: 0.7,
+        flex: 1,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
