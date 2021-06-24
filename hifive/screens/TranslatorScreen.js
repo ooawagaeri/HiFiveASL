@@ -121,7 +121,7 @@ function TranslatorScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.top}>
-                <Text style={styles.header}>DICTIONARY LOOKUP</Text>
+                <Text style={styles.header}>TEXT-TO-SIGN</Text>
                 <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Key in the word to translate into ASL!{"\n"}Swipe the pictures!</Text>
                 <TextInput
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     },
     rectangle: {
         marginTop:10,
-        width:330,
+        width:250,
         height:10,
         backgroundColor:'white',
         alignSelf:'flex-start',

@@ -28,6 +28,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "An Orbital NUS Project involving computer vision, machine learning and visual design to translate and teach American Sign Language to a greater audience."
+    "description": "An Orbital NUS Project involving computer vision, machine learning and visual design to translate and teach American Sign Language to a greater audience.",
+    "githubUrl": "https://github.com/ooawagaeri/orbital-asl-application"
   }
 }
