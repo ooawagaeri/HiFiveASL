@@ -17,6 +17,7 @@ function PractiseScreen() {
     const [type, setType] = useState(Camera.Constants.Type.front);
     const isFocused = useIsFocused();
     const [loading,setLoading] = useState(false)
+
     const [counterCheck, setCounter] = useState(false)
     const [qnLen, setQnLen] = useState(null)
     const [letter, setLetter] = useState("")
@@ -86,7 +87,11 @@ function PractiseScreen() {
     }
 
     // POST user response and return is_correct
-    function postAns(ans, qns) {
+    function postAns(ans, qns) {            
+        // Force ans and qns to load before sending (published issue)
+        console.log(ans);
+        console.log(qns);
+
         const uploadData = new FormData();
         uploadData.append('response', ans);
         uploadData.append('practise_question', qns);
@@ -100,14 +105,15 @@ function PractiseScreen() {
         }).
         then(response => {
             if(response.ok) return response.json();
-            throw new Error('Network response was not ok');
+            throw new Error(JSON.stringify(response));
         }).
         then(responseJson => {
             setMarking(responseJson.is_correct);
-            setWrong(responseJson.wrong_letters)
+            setWrong(responseJson.wrong_letters);
         }).
-        catch(() => {
+        catch(error => {
             setMarking(false); // When answer is not in possible answer
+            Alert.alert("error", error.message);
         })
         ;
     }
@@ -195,7 +201,6 @@ function PractiseScreen() {
                     <Button buttonStyle={{marginLeft:20}}
                             title="Next Question"
                             titleStyle={styles.butText}
-                        // disabled={!ans}
                             onPress={() => getQns()}/>
                 </View>
                 <View>
@@ -211,7 +216,6 @@ function PractiseScreen() {
     );
 }
 
-// skipcq
 const styles = StyleSheet.create({
     container: {
         flex: 1,
