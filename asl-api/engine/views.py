@@ -3,33 +3,15 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
+from .serializers import *
 
-from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
-from .serializers import ASLSerializer, PractiseQuestionSerializer, \
-    PractiseAnswerSerializer, GestureSerializer
-import nltk
-from nltk.corpus import wordnet
-
-# Download latest word dictionary (for word check)
-nltk.download('wordnet', quiet=True)
-
-
-# Async Delete oldest record
-def del_oldest_asl():
-    count = ASL.objects.count()
+# Async delete oldest record
+def del_oldest(object):
+    count = object.count()
     # Keep to track
-    if count > 5:
-        obj = ASL.objects.order_by('created_at')[0]
-        obj.delete()
-
-
-# Async Delete oldest record
-def del_oldest_practise():
-    count = PractiseAnswer.objects.count()
-    # Keep to track
-    if count > 5:
-        obj = PractiseAnswer.objects.order_by('created_at')[0]
-        obj.delete()
+    if count >= 5:
+        item = object.order_by('created_at')[0]
+        item.delete()
 
 
 class ASLViewSet(viewsets.ViewSet):
@@ -47,7 +29,7 @@ class ASLViewSet(viewsets.ViewSet):
         if asl_serializer.is_valid():
             asl_serializer.save()
             # Delete oldest record
-            sync_to_async(del_oldest_asl(), thread_sensitive=True)
+            sync_to_async(del_oldest(ASL.objects), thread_sensitive=True)
             return Response(asl_serializer.data, status=status.HTTP_201_CREATED)
         return Response(asl_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -65,13 +47,13 @@ class PractiseQuestionViewSet(viewsets.ModelViewSet):
     serializer_class = PractiseQuestionSerializer
 
 
-class PractiseAnswerViewSet(viewsets.ModelViewSet):
-    queryset = PractiseAnswer.objects.all()
-    serializer_class = PractiseAnswerSerializer
+class PractiseAttemptViewSet(viewsets.ModelViewSet):
+    queryset = PractiseAttempt.objects.all()
+    serializer_class = PractiseAttemptSerializer
 
     def create(self, request, **kwargs):
         # Delete oldest record
-        sync_to_async(del_oldest_practise(), thread_sensitive=True)
+        sync_to_async(del_oldest(PractiseAttempt.objects), thread_sensitive=True)
         return super().create(request)
 
 
@@ -84,12 +66,24 @@ class GestureViewSet(viewsets.ModelViewSet):
         search = self.request.GET.get('search', '').upper()
 
         if search:
-            if not wordnet.synsets(search):
-                return []
-
             characters = list(search)
             query = Q()
             for char in characters:
                 query = query | Q(name=char)
             queryset = queryset.filter(query)
         return queryset
+
+
+class QuizChoiceViewSet(viewsets.ModelViewSet):
+    queryset = QuizChoice.objects.all()
+    serializer_class = QuizChoiceSerializer
+
+
+class QuizAttemptViewSet(viewsets.ModelViewSet):
+    queryset = QuizAttempt.objects.all()
+    serializer_class = QuizAttemptSerializer
+
+    def create(self, request, **kwargs):
+        # Delete oldest record
+        sync_to_async(del_oldest(QuizAttempt.objects), thread_sensitive=True)
+        return super().create(request)

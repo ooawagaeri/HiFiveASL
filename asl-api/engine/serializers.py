@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import ASL, PractiseQuestion, PractiseAnswer, Gesture
+from .models import *
 
 import albumentations
 import cv2
@@ -74,9 +74,9 @@ class PractiseQuestionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PractiseAnswerSerializer(serializers.ModelSerializer):
+class PractiseAttemptSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PractiseAnswer
+        model = PractiseAttempt
         fields = ('id', 'response', 'practise_question', 'created_at',
                   'is_correct', 'wrong_letters')
 
@@ -85,3 +85,16 @@ class GestureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gesture
         fields = '__all__'
+
+
+class QuizChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuizChoice
+        fields = ('id', 'question', 'question_name', 'choice', 'position', 'gestures')
+
+
+class QuizAttemptSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuizAttempt
+        fields = ('id', 'response', 'quiz', 'created_at',
+                  'is_correct')

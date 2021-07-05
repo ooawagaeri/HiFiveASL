@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
-import {FontAwesome5, Ionicons} from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useState, useEffect} from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -113,7 +113,6 @@ function PractiseScreen() {
         }).
         catch(error => {
             setMarking(false); // When answer is not in possible answer
-            Alert.alert("error", error.message);
         })
         ;
     }
@@ -132,7 +131,7 @@ function PractiseScreen() {
         }).
         then(response => response.json()).
         then(responseJson => {
-            // Get random question from json array
+            // Get random question from json
             let {answer} = responseJson[getRandNumber(0, responseJson.length - 1)];
 
             setDictonary(responseJson); // Store possible answers

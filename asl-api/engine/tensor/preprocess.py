@@ -7,6 +7,7 @@ import os
 import random
 import cv2
 from tqdm import tqdm
+from bg_removal import BgRemover
 
 num_images = 3000
 training_path = '../../../../' \
@@ -21,6 +22,8 @@ training_sub_paths = os.listdir(training_path)
 # Ensures order of dataset is in ascending order
 training_sub_paths.sort()
 
+bg = BgRemover()
+
 # Iterate through all files
 for index, sub_path in tqdm(enumerate(training_sub_paths),
                             total=len(training_sub_paths)):
@@ -33,8 +36,11 @@ for index, sub_path in tqdm(enumerate(training_sub_paths),
     for i in range(num_images):
         # Randomize selection of images for pre-processed dataset
         # (applicable for limit set)
-        rand_id = (random.randint(0, 2999))
+        rand_id = (random.randint(1, num_images))
         image = cv2.imread(f"{training_path}/{sub_path}/{all_images[rand_id]}")
+
+        # image = bg.run(f"{training_path}/{sub_path}/{all_images[rand_id]}")
+
         # Standardized image size & faster training on smaller images
         image = cv2.resize(image, (224, 224))
         # Storing pre-processed images

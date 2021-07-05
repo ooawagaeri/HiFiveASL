@@ -1,24 +1,95 @@
 import * as React from 'react';
-import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
-import { Text, View, StyleSheet, TextInput, Image } from 'react-native';
+import { useState, useEffect} from 'react';
+import { Alert, StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import { Button } from 'react-native-elements';
+import { useIsFocused } from "@react-navigation/native";
+import Spinner from 'react-native-loading-spinner-overlay';
+import './Global.js'
+
 
 function QuizScreen() {
-    const [ans, setAns] = useState(null)
     const [marking, setMarking] = useState(null)
-    const [image, setImage] = useState('')
     const photo = require('./A.jpg')
+    
+    const [qns, setQns] = useState(null);
+    const [ans, setAns] = useState(null);
+    const [choices, setChoices] = useState([]);
 
+    useEffect(() => {
+        getQns();
+    }, []);
+
+
+    // GET quiz
+    function getQns() {
+        fetch(QUIZ_QNS_API, {
+            method:"GET"
+        }).
+        then(response => response.json()).
+        then(responseJson => {
+
+            // Get random question from json array
+            let question = responseJson[getRandNumber(0, responseJson.length - 1)];
+            let gesture = question.gestures;
+
+            console.log('Name: ' + question.question_name);
+            console.log('Choices: ' + question.choice);
+            console.log(gesture);
+            console.log(MEDIA_URL + gesture[0].image); // image url
+
+            setQns(question.id);
+            setChoices(question.choice.split(','));
+        }).
+        catch(error => {
+            Alert.alert("error", error.message)
+        });    
+    }
+
+    // POST user response and return is_correct
+    function postAns(ans, qns) {            
+        // Force ans and qns to load before sending (published issue)
+        console.log(qns);
+        console.log(ans);
+
+        const uploadData = new FormData();
+        uploadData.append('response', ans);
+        uploadData.append('quiz', qns);
+
+        fetch(QUIZ_ANS_API, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            body: uploadData
+        }).
+        then(response => {
+            if(response.ok) return response.json();
+            throw new Error(JSON.stringify(response));
+        }).
+        then(responseJson => {
+            console.log(responseJson.is_correct);
+            setMarking(responseJson.is_correct);
+        }).
+        catch(error => {
+            setMarking(false); // When answer is not in possible answer
+        });
+    }
+
+    
     function checkAns() {
-        //if ans is correct to picture,
-        setMarking(null) // else false
+        //if ans is correct to picture
+        postAns(ans, qns);
     }
 
     function nextQn() {
-        setImage(null)
-        setAns(null)
+        // setImage(null)
+        // setAns(null)
         // new question
+    }
+
+    function getRandNumber(min, max){
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     return (
@@ -46,7 +117,6 @@ function QuizScreen() {
                     <View style={styles.next}>
                     <Button title="Next Question" onPress={() => nextQn()}/></View>) : null}
             </LinearGradient>
-
         </View>
     )}
 

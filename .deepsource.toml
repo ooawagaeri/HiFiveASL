@@ -7,6 +7,7 @@ name = "javascript"
 enabled = true
 
   [analyzers.meta]
+  environment = ['nodejs']
   plugins = ["react"]
 
 [[analyzers]]
@@ -17,3 +18,8 @@ enabled = true
   runtime_version = "3.x.x"
   max_line_length = 99
   skip_doc_coverage = ["module","magic", "init", "class", "nonpublic"]
+
+
+[[transformers]]
+    name = "prettier"
+    enabled = true

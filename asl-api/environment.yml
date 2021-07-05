@@ -13,6 +13,7 @@ dependencies:
     - scikit-learn==0.24.1
     - tqdm
     - pandas
+    - pillow
     - Django
     - django-cors-headers
     - django-cleanup
