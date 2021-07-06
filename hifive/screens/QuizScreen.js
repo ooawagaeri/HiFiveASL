@@ -28,22 +28,27 @@ function QuizScreen() {
         }).
         then(response => response.json()).
         then(responseJson => {
-
             // Get random question from json array
             let question = responseJson[getRandNumber(0, responseJson.length - 1)];
             let gesture = question.gestures;
 
-            console.log('Name: ' + question.question_name);
-            console.log('Choices: ' + question.choice);
-            console.log(gesture);
-            console.log(MEDIA_URL + gesture[0].image); // image url
+            console.log('Name: ' + question.question_name); // question name for @sumiko to get order of images
+            console.log('Choices: ' + question.choice); // mcq choices, 2 or 4 options
+            console.log(gesture); // array of images
+            console.log(MEDIA_URL + gesture[0].image); // work around -- need MEDIA URL in order to get image internet URL
 
             setQns(question.id);
-            setChoices(question.choice.split(','));
+            setChoices(question.choice.split(',')); // mcq is saved as Array
         }).
         catch(error => {
             Alert.alert("error", error.message)
         });    
+    }
+
+    // Button Function to POST user response
+    function checkAns() {
+        // Choice ans: 0, 1, 2 ,3
+        postAns(ans, qns);
     }
 
     // POST user response and return is_correct
@@ -74,12 +79,6 @@ function QuizScreen() {
         catch(error => {
             setMarking(false); // When answer is not in possible answer
         });
-    }
-
-    
-    function checkAns() {
-        //if ans is correct to picture
-        postAns(ans, qns);
     }
 
     function nextQn() {

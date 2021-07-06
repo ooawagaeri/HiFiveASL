@@ -74,7 +74,10 @@ def decode_segmap(image, source, bgimg, nc=21):
 def segment(net, path, bgimagepath, show_orig=True, dev='cuda'):
     img = Image.open(path)
 
-    if show_orig: plt.imshow(img); plt.axis('off'); plt.show()
+    if show_orig:
+        plt.imshow(img)
+        plt.axis('off')
+        plt.show()
     # Comment the Resize and CenterCrop for better inference results
     trf = T.Compose([T.Resize(400),
                      # T.CenterCrop(224),
@@ -95,5 +98,6 @@ def segment(net, path, bgimagepath, show_orig=True, dev='cuda'):
 
 dlab = models.segmentation.deeplabv3_resnet101(pretrained=1).eval()
 
-segment(dlab, "D:/5-NUS\Orbital\kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train\A/A1.jpg", "D:/1-Tim/Downloads/Images/wz-siow-navy-kv00002.jpg", show_orig=False)
+segment(dlab, "D:/5-NUS\Orbital\kaggle_gestures_akash/asl_alphabet_train/asl_alphabet_train\A/A1.jpg",
+        "D:/1-Tim/Downloads/Images/wz-siow-navy-kv00002.jpg", show_orig=False)
 # segment(dlab, './images/change/girl.png', './images/change/forest.png', show_orig=False)

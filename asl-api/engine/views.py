@@ -1,23 +1,24 @@
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from asgiref.sync import sync_to_async
 from .serializers import *
+from django.db.models import Q
+
 
 # Async delete oldest record
-def del_oldest(object):
-    count = object.count()
+def del_oldest(request):
+    count = request.count()
     # Keep to track
     if count >= 5:
-        item = object.order_by('created_at')[0]
+        item = request.order_by('created_at')[0]
         item.delete()
 
 
 class ASLViewSet(viewsets.ViewSet):
     # GET List
     @staticmethod
-    def list(request):
+    def list(_):
         asl = ASL.objects.all()
         asl_serializer = ASLSerializer(asl, many=True)
         return Response(asl_serializer.data)
@@ -35,7 +36,7 @@ class ASLViewSet(viewsets.ViewSet):
 
     # GET
     @staticmethod
-    def retrieve(request, pk=None):
+    def retrieve(_, pk=None):
         asl_queryset = ASL.objects.all()
         asl = get_object_or_404(asl_queryset, pk=pk)
         asl_serializer = ASLSerializer(asl)

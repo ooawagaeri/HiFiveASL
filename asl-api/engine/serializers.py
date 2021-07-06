@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .tensor import custom_CNN
 from .models import *
 
 import albumentations
@@ -6,7 +7,6 @@ import cv2
 import joblib
 import numpy as np
 import torch
-from .tensor import custom_CNN
 
 
 def square_crop(img):
@@ -90,7 +90,8 @@ class GestureSerializer(serializers.ModelSerializer):
 class QuizChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizChoice
-        fields = ('id', 'question', 'question_name', 'choice', 'position', 'gestures')
+        fields = ('id', 'question', 'question_name', 'choice', 'position',
+                  'gestures')
 
 
 class QuizAttemptSerializer(serializers.ModelSerializer):

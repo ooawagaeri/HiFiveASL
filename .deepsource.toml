@@ -9,6 +9,8 @@ enabled = true
   [analyzers.meta]
   environment = ['nodejs']
   plugins = ["react"]
+  skip_doc_coverage = ["module","magic", "init", "class", "nonpublic"]
+
 
 [[analyzers]]
 name = "python"
