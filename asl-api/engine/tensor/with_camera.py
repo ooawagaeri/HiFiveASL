@@ -8,6 +8,7 @@ import joblib
 import numpy as np
 import cv2
 import custom_CNN
+from engine.tensor.images.bg_removal import BgRemover
 
 
 # Hand capture area
@@ -18,9 +19,13 @@ def hand_area(img):
 
 
 # Load label & model
-lb = joblib.load('output/lb_alpha.pkl')
-model = custom_CNN.CustomCNN("output/lb_alpha.pkl").cuda()
-model.load_state_dict(torch.load('output/model_alpha.pth'))
+model_inuse = "_4000"
+
+lb = joblib.load(f'labels/lb_alpha{model_inuse}.pkl')
+model = custom_CNN.CustomCNN(f"labels/lb_alpha{model_inuse}.pkl").cuda()
+model.load_state_dict(torch.load(f'models/model_alpha{model_inuse}.pth'))
+bg = BgRemover()
+
 print(model)
 print('Loading model...')
 
@@ -42,6 +47,8 @@ while cap.isOpened():
     # Draw on camera, hand box
     cv2.rectangle(frame, (100, 100), (324, 324), (20, 34, 255), 2)
     image = hand_area(frame)
+
+    # image = bg.run(image)
 
     image = np.transpose(image, (2, 0, 1)).astype(np.float32)
     image = torch.tensor(image, dtype=torch.float).cuda()

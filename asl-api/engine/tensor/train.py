@@ -3,7 +3,6 @@ train.py
 Used to train on dataset images and generate model
 """
 
-
 import random
 import time
 import matplotlib.pyplot as plt
@@ -18,16 +17,17 @@ from tqdm import tqdm
 import custom_CNN as cnn_models
 from asl_image_dataset import ASLImageDataset
 
+model_name = '4500'
+input_csv = f"labels/data_alpha_{model_name}.csv"
+input_pkl = f"labels/lb_alpha_{model_name}.pkl"
+output_model = f"models/model_alpha_{model_name}.pth"
+output_accuracy = f"diagrams/accuracy_alpha_{model_name}.png"
+output_loss = f"diagrams/loss_alpha_{model_name}.png"
 
-input_csv = 'output/data_alpha.csv'
-input_pkl = 'output/lb_alpha.pkl'
-output_model = 'output/model_alpha.pth'
-output_accuracy = 'output/accuracy_alpha.png'
-output_loss = 'output/loss_alpha.png'
 # Number of training cycles / pass
-epochs = 10
+epochs = 12
 # Random generator seed
-random_seed = 42
+random_seed = 69
 
 
 # Set random_seed for reproducible results
@@ -70,11 +70,11 @@ test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
 model = cnn_models.CustomCNN(input_pkl).to(device)
 # print(f"\nCNN model: {model}")
 
-# Get total number of parameters from model
+# Get total_correct number of parameters from model
 total_params = sum(p.numel() for p in model.parameters())
 print(f"Number of parameters: {total_params:,}")
 
-# Get total number of trainable parameters from model
+# Get total_correct number of trainable parameters from model
 total_trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 print(f"Number of trainable parameters: {total_trainable_params:,}")
 
