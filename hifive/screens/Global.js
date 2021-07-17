@@ -4,6 +4,5 @@ global.ASL_API          = `${BASE_API_URL}/api/asl/`;
 global.PRACTICE_QNS_API = `${BASE_API_URL}/api/practiseQns/`;
 global.PRACTICE_ANS_API = `${BASE_API_URL}/api/practiseAns/`;
 global.TRANSLATOR_API   = `${BASE_API_URL}/api/gesture/?search=`;
-global.QUIZ_QNS_API     = `${BASE_API_URL}/api/quizChoice/`;
-global.QUIZ_ANS_API     = `${BASE_API_URL}/api/quizAttempt/`;
-global.MEDIA_URL        = `${BASE_API_URL}/media/`
+global.QUIZ_CHOICE      = `${BASE_API_URL}/api/quizChoice/`;
+global.QUIZ_ATTEMPT     = `${BASE_API_URL}/api/quizAttempt/`;

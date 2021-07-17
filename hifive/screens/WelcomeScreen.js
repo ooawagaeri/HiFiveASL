@@ -10,20 +10,20 @@ const Onboarding = () => {
     const pagerRef = useRef(1);
 
     return (
-            <PagerView style={{ flex: 1 }} initialPage={0} ref={pagerRef}>
-                <View key="1">
-                    <Page
-                        title="Welcome to Hi Five!"
-                    />
-                    <Footer
-                        backgroundColor="#feb157"
-                        rightButtonLabel="Next"
-                        rightButtonPress={() => {
-                            navigation.navigate('Home');
-                        }}
-                    />
-                </View>
-            </PagerView>
+        <PagerView style={{ flex: 1 }} initialPage={0} ref={pagerRef}>
+            <View key="1">
+                <Page
+                    title="Welcome to Hi Five!"
+                />
+                <Footer
+                    backgroundColor="#feb157"
+                    rightButtonLabel="Next"
+                    rightButtonPress={() => {
+                        navigation.navigate('Home');
+                    }}
+                />
+            </View>
+        </PagerView>
     );
 };
 

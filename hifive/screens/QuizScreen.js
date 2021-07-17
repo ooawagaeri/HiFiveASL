@@ -1,95 +1,226 @@
 import * as React from 'react';
-import { LinearGradient } from "expo-linear-gradient";
-import { useState, useEffect} from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useIsFocused } from "@react-navigation/native";
-import Spinner from 'react-native-loading-spinner-overlay';
-import './Global.js'
+import { LinearGradient } from "expo-linear-gradient";
+import {useCallback, useEffect, useRef, useState} from "react";
+import {Text, View, StyleSheet, Image, Alert, FlatList, TouchableOpacity} from 'react-native';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 
 function QuizScreen() {
-    const [marking, setMarking] = useState(null)
-    const photo = require('./A.jpg')
-    
-    const [qns, setQns] = useState(null);
-    const [ans, setAns] = useState(null);
-    const [choices, setChoices] = useState([]);
+    const [letters, setLetters] = useState([])
+    const [question, setQn] = useState("")
+    const [ans, setAns] = useState(null)
+    const [currentOption, setCurrentOption] = useState(null);
+    const [next, setNext] = useState(false);
+    const [isOptionDisabled, setIsOptionDisabled] = useState(false);
+    const [choicesArr, setChoices] = useState([])
+
+    let holdLetters =[]
+    let holdImage = []
+    let multipleC = []
+    let holdMultiple= []
 
     useEffect(() => {
         getQns();
     }, []);
 
+    function getRandNumber(min, max){
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 
-    // GET quiz
+    // GET question
     function getQns() {
-        fetch(QUIZ_QNS_API, {
+        fetch(QUIZ_CHOICE, {
             method:"GET"
         }).
         then(response => response.json()).
         then(responseJson => {
             // Get random question from json array
-            let question = responseJson[getRandNumber(0, responseJson.length - 1)];
-            let gesture = question.gestures;
-
-            console.log('Name: ' + question.question_name); // question name for @sumiko to get order of images
-            console.log('Choices: ' + question.choice); // mcq choices, 2 or 4 options
-            console.log(gesture); // array of images
-            console.log(MEDIA_URL + gesture[0].image); // work around -- need MEDIA URL in order to get image internet URL
-
-            setQns(question.id);
-            setChoices(question.choice.split(',')); // mcq is saved as Array
+            let rand = getRandNumber(0, responseJson.length - 1)
+            let {gestures} = responseJson[rand];
+            let {question_name} = responseJson[rand];
+            let {choice} = responseJson[rand];
+            holdImage = gestures
+            multipleC = choice.split(`,`)
+            setQn(question_name)
+            arrangeChoices(multipleC)
+            sortLetter(question_name, holdImage)
+            setNext(false)
+            setIsOptionDisabled(false)
+            setCurrentOption(null)
         }).
         catch(error => {
+            setLoading(false);
             Alert.alert("error", error.message)
-        });    
-    }
-
-    // Button Function to POST user response
-    function checkAns() {
-        // Choice ans: 0, 1, 2 ,3
-        postAns(ans, qns);
-    }
-
-    // POST user response and return is_correct
-    function postAns(ans, qns) {            
-        // Force ans and qns to load before sending (published issue)
-        console.log(qns);
-        console.log(ans);
-
-        const uploadData = new FormData();
-        uploadData.append('response', ans);
-        uploadData.append('quiz', qns);
-
-        fetch(QUIZ_ANS_API, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            body: uploadData
-        }).
-        then(response => {
-            if(response.ok) return response.json();
-            throw new Error(JSON.stringify(response));
-        }).
-        then(responseJson => {
-            console.log(responseJson.is_correct);
-            setMarking(responseJson.is_correct);
-        }).
-        catch(error => {
-            setMarking(false); // When answer is not in possible answer
         });
     }
 
-    function nextQn() {
-        // setImage(null)
-        // setAns(null)
-        // new question
+    // POST user response and return is_correct
+
+
+    function sortLetter(ans,image) {
+        holdLetters=[]
+        let i;
+        let j;
+        for (i = 0; i < ans.length; i++) {
+            for (j = 0; j < image.length; j++) {
+                if (ans[i].toUpperCase() === image[j].name){
+                    holdLetters.push({id:i,title: image[j].name, url: "http://45-126-126-89.cloud-xip.io/media/"+image[j].image})
+                }
+            }
+        }
+        setLetters(holdLetters)
     }
 
-    function getRandNumber(min, max){
-        return Math.floor(Math.random() * (max - min + 1) + min);
+    function arrangeChoices(choices) {
+        holdMultiple=[]
+        let i;
+        for (i=0; i<choices.length; i++) {
+            holdMultiple.push({id:i,choice:choices[i]})
+        }
+        setChoices(holdMultiple)
     }
+
+    function Slide({ data }) {
+        return (
+            <View
+                style={{
+                    height:350,
+                    width:300,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}>
+                <Image resizeMode={"contain"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
+
+            </View>
+        );
+    }
+
+    function Pagination({ index }) {
+        return (
+            <View style={styles.pagination} pointerEvents="none">
+                {letters.map((_, i) => {
+                    return (
+                        <View
+                            key={i}
+                            style={[
+                                styles.paginationDot,
+                                index === i
+                                    ? styles.paginationDotActive
+                                    : styles.paginationDotInactive,
+                            ]}
+                        />
+                    );
+                })}
+            </View>
+        );
+    }
+
+    function Carousel() {
+        const [index, setIndex] = useState(0);
+        const indexRef = useRef(index);
+        indexRef.current = index;
+        const onScroll = useCallback((event) => {
+            const slideSize = event.nativeEvent.layoutMeasurement.width;
+            const index = event.nativeEvent.contentOffset.x / slideSize;
+            const roundIndex = Math.round(index);
+            const distance = Math.abs(roundIndex - index);
+            const isNoMansLand = distance > 0.4;
+            if (roundIndex !== indexRef.current && !isNoMansLand) {
+                setIndex(roundIndex);
+            }
+        }, []);
+        return (
+            <View style={{flex:4,height:300,width:300}}>
+                <FlatList data={letters}
+                          keyExtractor={(item, index)=> item.id.toString()}
+                          style={{ flex: 1 }}
+                          renderItem={renderItem}
+                          horizontal
+                          pagingEnabled
+                          showsHorizontalScrollIndicator={false}
+                          onScroll={onScroll}
+                />
+                <Pagination index={index}/>
+            </View>
+        )}
+
+    const renderItem = useCallback(function renderItem({ item }) {
+        return <Slide data={item}/>;
+    }, []);
+
+    const validateAns = (selectedOption) => {
+        setCurrentOption(selectedOption);
+        setAns(question);
+        setIsOptionDisabled(true);
+        setNext(true);
+        console.log(selectedOption)
+        console.log(question)
+    }
+    const renderChoice = ({ item }) => (
+        <Choice option={item.choice} />
+    );
+    const Choice = ({ option }) => (
+        <TouchableOpacity
+            onPress={()=> validateAns(option)}
+            disabled={isOptionDisabled}
+            style={{
+                borderWidth: 3,
+                borderColor: currentOption!=null && option == ans
+                    ? "#90EE90"
+                    : option == currentOption
+                        ? "#ff3232"
+                        : "#eaeaea",
+                backgroundColor: currentOption!=null && option == ans
+                    ? "#90EE90" +'20'
+                    : option ==currentOption
+                        ? "#ff3232" +'20'
+                        : null,
+                height: 60, borderRadius: 20,
+                flexDirection: 'row',
+                alignItems: 'center', justifyContent: 'space-between',
+                paddingHorizontal: 30,
+                marginVertical: 4,
+                marginHorizontal:4,
+            }}>
+            <Text>{option}  </Text>
+            {currentOption!=null && option==question
+                ? (<View style={{
+                        width: 30, height: 30, borderRadius: 30/2,
+                        backgroundColor: "#90EE90",
+                        justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <MaterialCommunityIcons name="check" style={{
+                            color: "#eaeaea",
+                            fontSize: 20
+                        }} />
+                    </View>
+                ): option == currentOption ? (
+                    <View style={{
+                        width: 30, height: 30, borderRadius: 30/2,
+                        backgroundColor: "#ff3232",
+                        justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <MaterialCommunityIcons name="close" style={{
+                            color: "#eaeaea",
+                            fontSize: 20
+                        }} />
+                    </View>
+                ) : (
+                    <View style={{
+                        width: 30, height: 30, borderRadius: 30/2,
+                        backgroundColor: "transparent",
+                        justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <MaterialCommunityIcons name="close" style={{
+                            color: "transparent",
+                            fontSize: 20
+                        }} />
+                    </View>
+                )
+            }
+        </TouchableOpacity>)
+
 
     return (
         <View style={styles.container}>
@@ -101,20 +232,26 @@ function QuizScreen() {
                 <Text style={styles.header}>QUIZ</Text>
                 <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
-                <Image style={{width:300,height:300}} source={photo}/>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setAns}
-                    value={ans}
-                    placeholder="Your answer"
+                <View style={{alignItems:"center", flex:1}}>
+                <Carousel />
+                {question.length===1
+                    ? null
+                    : <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
+                }
+
+                    <FlatList
+                    data={choicesArr}
+                    horizontal={false}
+                    renderItem={renderChoice}
+                    keyExtractor={option => option.id}
+                    numColumns={2}
                 />
-                <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
-                { marking === null ? (<Text style={styles.markingNull}>No answer submitted</Text>)
-                    : marking === false ? (<Text style={styles.markingFalse}>Wrong!{"\n"}Please try again!</Text>)
-                        : (<Text style={styles.markingTrue}>Correct!</Text>)}
-                { marking === true ? (
-                    <View style={styles.next}>
-                    <Button title="Next Question" onPress={() => nextQn()}/></View>) : null}
+                    <View style={{flex:0.5,marginTop:0}}>
+                    {next === true
+                        ? <Button title="Next Question" onPress={() => getQns()}/>
+                        : null}
+                    </View>
+                </View>
             </LinearGradient>
         </View>
     )}
