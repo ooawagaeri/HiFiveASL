@@ -17,3 +17,4 @@ matplotlib~=3.4.2
 nltk~=3.6.2
 asgiref~=3.3.4
 pillow~=8.2.0
+icrawler~=0.6.4

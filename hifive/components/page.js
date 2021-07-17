@@ -18,7 +18,7 @@ const Page = ({ title }) => {
                 alignItems: 'center'
             }}
         >
-            <Image source={require('./logo.png')} />
+            <Image source={require('../assets/logo.png')} />
             <View style={{ marginTop: 16 }}>
                 <Text style={{ fontSize: 24, color: 'white', textAlign: "center", fontFamily:"FuturaPTDemi" }}>
                     {title}

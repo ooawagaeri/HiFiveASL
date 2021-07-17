@@ -11,9 +11,10 @@ from sklearn.preprocessing import LabelBinarizer
 from tqdm import tqdm
 from imutils import paths
 
+model_name = '4500'
 input_path = 'output/preprocessed_image'
-output_csv = 'output/data_alpha.csv'
-output_pkl = 'output/lb_alpha.pkl'
+output_csv = f"output/label/data_alpha_{model_name}.csv"
+output_pkl = f"output/label/lb_alpha_{model_name}.pkl"
 
 # Get all subdirectories within pre-processed directory
 preprocessed_paths = list(paths.list_images(input_path))
@@ -26,6 +27,7 @@ labels = []
 for index, sub_path in tqdm(enumerate(preprocessed_paths),
                             total=len(preprocessed_paths)):
     # Get alphabet label
+    label = sub_path.split(os.path.sep)[-2]
     label = sub_path.split(os.path.sep)[-2]
     # Store relative path for mapping image to label
     data.loc[index, 'sub_path'] = sub_path
@@ -59,4 +61,3 @@ data.to_csv(output_csv, index=False)
 # Save binarized labels as pickle file
 print('Saving label binarizer...')
 joblib.dump(lb, output_pkl)
-# print(data.head(5))
