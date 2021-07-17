@@ -228,7 +228,12 @@ buck-out/
 */fastlane/Preview.html
 */fastlane/screenshots
 
+# Media / Images
 asl-api/media/post_images/
+asl-api/engine/tensor/images/rng_background
+asl-api/engine/tensor/images/preprocessed_image
+asl-api/engine/tensor/images/capture_image
+asl-api/engine/tensor/images/all_bgs
 
 # Expo CLI
 .expo
