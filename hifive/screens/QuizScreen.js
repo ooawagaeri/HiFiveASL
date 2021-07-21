@@ -14,6 +14,7 @@ function QuizScreen() {
     const [next, setNext] = useState(false);
     const [isOptionDisabled, setIsOptionDisabled] = useState(false);
     const [choicesArr, setChoices] = useState([])
+    const [marking, setMarking] = useState(null)
 
     let holdLetters =[]
     let holdImage = []
@@ -48,15 +49,13 @@ function QuizScreen() {
             setNext(false)
             setIsOptionDisabled(false)
             setCurrentOption(null)
+            setMarking(null)
         }).
         catch(error => {
             setLoading(false);
             Alert.alert("error", error.message)
         });
     }
-
-    // POST user response and return is_correct
-
 
     function sortLetter(ans,image) {
         holdLetters=[]
@@ -154,8 +153,10 @@ function QuizScreen() {
         setAns(question);
         setIsOptionDisabled(true);
         setNext(true);
-        console.log(selectedOption)
-        console.log(question)
+        if (selectedOption == question) {
+            setMarking(true)
+        }
+        else setMarking(false)
     }
     const renderChoice = ({ item }) => (
         <Choice option={item.choice} />
@@ -183,7 +184,7 @@ function QuizScreen() {
                 marginVertical: 4,
                 marginHorizontal:4,
             }}>
-            <Text>{option}  </Text>
+            <Text style={styles.butText}>{option}  </Text>
             {currentOption!=null && option==question
                 ? (<View style={{
                         width: 30, height: 30, borderRadius: 30/2,
@@ -247,8 +248,14 @@ function QuizScreen() {
                     numColumns={2}
                 />
                     <View style={{flex:0.5,marginTop:0}}>
+                        <View>
+                            {marking === false ? (<Text style={styles.markingFalse}>Wrong answer!</Text>)
+                                        : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
+                                            : null
+                            }
+                        </View>
                     {next === true
-                        ? <Button title="Next Question" onPress={() => getQns()}/>
+                        ? <Button buttonStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
                         : null}
                     </View>
                 </View>
@@ -360,7 +367,33 @@ const styles = StyleSheet.create({
     },
     butText:{
         fontFamily:"FuturaPTDemi",
-    }
+    },
+    markingTrue: {
+        marginTop: -50,
+        width: 200,
+        padding: 8,
+        borderWidth: 0,
+        borderColor: "#90EE90",
+        borderRadius: 50,
+        backgroundColor: "#90EE90",
+        color: "#20232a",
+        textAlign: "center",
+        fontSize: 20,
+        fontFamily:"FuturaPTDemi",
+    },
+    markingFalse: {
+        marginTop: -50,
+        width: 200,
+        padding: 8,
+        borderWidth: 0,
+        borderColor: "#ff3232",
+        borderRadius: 50,
+        backgroundColor: "#ff3232",
+        color: "#eaeaea",
+        textAlign: "center",
+        fontSize: 20,
+        fontFamily:"FuturaPTDemi",
+    },
 })
 
 export default QuizScreen
