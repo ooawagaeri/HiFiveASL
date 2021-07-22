@@ -71,7 +71,7 @@ function PractiseScreen() {
         then(responseJson => {
             setLetter(prevletter => (prevletter + responseJson.name))
             setLoading(false);
-            if ((letter.length+1) === qnLen) {
+            if ((letter.length + 1) === qnLen) {
                  setCounter(true)
             }
         }).
@@ -164,7 +164,7 @@ function PractiseScreen() {
                 <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
-                <Spinner visible={loading} textContent={'Loading...'}/>
+                <Spinner visible={loading} textContent={'Translating...'}/>
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                     <View style={styles.flip}>
                         <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
@@ -205,7 +205,7 @@ function PractiseScreen() {
                 <View>
                     { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>No answer submitted</Text>)
                         : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>Please submit answer.</Text>)
-                            : marking === false ? (<Text style={styles.markingFalse}>Try {wrong} again!</Text>)
+                            : marking === false ? (<Text style={styles.markingFalse}>Try again{'\n'}{wrong} was incorrect!</Text>)
                             : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
                                     : null
                     }
@@ -364,15 +364,15 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        marginTop:5,
-        padding: 0,
+        marginTop:10,
+        padding: 10,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
         fontFamily:"FuturaPTBook",
 
     },

@@ -61,66 +61,66 @@ const Tab = createBottomTabNavigator();
 
 const Home = () => {
     return (
-            <Tab.Navigator
-                initialRouteName="Camera"
-                tabBarOptions={{
-                    activeTintColor: 'tomato',
-                    inactiveTintColor: 'grey',
-                    style: styles.container,
-                    labelStyle: {
-                        fontFamily:"FuturaPTDemi",
-                        fontSize:12
+        <Tab.Navigator
+            initialRouteName="Camera"
+            tabBarOptions={{
+                activeTintColor: 'tomato',
+                inactiveTintColor: 'grey',
+                style: styles.container,
+                labelStyle: {
+                    fontFamily:"FuturaPTDemi",
+                    fontSize:12
 
-                    },
+                },
+            }}
+            theme={theme}
+        >
+            <Tab.Screen
+                name="Practise"
+                displayName="Practise"
+                component={PracStackScreen}
+                options={{tabBarLabel: 'Practise', tabBarIcon: ({ color, size }) => (
+                        <FontAwesome name="hand-paper-o" color={color} size={size} />
+                    ),
                 }}
-                theme={theme}
-            >
-                <Tab.Screen
-                    name="Practise"
-                    displayName="Practise"
-                    component={PracStackScreen}
-                    options={{tabBarLabel: 'Practise', tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="hand-paper-o" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Quiz"
-                    displayName="Quiz"
-                    component={QuizStackScreen}
-                    options={{tabBarLabel: 'Quiz', tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="thought-bubble" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Camera"
-                    displayName="Camera"
-                    component={CamStackScreen}
-                    options={{tabBarLabel: 'Camera', tabBarIcon: ({ color, size }) => (
-                            <MaterialIcons name="enhance-photo-translate" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Translator"
-                    displayName="Translator"
-                    component={TransStackScreen}
-                    options={{tabBarLabel: 'Translator', tabBarIcon: ({ color, size }) => (
-                            <MaterialIcons name="translate" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Videos"
-                    displayName="Videos"
-                    component={VideosStackScreen}
-                    options={{tabBarLabel: 'Videos', tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="youtube" color={color} size={size} />
-                        ),
-                    }}
-                />
-            </Tab.Navigator>
+            />
+            <Tab.Screen
+                name="Quiz"
+                displayName="Quiz"
+                component={QuizStackScreen}
+                options={{tabBarLabel: 'Quiz', tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="thought-bubble" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Camera"
+                displayName="Camera"
+                component={CamStackScreen}
+                options={{tabBarLabel: 'Camera', tabBarIcon: ({ color, size }) => (
+                        <MaterialIcons name="enhance-photo-translate" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Translator"
+                displayName="Translator"
+                component={TransStackScreen}
+                options={{tabBarLabel: 'Translator', tabBarIcon: ({ color, size }) => (
+                        <MaterialIcons name="translate" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Videos"
+                displayName="Videos"
+                component={VideosStackScreen}
+                options={{tabBarLabel: 'Videos', tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="youtube" color={color} size={size} />
+                    ),
+                }}
+            />
+        </Tab.Navigator>
     );
 };
 

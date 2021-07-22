@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {Text, View, StyleSheet, Image, Alert, FlatList, TouchableOpacity} from 'react-native';
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import './Global.js'
 
 
 function QuizScreen() {
@@ -55,9 +56,6 @@ function QuizScreen() {
         });
     }
 
-    // POST user response and return is_correct
-
-
     function sortLetter(ans,image) {
         holdLetters=[]
         let i;
@@ -65,7 +63,8 @@ function QuizScreen() {
         for (i = 0; i < ans.length; i++) {
             for (j = 0; j < image.length; j++) {
                 if (ans[i].toUpperCase() === image[j].name){
-                    holdLetters.push({id:i,title: image[j].name, url: "http://45-126-126-89.cloud-xip.io/media/"+image[j].image})
+                    console.log(MEDIA + image[j].image)
+                    holdLetters.push({id:i,title: image[j].name, url: MEDIA + image[j].image})
                 }
             }
         }
@@ -233,19 +232,18 @@ function QuizScreen() {
                 <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
                 <View style={{alignItems:"center", flex:1}}>
-                <Carousel />
-                {question.length===1
-                    ? null
-                    : <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
-                }
-
+                    <Carousel />
+                    {question.length===1
+                        ? null
+                        : <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
+                    }
                     <FlatList
                     data={choicesArr}
                     horizontal={false}
                     renderItem={renderChoice}
                     keyExtractor={option => option.id}
                     numColumns={2}
-                />
+                    />
                     <View style={{flex:0.5,marginTop:0}}>
                     {next === true
                         ? <Button title="Next Question" onPress={() => getQns()}/>
@@ -286,7 +284,8 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        padding: 23,
+        padding: 10,
+        marginTop:10,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,

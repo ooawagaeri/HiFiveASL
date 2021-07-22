@@ -1,4 +1,6 @@
+from matplotlib import pyplot as plt
 from rest_framework import serializers
+from PIL import Image
 from .tensor import custom_CNN
 from .models import *
 
@@ -22,16 +24,31 @@ def square_crop(img):
     return img
 
 
+def convert_warm_temp(image):
+    temp_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    temp_image = Image.fromarray(temp_image)
+
+    # 7500 Kelvin Temperature
+    r, g, b = (235, 238, 255)
+    matrix = (r / 255.0, 0.0, 0.0, 0.0,
+              0.0, g / 255.0, 0.0, 0.0,
+              0.0, 0.0, b / 255.0, 0.0)
+
+    return np.array(temp_image.convert('RGB', matrix))
+
+
 aug = albumentations.Compose([
     albumentations.Resize(224, 224, always_apply=True),
 ])
+
 # Allocate computation device
 device = 'cpu'
 
 # Load label binarizer and model
-lb = joblib.load('engine/tensor/output/lb_alpha.pkl')
-model = custom_CNN.CustomCNN("engine/tensor/output/lb_alpha.pkl").to(device)
-model.load_state_dict(torch.load('engine/tensor/output/model_alpha.pth',
+model_name = '_8000'
+lb = joblib.load(f'engine/tensor/labels/lb_alpha{model_name}.pkl')
+model = custom_CNN.CustomCNN(f"engine/tensor/labels/lb_alpha{model_name}.pkl").to(device)
+model.load_state_dict(torch.load(f'engine/tensor/models/model_alpha{model_name}.pth',
                                  map_location=device))
 
 
@@ -50,6 +67,8 @@ class ASLSerializer(serializers.ModelSerializer):
 
         # Load and prepare image
         image = square_crop(image)
+        image = convert_warm_temp(image)
+
         image = aug(image=np.array(image))['image']
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
         image = torch.tensor(image, dtype=torch.float).to(device)
@@ -59,8 +78,6 @@ class ASLSerializer(serializers.ModelSerializer):
         outputs = model(image)
         _, prediction = torch.max(outputs.data, 1)
         answer = lb.classes_[prediction]
-        if answer == "nothing":
-            answer = ""
 
         # Close read file
         obj.image.close()
@@ -92,10 +109,3 @@ class QuizChoiceSerializer(serializers.ModelSerializer):
         model = QuizChoice
         fields = ('id', 'question', 'question_name', 'choice', 'position',
                   'gestures')
-
-
-class QuizAttemptSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuizAttempt
-        fields = ('id', 'response', 'quiz', 'created_at',
-                  'is_correct')

@@ -11,10 +11,19 @@ from torch.utils.data import Dataset
 
 
 class ASLImageDataset(Dataset):
+    """
+    ASL Image Dataset reader and processor
+    Attributes:
+        x (str): Path of dataset image
+        y (str): Data classification label
+    Methods:
+        __len__ (int): Size of paths
+        __getitem__ (tensor): Returns image in tensor format
+    """
     def __init__(self, path, labels):
         self.X = path
         self.y = labels
-        # Augmentation pipeline; Resize
+        # Augmentation pipeline resize
         self.aug = albumentations.Compose([
             albumentations.Resize(224, 224, always_apply=True),
         ])
@@ -23,10 +32,15 @@ class ASLImageDataset(Dataset):
         return len(self.X)
 
     def __getitem__(self, i):
+        # Read image
         image = cv2.imread(self.X[i])
-        # Perform augmentation on image
+
+        # Perform augmentation / transformation on image
         image = self.aug(image=np.array(image))['image']
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)
+
+        # Get label of image
         label = self.y[i]
-        # Create tensors
+
+        # Return tensor image
         return torch.tensor(image, dtype=torch.float), torch.tensor(label, dtype=torch.long)
