@@ -1,37 +1,58 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
-import {FontAwesome5, Ionicons} from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
+
 
 function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [previewVisible, setPreviewVisible] = useState(false);
-    const [name, setName] = useState('Answer')
+    const [name, setName] = useState('Press to start');
     const [type, setType] = useState(Camera.Constants.Type.front);
-    const [loading,setLoading] = useState(false)
+    
+    const [loading, setLoading] = useState(false);
+    const [buttonIcon, setButtonIcon] = useState('play');
+    const iconPosition = useRef(false);
+    
     const isFocused = useIsFocused();
-
+    
     useEffect(() => {
-        (async () => {
-            const {status} = await Camera.requestPermissionsAsync();
-            setHasPermission(status === 'granted');
-        })();
-    }, []);
+        if (isFocused) {
+            (async () => {
+                const {status} = await Camera.requestPermissionsAsync();
+                setHasPermission(status === 'granted');
+            })();
+        }
+
+        setName('Press "Play" to start');
+        setButtonIcon('play');
+        setLoading(false);
+        iconPosition.current = false;
+
+    }, [isFocused]);
+
 
     const takePicture = async () => {
         if (camera) {
             if (!previewVisible) {
                 setPreviewVisible(true);
             }
-            setLoading(true);
-            const data = await camera.takePictureAsync(null);
-            postASL(data);
+            if (iconPosition.current) {
+                setButtonIcon('stop');
+                const data = await camera.takePictureAsync(null);
+                setLoading(true);
+                postASL(data);
+            } else {
+                setButtonIcon('play');
+                setLoading(false);
+                return
+            }
         }
     }
 
@@ -56,9 +77,17 @@ function CameraScreen() {
             throw new Error('Network response was not ok');
         }).
         then(responseJson => {
-            if (responseJson.name === '') throw new Error('No letter');
+            if (responseJson.name === 'nothing')
+                responseJson.name = "No Hand Detected"
+        
             setName(responseJson.name);
+        }).
+        then(() => {
             setLoading(false);
+            setTimeout(function(){
+                if(iconPosition.current)
+                    takePicture().catch(() => { iconPosition.current = false });
+            }, 200);
         }).
         catch(error => {
             setLoading(false);
@@ -66,6 +95,8 @@ function CameraScreen() {
         });
     }
 
+
+    // Checks for camera permission
     if (hasPermission === null) {
         return <View/>;
     }
@@ -82,13 +113,15 @@ function CameraScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>SIGN-TO-TEXT</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Take a picture showing us the sign language letter to translate!{"\n"}Press on the circle to shoot.</Text>
+                <Text style={styles.prompt}>Take a picture showing us the sign language{'\n'}letter to translate!</Text>
+                <Text style={styles.prompt}>Use your RIGHT hand. Images are mirrored.</Text>
             </LinearGradient>
                 <View style={styles.cameraContainer}>
-                    <Spinner visible={loading} textContent={'Loading...'}/>
-                    {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
+                    {/* <Spinner visible={loading} textContent={'Translating...'}/> */}
+                    {isFocused &&
+                    <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                         <View style={styles.flip}>
-                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
+                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white"/>}
                                     type={"clear"}
                                     buttonStyle={{ justifyContent: 'flex-start' }}
                                     onPress={() => {
@@ -96,15 +129,20 @@ function CameraScreen() {
                                             type === Camera.Constants.Type.back
                                                 ? Camera.Constants.Type.front
                                                 : Camera.Constants.Type.back
-                                        );
-                            }}/>
-                        </View>
+                                    )}}
+                            />
+                        </View> 
                     </Camera>}
+                    {loading && 
+                    <Text style={styles.loading}>
+                        Translating . . .
+                    </Text>}
                     <View style={styles.shutter}>
-                        <Button icon={<FontAwesome5 name="circle" size={40} color="white" />}
-                                type={"clear"}
-                                buttonStyle={{ justifyContent: 'center' }}
-                                onPress={() => takePicture()}/>
+                        <Button icon={<FontAwesome5 name= {buttonIcon} size={40} color="white"/>}
+                            type={"clear"}
+                            buttonStyle={{ justifyContent: 'center' }}
+                            onPress={() => { iconPosition.current = !iconPosition.current; takePicture()}}
+                        />
                     </View>
                 </View>
                 <LinearGradient
@@ -161,6 +199,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         width: '100%',
+        paddingBottom: '1%',
         justifyContent: 'center',
     },
     previewBox:{
@@ -214,7 +253,8 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        marginTop:20,
+        padding: 10,
+        marginTop:10,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -238,6 +278,13 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 50,
         alignItems:'center',
     },
+    loading: {
+        color: 'white',
+        fontSize: 18,
+        position: 'absolute',
+        bottom: '2%',
+        left: '2%',
+    }
 });
 
 export default CameraScreen

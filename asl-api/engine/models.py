@@ -76,18 +76,3 @@ class QuizChoice(models.Model):
     @property
     def question_name(self):
         return self.question.answer
-
-
-class QuizAttempt(models.Model):
-    response = models.IntegerField(
-        validators=[
-            # 4 Choices MCQ
-            MaxValueValidator(3),
-            MinValueValidator(0)
-        ])
-    quiz = models.ForeignKey(QuizChoice, on_delete=models.PROTECT)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    @property
-    def is_correct(self):
-        return self.quiz.position == self.response

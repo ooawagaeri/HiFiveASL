@@ -90,7 +90,7 @@ function PractiseScreen() {
     }
 
     // POST user response and return is_correct
-    function postAns(ans, qns) {            
+    function postAns(ans, qns) {
         // Force ans and qns to load before sending (published issue)
         console.log(ans);
         console.log(qns);
@@ -145,7 +145,7 @@ function PractiseScreen() {
         catch(error => {
             setLoading(false);
             Alert.alert("error", error.message)
-        });    
+        });
     }
 
     if (hasPermission === null) {
@@ -168,7 +168,7 @@ function PractiseScreen() {
                 <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
-                <Spinner visible={loading} textContent={'Loading...'}/>
+                <Spinner visible={loading} textContent={'Translating...'}/>
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
                     <View style={styles.flip}>
                         <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
@@ -370,15 +370,15 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        marginTop:5,
-        padding: 0,
+        marginTop:10,
+        padding: 10,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
         fontFamily:"FuturaPTBook",
 
     },

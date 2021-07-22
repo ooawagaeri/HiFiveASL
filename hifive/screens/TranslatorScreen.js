@@ -99,7 +99,7 @@ function TranslatorScreen() {
         return (
             <View style={{flex:1,height:300,width:300}}>
                 <FlatList data={letters}
-                          keyExtractor={(item, index)=> item.id.toString()}
+                          keyExtractor={(item, _)=> item.id.toString()}
                           style={{ flex: 1 }}
                           renderItem={renderItem}
                           horizontal
@@ -124,7 +124,7 @@ function TranslatorScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>TEXT-TO-SIGN</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Key in a letter or word to translate into ASL!{"\n"}Swipe the pictures!</Text>
+                <Text style={styles.prompt}>Key in a letter or word to translate into ASL{"\n"}Swipe the pictures!</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
@@ -134,6 +134,7 @@ function TranslatorScreen() {
                 <View style={styles.submitButton}>
                     <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
                 </View>
+                <Text style={styles.prompt}>These images are mirrored to assist you in your front-facing camera use</Text>
                 {(ans === '') ? (<Text style={styles.markingNull}>No word submitted</Text>)
                     : (isWord === false) ? (<Text style={styles.noSuchWord}>No such word</Text>)
                         : <Carousel/>
@@ -174,13 +175,14 @@ const styles = StyleSheet.create({
     prompt: {
         width: 350,
         padding: 10,
+        marginTop:10,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
         backgroundColor: "transparent",
         color: "#20232a",
         textAlign: "center",
-        fontSize: 15,
+        fontSize: 17,
         fontFamily:"FuturaPTBook",
 
     },
@@ -206,7 +208,8 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     submitButton: {
-        marginBottom:20
+        paddingTop: "2%",
+        paddingBottom: "2%"
     },
     pagination: {
         bottom: 130,

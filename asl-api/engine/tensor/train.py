@@ -17,12 +17,12 @@ from tqdm import tqdm
 import custom_CNN as cnn_models
 from asl_image_dataset import ASLImageDataset
 
-model_name = '4500'
-input_csv = f"labels/data_alpha_{model_name}.csv"
-input_pkl = f"labels/lb_alpha_{model_name}.pkl"
-output_model = f"models/model_alpha_{model_name}.pth"
-output_accuracy = f"diagrams/accuracy_alpha_{model_name}.png"
-output_loss = f"diagrams/loss_alpha_{model_name}.png"
+model_name = '_8000'
+input_csv = f"labels/data_alpha{model_name}.csv"
+input_pkl = f"labels/lb_alpha{model_name}.pkl"
+output_model = f"models/model_alpha{model_name}.pth"
+output_accuracy = f"diagrams/accuracy_alpha{model_name}.png"
+output_loss = f"diagrams/loss_alpha{model_name}.png"
 
 # Number of training cycles / pass
 epochs = 12
@@ -50,7 +50,7 @@ print(f"Running on computation device: {device}")
 df = pd.read_csv(input_csv)
 # Get image paths and labels
 X = df.sub_path.values
-y = df.target.values
+y = df.target_image.values
 # Split dataset into random train and test subsets
 (xtrain, xtest, ytrain, ytest) = (train_test_split(X, y, test_size=0.15,
                                                    random_state=42))
@@ -158,7 +158,7 @@ training_loss, training_accuracy = [], []
 validation_loss, validation_accuracy = [], []
 
 start = time.time()
-# Iterate {number of epochs} times
+# Iterate number of epochs times
 for epoch in range(epochs):
     print(f"Epoch {epoch + 1} of {epochs}")
     train_epoch_loss, train_epoch_accuracy = train(model, train_loader)

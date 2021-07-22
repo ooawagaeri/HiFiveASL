@@ -1,75 +1,78 @@
+"""
+capture_image.py
+Used to photo-take images manually by developer.
+"""
 
 import cv2
 import os
 import math
 
-# Cropped area
-x_0 = 170
-x_1 = 550
-y_0 = 100
-y_1 = 550
+# Write path
+output_path = '../../../../../Datasets/images/capture_image'
 
-output_path = 'capture_image'
-asl_letters = [
-               # "A",
-               # "B",
-               # "C",
-               # "D",
-               # "E",
-               # "F",
-               # "G",
-               # "H",
-               # "I",
-               # "J",
-               # "K",
-               # "L",
-               # "M",
-               # "N",
-               # "O",
-               # "P",
-               # "Q",
-               # "R",
-               # "S",
-               # "T",
-               # "U",
-               # "V",
-               # "W",
-               # "X",
-               # "Y",
-               # "Z",
-               "nothing"
-               ]
+# Letter that is being captured
+asl_letters = 'A'
 
+# Limit of images captured
 max_images = 100
 
+
+def hand_area(img):
+    """
+    Crops given image into 450 x 450 size where hand is located
+    Parameters:
+        img (cv2.Mat): Webcam image
+    Returns:
+        area (cv2.Mat): Cropped and resized image
+    """
+    area = img[100:550, 170:550]
+    return area
+
+
+# Capture webcam
 cap = cv2.VideoCapture(1)
+
+# Retrieve frame rate
 frameRate = cap.get(5)
 
-for output_sub_path in asl_letters:
-    count = 0
-    os.makedirs(f"{output_path}/{output_sub_path}", exist_ok=True)
+# Track number of images taken
+count = 0
 
-    while cap.isOpened():
-        frameId = 1 + cap.get(1)  # current frame number
-        ret, frame = cap.read()
-        frame = cv2.flip(frame, 1)
+# Make directory
+os.makedirs(f"{output_path}/{asl_letters}", exist_ok=True)
 
-        if ret and not count == max_images:
-            frame_crop = frame[y_0:y_1, x_0:x_1]
+# Read until end of video
+while cap.isOpened():
+    # Current frame number
+    frameId = 1 + cap.get(1)
 
-            if frameId % math.floor(frameRate) == 0:
-                cv2.imwrite(f"{output_path}/{output_sub_path}/{output_sub_path}{3001 + count}.jpg", frame_crop)
-                cap.set(cv2.CAP_PROP_POS_FRAMES, frameId)
-                count += 1
+    # Each frame of video
+    ret, frame = cap.read()
 
-            cv2.putText(frame_crop, output_sub_path, (10, 27), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            cv2.putText(frame_crop, str(count), (10, 55), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            cv2.imshow("crop", frame_crop)
-            key = cv2.waitKey(25)
-            if key == ord('q'):
-                break
-        else:
+    # ret, if frame is successful
+    # If number of captures has hit max
+    if ret and count != max_images:
+        frame_crop = hand_area(frame)
+
+        # Capture image once every frame rate
+        if frameId % math.floor(frameRate) == 0:
+            # Save image
+            cv2.imwrite(f"{output_path}/{asl_letters}/{asl_letters}{count}.jpg", frame_crop)
+            cap.set(cv2.CAP_PROP_POS_FRAMES, frameId)
+            count += 1
+
+        # Display letter being captured
+        cv2.putText(frame_crop, asl_letters, (10, 27), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv2.putText(frame_crop, str(count), (10, 55), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        cv2.imshow("crop", frame_crop)
+
+        # `Q` to exit
+        if cv2.waitKey(27) & 0xFF == ord('q'):
             break
 
+    else:
+        break
+
+# Closes camera, frames and video windows
 cv2.destroyAllWindows()
 cap.release()

@@ -124,9 +124,9 @@ STATIC_URL = '/static/'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Media storage (image upload, download)
+# Media storage (non_warm_image upload, download)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# Force image uploaded to follow Temporary File class format
+# Force non_warm_image uploaded to follow Temporary File class format
 FILE_UPLOAD_HANDLERS = ['django.core.files.uploadhandler.TemporaryFileUploadHandler', ]
