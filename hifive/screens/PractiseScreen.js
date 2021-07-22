@@ -69,9 +69,12 @@ function PractiseScreen() {
             throw new Error('Network response was not ok');
         }).
         then(responseJson => {
+            if (responseJson.name === 'nothing') {responseJson.name = "1"}
             setLetter(prevletter => (prevletter + responseJson.name))
+            console.log(letter)
+            console.log(responseJson.name)
             setLoading(false);
-            if ((letter.length+1) === qnLen) {
+            if ((letter.length+1) >= qnLen) {
                  setCounter(true)
             }
         }).
@@ -120,6 +123,7 @@ function PractiseScreen() {
     function getRandNumber(min, max){
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
+
 
     // GET practise
     function getQns() {
@@ -196,16 +200,16 @@ function PractiseScreen() {
                             buttonStyle={{marginRight:20,}}
                             onPress={() => ansToPost()}
                             titleStyle={styles.butText}
-                            title="Submit"/>
+                            title={"Submit"}/>
                     <Button buttonStyle={{marginLeft:20}}
                             title="Next Question"
                             titleStyle={styles.butText}
                             onPress={() => getQns()}/>
                 </View>
                 <View>
-                    { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>No answer submitted</Text>)
-                        : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>Please submit answer.</Text>)
-                            : marking === false ? (<Text style={styles.markingFalse}>Try {wrong} again!</Text>)
+                    { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed</Text>)
+                        : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed! {"\n"}Please submit answer.</Text>)
+                            : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect{"\n"}Please try again!</Text>)
                             : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
                                     : null
                     }
@@ -221,7 +225,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     cameraContainer: {
-        flex: 1,
+        flex: 0.7,
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
@@ -268,6 +272,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     qnText: {
+        flex:0.23,
         marginTop: 2,
         width: 350,
         padding: 2,
@@ -325,7 +330,7 @@ const styles = StyleSheet.create({
         alignContent: 'space-around',
     },
     bottom: {
-        flex: 0.45,
+        flex: 0.3,
         borderWidth: 0,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -333,13 +338,14 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
     },
     top: {
-        flex: 1,
+        flex: 0.7,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
         alignItems:'center',
     },
     header: {
+        flex:0.17,
         marginTop: 50,
         width: 350,
         padding: 0,
