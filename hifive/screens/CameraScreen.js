@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     prompt: {
         width: 350,
         padding: 10,
-        marginTop:10,
+        marginTop:0,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTBook",
     },
     bottom: {
-        flex: 0.45,
+        flex: 0.4,
         borderWidth: 0,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,

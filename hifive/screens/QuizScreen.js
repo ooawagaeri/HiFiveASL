@@ -90,7 +90,7 @@ function QuizScreen() {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                <Image resizeMode={"contain"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
+                <Image resizeMode={"cover"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
 
             </View>
         );
@@ -178,7 +178,7 @@ function QuizScreen() {
                     : option ==currentOption
                         ? "#ff3232" +'20'
                         : null,
-                height: 60, borderRadius: 20,
+                height: 60, borderRadius: 20,width:140,
                 flexDirection: 'row',
                 alignItems: 'center', justifyContent: 'space-between',
                 paddingHorizontal: 30,
@@ -234,7 +234,7 @@ function QuizScreen() {
                 <Text style={styles.header}>QUIZ</Text>
                 <View style={styles.rectangle}/>
                 <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
-                <View style={{alignItems:"center", flex:1}}>
+                <View style={{alignItems:"center"}}>
                     <Carousel />
                     {question.length===1
                         ? null
@@ -247,16 +247,18 @@ function QuizScreen() {
                     keyExtractor={option => option.id}
                     numColumns={2}
                     />
-                    <View style={{flex:0.5,marginTop:0}}>
+                    <View style={{flex:2, margin:"1%"}}>
                         <View>
                             {marking === false ? (<Text style={styles.markingFalse}>Wrong answer!</Text>)
                                         : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
                                             : null
                             }
                         </View>
+                        <View style={{marginTop:"-10%"}}>
                     {next === true
-                        ? <Button buttonStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
+                        ? <Button buttonStyle={{}} titleStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
                         : null}
+                        </View>
                     </View>
                 </View>
             </LinearGradient>
@@ -324,9 +326,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily:"FuturaPTDemi",
     },
-    next: {
-        marginTop:10
-    },
     markingNull: {
         marginTop: 20,
         width: 250,
@@ -370,7 +369,7 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     markingTrue: {
-        marginTop: -50,
+        marginTop: "-40%",
         width: 200,
         padding: 8,
         borderWidth: 0,
@@ -383,7 +382,7 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     markingFalse: {
-        marginTop: -50,
+        marginTop: "-40%",
         width: 200,
         padding: 8,
         borderWidth: 0,

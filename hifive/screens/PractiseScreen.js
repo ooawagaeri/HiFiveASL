@@ -184,9 +184,11 @@ function PractiseScreen() {
                     </View>
                 </Camera>}
                 <View style={styles.shutter}>
-                    <Button icon={<FontAwesome5 name="circle" size={40} color="white" />}
+                    <Button icon={counterCheck ? <FontAwesome5 name="circle" size={40} color="transparent" />
+                        : <FontAwesome5 name="circle" size={40} color="white" />}
                             type={"clear"}
                             buttonStyle={{ justifyContent: 'center' }}
+                            disabled={counterCheck}
                             onPress={() => takePicture()}/>
                 </View>
             </View>
@@ -209,7 +211,7 @@ function PractiseScreen() {
                 <View>
                     { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed</Text>)
                         : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed! {"\n"}Please submit answer.</Text>)
-                            : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect{"\n"}Please try again!</Text>)
+                            : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect</Text>)
                             : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
                                     : null
                     }
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     cameraContainer: {
-        flex: 0.7,
+        flex: 0.8,
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
@@ -266,14 +268,13 @@ const styles = StyleSheet.create({
     },
     ansContainer: {
         flex: 1,
-        padding: 24,
+        padding: 0,
         backgroundColor: "#eaeaea",
         alignItems:'center',
         justifyContent:'center',
     },
     qnText: {
-        flex:0.23,
-        marginTop: 2,
+        marginTop: "2%",
         width: 350,
         padding: 2,
         borderWidth: 4,
@@ -286,9 +287,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     markingNull: {
-        marginTop: 15,
+        marginTop: "1%",
         width: 250,
-        padding: 8,
+        padding: "2%",
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -299,9 +300,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     markingTrue: {
-        marginTop: 15,
+        marginTop: "1%",
         width: 200,
-        padding: 8,
+        padding: "2%",
         borderWidth: 0,
         borderColor: "#90EE90",
         borderRadius: 50,
@@ -312,9 +313,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     markingFalse: {
-        marginTop: 15,
+        marginTop: "1%",
         width: 200,
-        padding: 8,
+        padding: "2%",
         borderWidth: 0,
         borderColor: "#ff3232",
         borderRadius: 50,
@@ -325,27 +326,27 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     botButton: {
-        marginTop:10,
+        marginTop:"1%",
         flexDirection:'row',
         alignContent: 'space-around',
     },
     bottom: {
         flex: 0.3,
         borderWidth: 0,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25,
         alignItems:'center',
         paddingLeft: 10,
     },
     top: {
-        flex: 0.7,
+        flex: 0.8,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
         alignItems:'center',
     },
     header: {
-        flex:0.17,
+        flex:0.2,
         marginTop: 50,
         width: 350,
         padding: 0,
@@ -370,8 +371,8 @@ const styles = StyleSheet.create({
     },
     prompt: {
         width: 350,
-        marginTop:10,
-        padding: 10,
+        marginTop:5,
+        padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,

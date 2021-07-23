@@ -97,7 +97,7 @@ const Home = () => {
                 name="Camera"
                 displayName="Camera"
                 component={CamStackScreen}
-                options={{tabBarLabel: 'Camera', tabBarIcon: ({ color, size }) => (
+                options={{tabBarLabel: 'Sign to Text', tabBarIcon: ({ color, size }) => (
                         <MaterialIcons name="enhance-photo-translate" color={color} size={size} />
                     ),
                 }}
@@ -106,7 +106,7 @@ const Home = () => {
                 name="Translator"
                 displayName="Translator"
                 component={TransStackScreen}
-                options={{tabBarLabel: 'Translator', tabBarIcon: ({ color, size }) => (
+                options={{tabBarLabel: 'Text to Sign', tabBarIcon: ({ color, size }) => (
                         <MaterialIcons name="translate" color={color} size={size} />
                     ),
                 }}
@@ -115,7 +115,7 @@ const Home = () => {
                 name="Videos"
                 displayName="Videos"
                 component={VideosStackScreen}
-                options={{tabBarLabel: 'Videos', tabBarIcon: ({ color, size }) => (
+                options={{tabBarLabel: 'Resources', tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="youtube" color={color} size={size} />
                     ),
                 }}

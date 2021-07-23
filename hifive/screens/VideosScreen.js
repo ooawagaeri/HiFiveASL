@@ -38,13 +38,15 @@ const Vid = ({item}) => {
 
 const Link = ({item}) => {
     return (
-        <View style={styles.blogDes}>
-            <TouchableOpacity onPress={()=>{ Linking.openURL(item.url)}}>
-                <Image style={styles.banner} source={item.banner}/>
-            </TouchableOpacity>
-                <Text style={styles.des}>{item.caption}</Text>
 
-        </View>
+            <TouchableOpacity onPress={()=>{ Linking.openURL(item.url)}}>
+                <View style={styles.blogDes}>
+                    <Image style={styles.banner} source={item.banner}/>
+                    <Text style={styles.des}>{item.caption}</Text>
+                </View>
+            </TouchableOpacity>
+
+
     )
 }
 
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     rectangle: {
         marginTop:10,
         marginLeft: -20,
-        width:160,
+        width:185,
         height:10,
         backgroundColor:'white',
         alignSelf:'flex-start',
