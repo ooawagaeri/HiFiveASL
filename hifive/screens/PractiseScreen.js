@@ -233,8 +233,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     fixedRatio : {
-        flex: 1,
-        aspectRatio:3/4,
+        // flex: 1,
+        width:"100%",
+        height:"166%",
+        // aspectRatio:3/4,
     },
     buttonContainer: {
         flex: 1,
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
     qnText: {
         marginTop: "2%",
         width: 350,
-        padding: 2,
+        padding: "1%",
         borderWidth: 4,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -347,7 +349,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flex:0.2,
-        marginTop: 50,
+        marginTop: "10%",
         width: 350,
         padding: 0,
         borderWidth: 0,
