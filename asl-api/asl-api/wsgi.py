@@ -1,10 +1,7 @@
 """
+wsgi.py
 WSGI config for asl-api project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/3.2/howto/deployment/wsgi/
+Exposes the WSGI callable as a module-level variable named ``application``.
 """
 
 import os
