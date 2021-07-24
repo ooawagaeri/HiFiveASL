@@ -10,6 +10,7 @@ function TranslatorScreen() {
     const [ans, setAns] = useState('')
     const [letters, setLetters] = useState([])
     const [isWord,setIsWord] = useState(null)
+    const [submitted,setSub] =useState(false)
     let holdLetters =[]
     let holdImage = []
 
@@ -20,6 +21,7 @@ function TranslatorScreen() {
         }).
         then(response => response.json()).
         then(responseJson => {
+            setSub(true)
             holdImage = responseJson
             sortLetter(ans,holdImage)
             if (holdImage.length === 0) {
@@ -30,6 +32,14 @@ function TranslatorScreen() {
         }).
         catch(error => Alert.alert("error", error.message))
     }
+
+    function clearInput(){
+        setAns("")
+        setLetters([])
+        setIsWord(null)
+        setSub(false)
+    }
+
 
     function sortLetter(ans,image) {
         holdLetters=[]
@@ -55,8 +65,8 @@ function TranslatorScreen() {
                     alignItems: "center",
                 }}>
                 <Image resizeMode={"contain"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
-                <Text style={{fontSize: 24 }}>{data.title}</Text>
-                <MaterialCommunityIcons style={{marginTop:30}} name="gesture-swipe-horizontal" size={24} color="black" />
+                <Text style={{fontSize: 24,fontFamily:"FuturaPTDemi" }}>{data.title}</Text>
+                <MaterialCommunityIcons style={{bottom:"-5%"}} name="gesture-swipe-horizontal" size={24} color="black" />
 
             </View>
         );
@@ -132,10 +142,12 @@ function TranslatorScreen() {
                     placeholder="Letter/Word"
                 />
                 <View style={styles.submitButton}>
+
+                    <Button buttonStyle={{marginRight:"3%"}} titleStyle={styles.butText} title="Clear" onPress={() => clearInput()}/>
                     <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
                 </View>
                 <Text style={styles.prompt}>These images are mirrored to assist you in your front-facing camera use</Text>
-                {(ans === '') ? (<Text style={styles.markingNull}>No word submitted</Text>)
+                {(ans === '' && submitted==false) ? (<Text style={styles.markingNull}>Nothing submitted</Text>)
                     : (isWord === false) ? (<Text style={styles.noSuchWord}>No such word</Text>)
                         : <Carousel/>
                 }
@@ -150,9 +162,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     header: {
-        marginTop: 50,
-        width: 350,
-        padding: 0,
+        flex:0.088,
+        marginTop: "10%",
+        width: "90%",
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -163,9 +175,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:10,
-        width:250,
-        height:10,
+        marginTop:"1.5%",
+        width:"59%",
+        height:"0.9%",
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
@@ -173,9 +185,9 @@ const styles = StyleSheet.create({
 
     },
     prompt: {
-        width: 350,
-        padding: 10,
-        marginTop:10,
+        width: "100%",
+        padding: "2%",
+        marginTop:"2%",
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -194,10 +206,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     input: {
-        marginTop: 10,
+        marginTop: "2%",
         marginBottom: 0,
-        width: 350,
-        padding: 10,
+        width: "90%",
+        padding: "2%",
         borderWidth: 4,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -209,10 +221,11 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         paddingTop: "2%",
-        paddingBottom: "2%"
+        paddingBottom: "2%",
+        flexDirection: "row",
     },
     pagination: {
-        bottom: 130,
+        bottom: "30%",
         width: "100%",
         justifyContent: "center",
         flexDirection: "row",
@@ -227,8 +240,8 @@ const styles = StyleSheet.create({
     paginationDotActive: { backgroundColor: "lightblue" },
     paginationDotInactive: { backgroundColor: "gray" },
     markingNull: {
-        width: 250,
-        padding: 8,
+        width: "50%",
+        padding: "2%",
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -239,8 +252,8 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     noSuchWord: {
-        width: 250,
-        padding: 8,
+        width: "50%",
+        padding: "2%",
         borderWidth: 0,
         borderColor: "#ff3232",
         borderRadius: 50,

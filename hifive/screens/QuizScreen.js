@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     header: {
-        marginTop: 50,
-        width: 350,
+        marginTop: "10%",
+        width: "90%",
         padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
@@ -284,9 +284,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:10,
-        width:120,
-        height:10,
+        marginTop:"1.8%",
+        width:"30%",
+        height:"1%",
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,

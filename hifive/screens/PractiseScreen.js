@@ -335,8 +335,8 @@ const styles = StyleSheet.create({
     bottom: {
         flex: 0.3,
         borderWidth: 0,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
         alignItems:'center',
         paddingLeft: 10,
     },
@@ -350,7 +350,8 @@ const styles = StyleSheet.create({
     header: {
         flex:0.2,
         marginTop: "10%",
-        width: 350,
+        width: "90%",
+        marginLeft:"-2%",
         padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
@@ -362,9 +363,9 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:10,
-        width:190,
-        height:10,
+        marginTop:"2%",
+        width:"45%",
+        height:"2%",
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
@@ -372,9 +373,8 @@ const styles = StyleSheet.create({
 
     },
     prompt: {
-        width: 350,
-        marginTop:5,
-        padding: 0,
+        width: "100%",
+        marginTop:"1%",
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,

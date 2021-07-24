@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
         elevation:0,
         shadowOffset:{width:0,height:0},
         backgroundColor:'transparent',
+        // height: "9%",
     },
 })
 
