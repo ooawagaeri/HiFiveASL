@@ -21,7 +21,7 @@ class ASLImageDataset(Dataset):
         __getitem__ (tensor): Returns image in tensor format
     """
     def __init__(self, path, labels):
-        self.X = path
+        self.x = path
         self.y = labels
         # Augmentation pipeline resize
         self.aug = albumentations.Compose([
@@ -29,12 +29,13 @@ class ASLImageDataset(Dataset):
         ])
 
     def __len__(self):
-        return len(self.X)
+        return len(self.x)
 
     def __getitem__(self, i):
         # Read image
-        image = cv2.imread(self.X[i])
+        image = cv2.imread(self.x[i])
 
+        # Perform augmentation / transformation on image
         # Perform augmentation / transformation on image
         image = self.aug(image=np.array(image))['image']
         image = np.transpose(image, (2, 0, 1)).astype(np.float32)

@@ -1,3 +1,8 @@
+"""
+urls.py
+URL Mapping between HTTP and Views
+"""
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -6,9 +11,12 @@ from django.views.static import serve
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Serve Admin dashboard
-    path('api/', include('engine.urls')),  # Serve API
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })  # Serve media images
+    # Serve Admin dashboard
+    path('admin/', admin.site.urls),
+    # Serve API
+    path('api/', include('engine.urls')),
+    # Serve media images
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, })
 ]
 
 # Read media folder images
