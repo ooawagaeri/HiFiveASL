@@ -33,8 +33,7 @@ for index, sub_path in tqdm(enumerate(training_sub_paths), total=len(training_su
 
     # Limit on number of images to preprocess (for each category)
     limit = num_images
-    if limit > size:
-        limit = size
+    limit = min(limit, size)
 
     for i in range(limit):
         # Randomize selection of images for pre-processed dataset
