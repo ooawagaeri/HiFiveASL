@@ -2,10 +2,10 @@ import React, {useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
-// import Spinner from 'react-native-loading-spinner-overlay';
+import { MediaQueryStyleSheet } from "react-native-responsive";
 import './Global.js'
 
 
@@ -87,14 +87,13 @@ function CameraScreen() {
             setTimeout(function(){
                 if(iconPosition.current)
                     takePicture().catch(() => { iconPosition.current = false });
-            }, 200);
+            }, 500);
         }).
         catch(error => {
             setLoading(false);
             Alert.alert("error", error.message)
         });
     }
-
 
     // Checks for camera permission
     if (hasPermission === null) {
@@ -113,50 +112,52 @@ function CameraScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>SIGN-TO-TEXT</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Take a picture showing us the sign language{'\n'}letter to translate!</Text>
-                <Text style={styles.prompt}>Use your RIGHT hand. Images are mirrored.</Text>
+                <Text style={QStyles.prompt}>Take a picture showing us the sign language{'\n'}letter to translate! Use your right hand and begin!</Text>
             </LinearGradient>
-                <View style={styles.cameraContainer}>
-                    {/* <Spinner visible={loading} textContent={'Translating...'}/> */}
-                    {isFocused &&
-                    <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
-                        <View style={styles.flip}>
-                            <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white"/>}
-                                    type={"clear"}
-                                    buttonStyle={{ justifyContent: 'flex-start' }}
-                                    onPress={() => {
-                                        setType(
-                                            type === Camera.Constants.Type.back
-                                                ? Camera.Constants.Type.front
-                                                : Camera.Constants.Type.back
-                                    )}}
-                            />
-                        </View> 
-                    </Camera>}
-                    {loading && 
-                    <Text style={styles.loading}>
-                        Translating . . .
-                    </Text>}
-                    <View style={styles.shutter}>
-                        <Button icon={<FontAwesome5 name= {buttonIcon} size={40} color="white"/>}
-                            type={"clear"}
-                            buttonStyle={{ justifyContent: 'center' }}
-                            onPress={() => { iconPosition.current = !iconPosition.current; takePicture()}}
+            <View style={styles.cameraContainer}>
+                {isFocused &&
+                <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
+                    <View style={styles.flip}>
+                        <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white"/>}
+                                type={"clear"}
+                                buttonStyle={{ justifyContent: 'flex-start' }}
+                                onPress={() => {
+                                    setType(
+                                        type === Camera.Constants.Type.back
+                                            ? Camera.Constants.Type.front
+                                            : Camera.Constants.Type.back
+                                )}}
                         />
-                    </View>
+                    </View> 
+                </Camera>}
+                {loading && 
+                <View style={QStyles.loading}>
+                    <ActivityIndicator size="large" color="#f2f2f2" />
+                    <Text style={QStyles.loadingtText}> 
+                        Translating . . .
+                    </Text>
                 </View>
-                <LinearGradient
-                    colors={["#feb157","#ffd26c"]}
-                    start={{ x: 0, y: 0.5 }}
-                    end={{ x: 1, y: 0.5 }}
-                    style={styles.bottom}>
-                    <Text style={styles.ansText}>{name}</Text>
-                </LinearGradient>
+                }    
+                <View style={styles.shutter}>
+                    <Button icon={<FontAwesome5 name= {buttonIcon} size={40} color="white"/>}
+                        type={"clear"}
+                        buttonStyle={{ justifyContent: 'center' }}
+                        onPress={() => { iconPosition.current = !iconPosition.current; takePicture()}}
+                    />
+                </View>
+            </View>
+            <View style={styles.whitebox} />
+            <LinearGradient
+                colors={["#feb157","#ffd26c"]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.bottom}>
+                <Text style={styles.ansText}>{name}</Text>
+            </LinearGradient>
         </View>
         );
     }
 
-// skipcq
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -168,8 +169,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     fixedRatio : {
-        width:"100%",
-        height:"166%",
+        flex: 1,
+        aspectRatio:3/4,
     },
     buttonContainer: {
         flex: 1,
@@ -216,9 +217,10 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     ansText: {
-        marginTop: 30,
-        width: 350,
-        padding: 10,
+        marginTop: "5%",
+        marginBottom: 0,
+        width: "90%",
+        padding: "2%",
         borderWidth: 4,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -230,8 +232,8 @@ const styles = StyleSheet.create({
     },
     header: {
         marginTop: "10%",
-        width: "100%",
-        marginLeft: "8%",
+        width: "90%",
+        padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -242,30 +244,17 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:"0.9%",
-        width:240,
-        height:"2%",
+        marginTop:"1%",
+        marginBottom:"1%",
+        width: "65%",
+        height: 8,
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
-
-    },
-    prompt: {
-        width: 350,
-        padding: 10,
-        marginTop:0,
-        borderWidth: 0,
-        borderColor: "#eaeaea",
-        borderRadius: 50,
-        backgroundColor: "transparent",
-        color: "#20232a",
-        textAlign: "center",
-        fontSize: 17,
-        fontFamily:"FuturaPTBook",
     },
     bottom: {
-        flex: 0.4,
+        flex: 0.5,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
@@ -279,12 +268,85 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     loading: {
+        width: 150,
+        position: 'absolute',
+        top: "25%",
+        left: "50%",
+        marginLeft: -75,
+
+    },
+    loadingtText: {
+        paddingTop: '25%',
+        textAlign: "center",
         color: 'white',
         fontSize: 18,
+        fontWeight: 'bold'
+    },
+    whitebox: {
         position: 'absolute',
-        bottom: '2%',
-        left: '2%',
-    }
+        width: "100%",
+        height: "10%",
+        backgroundColor: "#f2f2f2",
+        bottom: 0,
+    },
 });
+
+const QStyles = MediaQueryStyleSheet.create(
+    {
+        prompt: {
+            width: 350,
+            padding: 10,
+            marginTop: 10,
+            borderWidth: 0,
+            borderColor: "#eaeaea",
+            borderRadius: 50,
+            backgroundColor: "transparent",
+            color: "#20232a",
+            textAlign: "center",
+            fontSize: 17,
+            fontFamily:"FuturaPTBook",
+        },
+        loading: {
+            width: 150,
+            position: 'absolute',
+            top: "25%",
+            left: "50%",
+            marginLeft: -75,
+    
+        },
+        loadingtText: {
+            paddingTop: '25%',
+            textAlign: "center",
+            color: 'white',
+            fontSize: 18,
+            fontWeight: 'bold'
+        },
+    },
+    {
+        "@media (max-device-height: 720)": {
+            prompt: {
+                width: 350,
+                padding: 10,
+                marginTop:0,
+                borderWidth: 0,
+                borderColor: "#eaeaea",
+                borderRadius: 50,
+                backgroundColor: "transparent",
+                color: "#20232a",
+                textAlign: "center",
+                fontSize: 15,
+                fontFamily:"FuturaPTBook",
+            },
+            loading: {
+                width: 150,
+                position: 'absolute',
+                top: "11%",
+                left: "50%",
+                marginLeft: -75,
+        
+            },
+        }
+    }
+);
 
 export default CameraScreen

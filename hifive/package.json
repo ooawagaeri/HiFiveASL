@@ -34,6 +34,7 @@
     "react-native-pager-view": "^5.1.9",
     "react-native-paper": "^4.8.1",
     "react-native-reanimated": "~2.1.0",
+    "react-native-responsive": "^1.0.2",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-thumbnail-video": "^0.1.2",

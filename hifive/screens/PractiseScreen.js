@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { useIsFocused } from "@react-navigation/native";
+import { MediaQuery, MediaQueryStyleSheet } from "react-native-responsive";
 import Spinner from 'react-native-loading-spinner-overlay';
 import './Global.js'
 
@@ -18,9 +19,9 @@ function PractiseScreen() {
     const isFocused = useIsFocused();
     const [loading,setLoading] = useState(false)
 
-    const [counterCheck, setCounter] = useState(false)
     const [qnLen, setQnLen] = useState(null)
-    const [letter, setLetter] = useState("")
+    const [wordLen, setWordLen] = useState(0)
+    const word = useRef("");
 
     const [marking, setMarking] = useState(null);
     const [wrong, setWrong] = useState([])
@@ -34,6 +35,7 @@ function PractiseScreen() {
             setHasPermission(status === 'granted');
         })();
         getQns();
+        word.current = "";
     }, []);
 
     const takePicture = async () => {
@@ -70,13 +72,16 @@ function PractiseScreen() {
         }).
         then(responseJson => {
             if (responseJson.name === 'nothing') {responseJson.name = "1"}
-            setLetter(prevletter => (prevletter + responseJson.name))
-            console.log(letter)
-            console.log(responseJson.name)
             setLoading(false);
-            if ((letter.length+1) >= qnLen) {
-                 setCounter(true)
-            }
+
+            word.current += responseJson.name
+            setWordLen(word.current.length)
+
+            return ((word.current.length) >= qnLen) 
+        }).
+        then((len) => {
+            if (len)
+                ansToPost()
         }).
         catch(error => Alert.alert("error", error.message));
     }
@@ -85,8 +90,10 @@ function PractiseScreen() {
         // Get question no.
         const question = dictonary.findIndex(obj => obj.answer === qns) + 1;
         // Send user response to server to validate ans
-        postAns(letter, question);
-        setLetter("")
+        postAns(word.current, question);
+        
+        setWordLen(0)
+        word.current = "";
     }
 
     // POST user response and return is_correct
@@ -114,7 +121,7 @@ function PractiseScreen() {
             setMarking(responseJson.is_correct);
             setWrong(responseJson.wrong_letters);
         }).
-        catch(error => {
+        catch(() => {
             setMarking(false); // When answer is not in possible answer
         })
         ;
@@ -128,8 +135,7 @@ function PractiseScreen() {
     // GET practise
     function getQns() {
         setMarking(null)
-        setCounter(false)
-        setLetter("")
+        // setLetter("")
         fetch(PRACTICE_QNS_API, {
             method:"GET"
         }).
@@ -148,6 +154,7 @@ function PractiseScreen() {
         });
     }
 
+
     if (hasPermission === null) {
         return <View/>;
     }
@@ -164,12 +171,12 @@ function PractiseScreen() {
                 style={styles.top}>
                 <Text style={styles.header}> PRACTISE </Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Take pictures of the sign language to this question one letter at a time! Press on the circle to shoot.</Text>
+                <Text style={QStyles.prompt}>Take pictures of the corresponding ASL to this question, 1 letter at a time. Press 'circle' to snap!</Text>
                 <Text style={styles.qnText}>{qns}</Text>
             </LinearGradient>
-            <View style={styles.cameraContainer}>
-                <Spinner visible={loading} textContent={'Translating...'}/>
-                {isFocused && <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
+            <View style={QStyles.cameraContainer}>
+                <Spinner visible={loading} textStyle={styles.loadingtText} textContent={'Translating...'}/>
+                {isFocused && <Camera ref={ref => setCamera(ref)} style={QStyles.fixedRatio} type={type}>
                     <View style={styles.flip}>
                         <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
                                 type={"clear"}
@@ -182,38 +189,42 @@ function PractiseScreen() {
                                     );
                         }}/>
                     </View>
+                    <MediaQuery minDeviceWidth={360} maxDeviceHeight={600}>
+                        <Text style={styles.qnText600}>{qns}</Text>
+                    </MediaQuery>
                 </Camera>}
                 <View style={styles.shutter}>
-                    <Button icon={counterCheck ? <FontAwesome5 name="circle" size={40} color="transparent" />
+                    <Button icon={marking !== null ? <FontAwesome5 name="circle" size={40} color="transparent" />
                         : <FontAwesome5 name="circle" size={40} color="white" />}
                             type={"clear"}
                             buttonStyle={{ justifyContent: 'center' }}
-                            disabled={counterCheck}
+                            disabled={marking !== null}
                             onPress={() => takePicture()}/>
                 </View>
             </View>
+            <View style={styles.whitebox} />
             <LinearGradient
                 colors={["#feb157","#ffd26c"]}
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.bottom}>
-                <View style={styles.botButton}>
-                    <Button disabled={!counterCheck}
-                            buttonStyle={{marginRight:20,}}
-                            onPress={() => ansToPost()}
+                <View style={QStyles.botButton}>
+                    <Button 
+                            buttonStyle={{paddingLeft:30, paddingRight:30}}
+                            onPress={() => {word.current = ""; setMarking(null); setWordLen(0)} }
                             titleStyle={styles.butText}
-                            title={"Submit"}/>
+                            title={"Reset"}/>
                     <Button buttonStyle={{marginLeft:20}}
                             title="Next Question"
                             titleStyle={styles.butText}
                             onPress={() => getQns()}/>
+                    
                 </View>
-                <View>
-                    { (marking === null && counterCheck === false) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed</Text>)
-                        : (marking === null && counterCheck === true) ? (<Text style={styles.markingNull}>{letter.length} of {qnLen} completed! {"\n"}Please submit answer.</Text>)
-                            : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect</Text>)
-                            : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
-                                    : null
+                <View style={QStyles.bottom}>
+                    { marking === null  ? (<Text style={styles.markingNull}>{wordLen} of {qnLen} completed</Text>)
+                        : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect</Text>)
+                        : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
+                                : null
                     }
                 </View>
             </LinearGradient>
@@ -233,10 +244,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     fixedRatio : {
-        // flex: 1,
-        width:"100%",
-        height:"166%",
-        // aspectRatio:3/4,
+        flex: 1,
+        aspectRatio:3/4,
     },
     buttonContainer: {
         flex: 1,
@@ -276,7 +285,6 @@ const styles = StyleSheet.create({
         justifyContent:'center',
     },
     qnText: {
-        marginTop: "2%",
         width: 350,
         padding: "1%",
         borderWidth: 4,
@@ -287,6 +295,23 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 30,
         fontFamily:"FuturaPTDemi",
+        margin: "2%"
+    },
+    qnText600: {
+        width: 350,
+        padding: "1%",
+        borderWidth: 4,
+        borderColor: "#eaeaea",
+        borderRadius: 50,
+        backgroundColor: "#eaeaea",
+        color: "#20232a",
+        textAlign: "center",
+        fontSize: 30,
+        fontFamily:"FuturaPTDemi",
+        position: 'absolute',
+        top: "-7%",
+        left: "50%",
+        marginLeft: -175
     },
     markingNull: {
         marginTop: "1%",
@@ -327,31 +352,21 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily:"FuturaPTDemi",
     },
-    botButton: {
-        marginTop:"1%",
-        flexDirection:'row',
-        alignContent: 'space-around',
-    },
     bottom: {
         flex: 0.3,
         borderWidth: 0,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
-        alignItems:'center',
-        paddingLeft: 10,
+        alignItems:'center'
     },
     top: {
         flex: 0.8,
         borderWidth: 0,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
         alignItems:'center',
     },
     header: {
-        flex:0.2,
         marginTop: "10%",
         width: "90%",
-        marginLeft:"-2%",
         padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
@@ -363,27 +378,14 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:"2%",
-        width:"45%",
-        height:"2%",
+        marginTop:"1%",
+        marginBottom:"1%",
+        width: "50%",
+        height: 8,
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
-
-    },
-    prompt: {
-        width: "100%",
-        marginTop:"1%",
-        borderWidth: 0,
-        borderColor: "#eaeaea",
-        borderRadius: 50,
-        backgroundColor: "transparent",
-        color: "#20232a",
-        textAlign: "center",
-        fontSize: 17,
-        fontFamily:"FuturaPTBook",
-
     },
     flip: {
         bottom: 0,
@@ -402,7 +404,101 @@ const styles = StyleSheet.create({
     },
     butText:{
         fontFamily:"FuturaPTDemi",
-    }
+    },
+    loadingtText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    whitebox: {
+        position: 'absolute',
+        width: "100%",
+        height: "10%",
+        backgroundColor: "#f2f2f2",
+        bottom: 0,
+    },
 });
+
+const QStyles = MediaQueryStyleSheet.create(
+    {
+        cameraContainer: {
+            flex: 0.8,
+            flexDirection: 'row',
+            alignItems: 'center',
+            alignSelf: 'center',
+        },
+        fixedRatio : {
+            flex: 1,
+            aspectRatio:3/4,
+            marginTop: "-10%"
+        },
+        botButton: {
+            marginTop:"5%",
+            marginBottom:"1%",
+            flexDirection:'row',
+            alignContent: 'space-around',
+        },
+        prompt: {
+            width: "95%",
+            marginTop:"1%",
+            borderWidth: 0,
+            borderColor: "#eaeaea",
+            borderRadius: 50,
+            backgroundColor: "transparent",
+            color: "#20232a",
+            textAlign: "center",
+            fontSize: 17,
+            fontFamily:"FuturaPTBook",
+        },
+        bottom: {},
+    },
+    {
+        "@media (min-device-width: 320) and (max-device-height: 720)": {
+            cameraContainer: {
+                marginTop: 100,
+                flex: 0.8,
+                flexDirection: 'row',
+                alignItems: 'center',
+                alignSelf: 'center',
+            },
+            fixedRatio : {
+                flex: 1,
+                aspectRatio:3/4,
+            },
+            botButton: {
+                marginTop: "1.5%",
+                flexDirection:'row',
+                alignContent: 'space-around',
+            },
+            prompt: {
+                width: "95%",
+                marginTop:"1%",
+                borderWidth: 0,
+                borderColor: "#eaeaea",
+                borderRadius: 50,
+                backgroundColor: "transparent",
+                color: "#20232a",
+                textAlign: "center",
+                fontSize: 15,
+                fontFamily:"FuturaPTBook",
+            },
+        }, 
+        "@media (min-device-width: 320) and (max-device-height: 680)": {
+            bottom: {
+                top: -5,
+            },
+        },
+        "@media (min-device-width: 360) and (max-device-height: 600)": {
+            bottom: {
+                top: -6,
+            },
+            botButton: {
+                marginTop: 1,
+                flexDirection:'row',
+                alignContent: 'space-around',
+            },
+        }
+    }
+);
 
 export default PractiseScreen

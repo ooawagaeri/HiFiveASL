@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
-import {useCallback, useEffect, useRef, useState} from "react";
-import {Text, View, StyleSheet, Image, Alert, FlatList, TouchableOpacity} from 'react-native';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {useCallback, useEffect, useRef, useState } from "react";
+import { Text, View, StyleSheet, Image, Alert, FlatList, TouchableOpacity } from 'react-native';
+import { MediaQueryStyleSheet } from "react-native-responsive";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import './Global.js'
 
 
@@ -90,7 +91,7 @@ function QuizScreen() {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                <Image resizeMode={"cover"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
+                <Image resizeMode={"cover"} source={{ uri: data.url }} style={QStyles.carouselImage}/>
 
             </View>
         );
@@ -131,9 +132,9 @@ function QuizScreen() {
             }
         }, []);
         return (
-            <View style={{flex:4,height:300,width:300}}>
+            <View style={QStyles.carousel}>
                 <FlatList data={letters}
-                          keyExtractor={(item, index)=> item.id.toString()}
+                          keyExtractor={(item, _)=> item.id.toString()}
                           style={{ flex: 1 }}
                           renderItem={renderItem}
                           horizontal
@@ -233,32 +234,30 @@ function QuizScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>QUIZ</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Key in the letter corresponding to this sign!</Text>
+                <Text style={QStyles.prompt}>Choose in the letter corresponding to this sign!</Text>
                 <View style={{alignItems:"center"}}>
-                    <Carousel />
+                    <Carousel styles={QStyles.carousel}/>
                     {question.length===1
                         ? null
                         : <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
                     }
                     <FlatList
-                    data={choicesArr}
-                    horizontal={false}
-                    renderItem={renderChoice}
-                    keyExtractor={option => option.id}
-                    numColumns={2}
+                        data={choicesArr}
+                        horizontal={false}
+                        renderItem={renderChoice}
+                        keyExtractor={option => option.id}
+                        numColumns={2}
                     />
-                    <View style={{flex:2, margin:"1%"}}>
-                        <View>
-                            {marking === false ? (<Text style={styles.markingFalse}>Wrong answer!</Text>)
-                                        : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
-                                            : null
-                            }
-                        </View>
-                        <View style={{marginTop:"-10%"}}>
-                    {next === true
-                        ? <Button buttonStyle={{}} titleStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
-                        : null}
-                        </View>
+                    <View style={QStyles.correct}>
+                        {marking === false ? (<Text style={styles.markingFalse}>Wrong answer!</Text>)
+                                    : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
+                                        : null
+                        }
+                    </View>
+                    <View style={QStyles.bottom}>
+                        {next === true
+                        ? <Button titleStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
+                    : null}
                     </View>
                 </View>
             </LinearGradient>
@@ -284,14 +283,14 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:"1.8%",
-        width:"30%",
-        height:"1%",
+        marginTop:"1%",
+        marginBottom:"1%",
+        width: "35%",
+        height: 8,
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
-
     },
     prompt: {
         width: 350,
@@ -394,6 +393,101 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily:"FuturaPTDemi",
     },
-})
+});
+
+const QStyles = MediaQueryStyleSheet.create(
+    {
+        prompt: {
+            width: 350,
+            padding: 10,
+            marginTop:10,
+            borderWidth: 0,
+            borderColor: "#eaeaea",
+            borderRadius: 50,
+            backgroundColor: "transparent",
+            color: "#20232a",
+            textAlign: "center",
+            fontSize: 17,
+            fontFamily:"FuturaPTBook",
+        },
+        carousel: {
+            flex: 1,
+            height:300,
+            width:300
+        },
+        carouselImage: {
+            height:300,
+            width:300
+        },
+        correct: {
+            position: "absolute",
+            bottom: "22%"
+        },
+        bottom: {
+            position: "absolute",
+            bottom: "20%"
+        }
+    },
+    {
+        "@media (max-device-height: 720)": {
+            prompt: {
+                width: 350,
+                padding: 10,
+                marginTop:10,
+                borderWidth: 0,
+                borderColor: "#eaeaea",
+                borderRadius: 50,
+                backgroundColor: "transparent",
+                color: "#20232a",
+                textAlign: "center",
+                fontSize: 15,
+                fontFamily:"FuturaPTBook",
+            },
+            carousel: {
+                flex: 1.2,
+                height:220,
+                width:300,
+                marginTop: -50
+            },
+            carouselImage: {
+                height:220,
+                width:220
+            },
+            correct: {
+                position: "absolute",
+                bottom: "25.5%"
+            },
+            bottom: {
+                position: "absolute",
+                bottom: "24%"
+            }
+        },
+        "@media (min-device-width: 320) and (max-device-height: 680)": {
+            correct: {
+                position: "absolute",
+                bottom: "25%"
+            },
+            bottom: {
+                position: "absolute",
+                bottom: "24%"
+            }
+        },
+        "@media (min-device-width: 360) and (max-device-height: 600)": {
+            botButton: {
+                marginTop: 1,
+                flexDirection:'row',
+                alignContent: 'space-around',
+            },
+            correct: {
+                position: "absolute",
+                bottom: "24.5%"
+            },
+            bottom: {
+                position: "absolute",
+                bottom: "24.5%"
+            }
+        }
+    }
+);
 
 export default QuizScreen

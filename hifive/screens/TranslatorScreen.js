@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { LinearGradient} from "expo-linear-gradient";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from 'react-native-elements';
+import { MediaQueryStyleSheet } from "react-native-responsive";
 import { Alert, Text, View, StyleSheet, Image, TextInput, FlatList } from 'react-native';
 import './Global.js'
 
@@ -32,6 +33,13 @@ function TranslatorScreen() {
         }).
         catch(error => Alert.alert("error", error.message))
     }
+
+    useEffect(() => {
+        setAns("")
+        setLetters([])
+        setIsWord(null)
+        setSub(false)
+    }, []);
 
     function clearInput(){
         setAns("")
@@ -64,7 +72,7 @@ function TranslatorScreen() {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                <Image resizeMode={"contain"} source={{ uri: data.url }} style={{width: 300, height:300}}/>
+                <Image resizeMode={"contain"} source={{ uri: data.url }} style={QStyles.carouselImage}/>
                 <Text style={{fontSize: 24,fontFamily:"FuturaPTDemi" }}>{data.title}</Text>
                 <MaterialCommunityIcons style={{bottom:"-5%"}} name="gesture-swipe-horizontal" size={24} color="black" />
 
@@ -107,7 +115,7 @@ function TranslatorScreen() {
             }
         }, []);
         return (
-            <View style={{flex:1,height:300,width:300}}>
+            <View style={QStyles.carousel}>
                 <FlatList data={letters}
                           keyExtractor={(item, _)=> item.id.toString()}
                           style={{ flex: 1 }}
@@ -134,7 +142,7 @@ function TranslatorScreen() {
                 style={styles.top}>
                 <Text style={styles.header}>TEXT-TO-SIGN</Text>
                 <View style={styles.rectangle}/>
-                <Text style={styles.prompt}>Key in a letter or word to translate into ASL{"\n"}Swipe the pictures!</Text>
+                <Text style={QStyles.prompt}>Key in a letter or word to translate into ASL{"\n"}Swipe the mirrored pictures!{"\n"}</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
@@ -142,11 +150,9 @@ function TranslatorScreen() {
                     placeholder="Letter/Word"
                 />
                 <View style={styles.submitButton}>
-
-                    <Button buttonStyle={{marginRight:"3%"}} titleStyle={styles.butText} title="Clear" onPress={() => clearInput()}/>
-                    <Button titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
+                    <Button buttonStyle={{paddingLeft:30, paddingRight:30}} titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
+                    <Button buttonStyle={{paddingLeft:30, paddingRight:30, marginLeft:"3%"}} titleStyle={styles.butText} title="Clear" onPress={() => clearInput()}/>
                 </View>
-                <Text style={styles.prompt}>These images are mirrored to assist you in your front-facing camera use</Text>
                 {(ans === '' && submitted==false) ? (<Text style={styles.markingNull}>Nothing submitted</Text>)
                     : (isWord === false) ? (<Text style={styles.noSuchWord}>No such word</Text>)
                         : <Carousel/>
@@ -162,9 +168,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     header: {
-        flex:0.088,
         marginTop: "10%",
         width: "90%",
+        padding: 0,
         borderWidth: 0,
         borderColor: "#eaeaea",
         borderRadius: 50,
@@ -175,14 +181,14 @@ const styles = StyleSheet.create({
         fontFamily:"FuturaPTDemi",
     },
     rectangle: {
-        marginTop:"1.5%",
-        width:"59%",
-        height:"0.9%",
+        marginTop:"1%",
+        marginBottom:"1%",
+        width: "65%",
+        height: 8,
         backgroundColor:'white',
         alignSelf:'flex-start',
         borderTopRightRadius: 50,
         borderBottomRightRadius: 50,
-
     },
     prompt: {
         width: "100%",
@@ -196,7 +202,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 17,
         fontFamily:"FuturaPTBook",
-
     },
     top: {
         flex: 1,
@@ -221,7 +226,7 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         paddingTop: "2%",
-        paddingBottom: "2%",
+        paddingBottom: "10%",
         flexDirection: "row",
     },
     pagination: {
@@ -266,6 +271,72 @@ const styles = StyleSheet.create({
     butText:{
         fontFamily:"FuturaPTDemi",
     }
-})
+});
+
+const QStyles = MediaQueryStyleSheet.create(
+    {
+        prompt: {
+            width: "100%",
+            padding: "2%",
+            marginTop:"2%",
+            borderWidth: 0,
+            borderColor: "#eaeaea",
+            borderRadius: 50,
+            backgroundColor: "transparent",
+            color: "#20232a",
+            textAlign: "center",
+            fontSize: 17,
+            fontFamily:"FuturaPTBook",
+        },
+        carousel: {
+            flex: 1,
+            height:300,
+            width:300
+        },
+        carouselImage: {
+            height:300,
+            width:300
+        },
+    },
+    {
+        "@media (max-device-height: 720)": {
+            prompt: {
+                width: "100%",
+                padding: "2%",
+                marginTop:"2%",
+                borderWidth: 0,
+                borderColor: "#eaeaea",
+                borderRadius: 50,
+                backgroundColor: "transparent",
+                color: "#20232a",
+                textAlign: "center",
+                fontSize: 15,
+                fontFamily:"FuturaPTBook",
+            },
+            carousel: {
+                flex: 1.2,
+                height:220,
+                width:300,
+                marginTop: -30
+            },
+            carouselImage: {
+                height:220,
+                width:220
+            },
+        },
+        "@media (min-device-width: 360) and (max-device-height: 600)": {
+            carousel: {
+                flex: 1.2,
+                height:200,
+                width:300,
+                marginTop: -50
+            },
+            carouselImage: {
+                height:200,
+                width:200
+            },
+        }
+    }
+);
 
 export default TranslatorScreen

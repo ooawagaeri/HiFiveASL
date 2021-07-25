@@ -3,6 +3,7 @@ import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector
 import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { MediaQuery } from "react-native-responsive";
 import CameraScreen from "./CameraScreen";
 import PractiseScreen from "./PractiseScreen";
 import QuizScreen from "./QuizScreen";
@@ -131,8 +132,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
         elevation:0,
         shadowOffset:{width:0,height:0},
-        backgroundColor:'transparent',
-        // height: "9%",
+        backgroundColor:'transparent'
     },
 })
 
