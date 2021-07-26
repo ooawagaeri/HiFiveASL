@@ -1,11 +1,28 @@
-# Orbital Apollo 11: HI Five
-
-<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/hifive/assets/icon.png?raw=true" width="250" height="250">
-
-## _American Sign Language Application_
-
-
+<p align="center">
+  <a href="https://getbootstrap.com/">
+      <img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/hifive/assets/icon.png?raw=true" width="225" height="225">
+  </a>
+</p>
+<h1 align="center">Orbital Apollo 11: HI Five</h1>
+<h3 align="center"><i>An American Sign Language Application</i></h3>
+<p align="center">
 An Orbital NUS Project involving computer vision, machine learning and visual design to translate and teach American Sign Language to a greater audience.
+<br>
+<br>
+<a href="https://github.com/twbs/bootstrap/issues/new?template=bug_report.md"><strong>Watch Our Overview Video</strong></a>
+·
+<a href="https://docs.google.com/document/d/1mcwQNOPeJEktWSWh4hMidNtkC43IOc3qrt4Oz8TZbSY/edit?usp=sharing"><strong>Explore Our In-depth Orbital Docs »</strong></a>
+</p>
+
+## Table of contents
+
+- [Feature](#features)
+- [Tech Stack](#tech-stack)
+- [UML Diagram](#uml-diagram)
+- [Included Folders](#included-folders)
+- [Frontend Installation](#frontend-installation)
+- [Backend Installation](#backend-installation)
+- [Production Deployment](#production-deployment)
 
 ## Features
 
@@ -13,7 +30,7 @@ An Orbital NUS Project involving computer vision, machine learning and visual de
 - Text-to-Sign Translation: Search and construct words into its corresponding image of the ASL gesture.
 - Pop-Quizzes: Randomly generates a gesture for the user to input a text answer to challenge oneself.
 - Gesture Practice: Allows users to learn and practice the correct gesture to a corresponding letter.
-- Video Resources: A library of content and media, curated across the web, aiming to provide users with learning resources beyond this app.
+- Resources: A library of content and media, curated across the web, aiming to provide users with learning resources beyond this app.
 
 ## Tech Stack
 
@@ -25,11 +42,73 @@ HI Five uses an assortment of environments and open source projects to develop t
 - [Django REST Framework] - A REST framework for building APIs to transfer information to and fro frontend and backend
 - [Python] - Backend of the application, using Torch and Keras to generate and train a predictive ASL model
 
-## Installation & Staging Deployment
+<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/program_flow.png?raw=true" width="760">
 
-HI Five requires [Node.js 12 LTS or greater]  to operate the front-end and [Anaconda 3] or [Docker] for the back-end.
+## UML Diagram
 
-**Front-End**
+**Class Diagram**
+
+HI Five's backend system representation of its classes, properties, actions, and object connections.
+
+<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/model_uml.png?raw=true" width="760">
+
+## Included Folders
+
+Within the download you will find the following directories like this:
+
+```text
+orbital-asl-application/
+├───asl-api
+│   ├───asl-api
+│   ├───engine
+│   │   ├───migrations
+│   │   ├───tensor
+│   │   │   ├───diagrams
+│   │   │   ├───images
+│   │   │   ├───labels
+│   │   │   └───models
+│   ├───media
+│   │   ├───get_images
+│   │   └───post_images
+│   ├───static
+│   │   ├───admin
+│   │   │   ├───css
+│   │   │   │   └───vendor
+│   │   │   │       └───select2
+│   │   │   ├───fonts
+│   │   │   ├───img
+│   │   │   │   └───gis
+│   │   │   └───js
+│   │   │       ├───admin
+│   │   │       └───vendor
+│   │   │           ├───jquery
+│   │   │           ├───select2
+│   │   │           │   └───i18n
+│   │   │           └───xregexp
+│   │   └───rest_framework
+│   │       ├───css
+│   │       ├───docs
+│   │       │   ├───css
+│   │       │   ├───img
+│   │       │   └───js
+│   │       ├───fonts
+│   │       ├───img
+│   │       └───js
+│   └───templates
+├───hifive
+│   ├───assets
+│   │   └───fonts
+│   ├───components
+│   │   └───patches
+│   ├───my-app
+│   └───screens
+└───README Resources
+
+```
+
+## Frontend Installation
+
+HI Five requires [Node.js 12 LTS or greater] to operate the frontend interface.
 
 1. Install the dependencies for React Native from package.json
 
@@ -52,7 +131,11 @@ npm start
 
 <br/>
 
-**Back-End (Anaconda 3)**
+
+## Backend Installation
+HI Five requires [Anaconda 3] or [Docker] to operate the backend API.
+
+<h3>Anaconda Version</h3>
 
 1. Install the dependencies for the Python environment via requirements.txt
 
@@ -75,9 +158,8 @@ conda activate venv
 python manage.py runserver <your ip address>:8000
 ```
 
-<br/>
 
-**Back-End (Docker)**
+<h3>Docker Version</h3>
 
 1. Install the dependencies via Dockerfile
 
@@ -104,7 +186,7 @@ or
 
 ## Production Deployment
 
-**Expo.io**
+<h3>Expo.io</h3>  
 
 Expo is a publicly available framework and platform for React applications. In addition to serving as a programming
 platform, Expo provides an in-house publishing service.
@@ -126,10 +208,15 @@ On top of downloading the Expo Go from the [App Store], you will need to login i
 >
 >Password: testing123
 
-**Kamatera**
+<h3>Kamatera</h3>
 
 Kamatera is a service which offers flexible cloud-based solutions for developers and web app developers. Similar to
-Amazon Web Services EC2, Kamatera Express provides cloud computing environments. For a live preview of the backend
+Amazon Web Services EC2, Kamatera Express provides cloud computing environments.
+
+If you are using a Kamatera server, do open your machine's PORT 80  or respective port as your URL endpoint would
+differ from this projects.
+
+For a live preview of the backend
 Django RESTful API server at: http://45-126-126-89.cloud-xip.io/api/
 
 <img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/django_api.png?raw=true">
@@ -140,13 +227,15 @@ Some subdomain URLs you can use to access the various functions are:
 - Gesture Questions: http://45-126-126-89.cloud-xip.io/api/practiseQns/
 - Gesture Reply / Answer: http://45-126-126-89.cloud-xip.io/api/practiseAns/
 - Text-To-Sign: http://45-126-126-89.cloud-xip.io/api/gesture/
+- Pop-Quiz: http://45-126-126-89.cloud-xip.io/api/quizChoice/
 
 
 ---
 
-Disclaimer: Do not POST, DELETE, or PUT the given URLS. These are only for demonstration purposes, as a proof of concept
-that further work can be done to add custom questions or letters beyond our intended scope.
-To insert or modify at your leisure, do install the application at our github and run it in your own environment!
+Disclaimer: Do not POST, DELETE, or PUT the given URLS. These are for demonstration purposes only, as any unnecessary
+ modification could jeopardize the functionality of the server.
+
+To insert or modify at your own leisure, do install the application at our Github and run it in your own environment.
 
 ---
 
