@@ -1,6 +1,13 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
+/**
+ * Rounded button used in the footer page
+ * @param {string} label
+ * @param {function} onPress
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const RoundedButton = ({ label, onPress }) => {
     return (
         <TouchableOpacity

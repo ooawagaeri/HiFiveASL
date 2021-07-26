@@ -28,7 +28,9 @@ function PractiseScreen() {
     const [qns, setQns] = useState(null);
     const [dictonary, setDictonary] = useState(null); // Array of possible answers
 
-
+    /**
+     * Upon render, request camera permissions.
+     */
     useEffect(() => {
         (async () => {
             const {status} = await Camera.requestPermissionsAsync();
@@ -38,6 +40,10 @@ function PractiseScreen() {
         word.current = "";
     }, []);
 
+    /**
+     * Take photo and post image
+     * @returns {Promise<void>}
+     */
     const takePicture = async () => {
         if (camera) {
             if (!previewVisible) {
@@ -50,6 +56,11 @@ function PractiseScreen() {
         }
     }
 
+    /**
+     * POST user image.
+     * GET response from API (corresponding letter)
+     * @param result (photo data)
+     */
     const postASL = (result) => {
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
@@ -96,7 +107,11 @@ function PractiseScreen() {
         word.current = "";
     }
 
-    // POST user response and return is_correct
+    /**
+     * POST user response and return is_correct
+     * @param {string} ans
+     * @param {string} qns
+     */
     function postAns(ans, qns) {
         // Force ans and qns to load before sending (published issue)
         console.log(ans);
@@ -127,12 +142,20 @@ function PractiseScreen() {
         ;
     }
 
+    /**
+     * To derive a random number (for randomising question)
+     * @param {int} min
+     * @param {int} max
+     * @returns {int} random number
+     */
     function getRandNumber(min, max){
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
 
-    // GET practise
+    /**
+     * GET practise question
+     */
     function getQns() {
         setMarking(null)
         // setLetter("")
@@ -143,7 +166,6 @@ function PractiseScreen() {
         then(responseJson => {
             // Get random question from json
             let {answer} = responseJson[getRandNumber(0, responseJson.length - 1)];
-
             setDictonary(responseJson); // Store possible answers
             setQns(answer); // Set question
             setQnLen(answer.length)
@@ -154,7 +176,7 @@ function PractiseScreen() {
         });
     }
 
-
+    // Checks for camera permission
     if (hasPermission === null) {
         return <View/>;
     }
@@ -176,7 +198,9 @@ function PractiseScreen() {
             </LinearGradient>
             <View style={QStyles.cameraContainer}>
                 <Spinner visible={loading} textStyle={styles.loadingtText} textContent={'Translating...'}/>
+                {/*isFocused prevents camera feed from not rendering upon navigating other screens*/}
                 {isFocused && <Camera ref={ref => setCamera(ref)} style={QStyles.fixedRatio} type={type}>
+                    {/*Button for flip camera*/}
                     <View style={styles.flip}>
                         <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white" />}
                                 type={"clear"}
@@ -193,6 +217,7 @@ function PractiseScreen() {
                         <Text style={styles.qnText600}>{qns}</Text>
                     </MediaQuery>
                 </Camera>}
+                {/*Render shutter button*/}
                 <View style={styles.shutter}>
                     <Button icon={marking !== null ? <FontAwesome5 name="circle" size={40} color="transparent" />
                         : <FontAwesome5 name="circle" size={40} color="white" />}
@@ -208,6 +233,7 @@ function PractiseScreen() {
                 start={{ x: 0, y: 0.5 }}
                 end={{ x: 1, y: 0.5 }}
                 style={styles.bottom}>
+                {/*Reset and Clear Buttons*/}
                 <View style={QStyles.botButton}>
                     <Button 
                             buttonStyle={{paddingLeft:30, paddingRight:30}}
@@ -220,6 +246,7 @@ function PractiseScreen() {
                             onPress={() => getQns()}/>
                     
                 </View>
+                {/*Indicator of number of images completed and marking of user input*/}
                 <View style={QStyles.bottom}>
                     { marking === null  ? (<Text style={styles.markingNull}>{wordLen} of {qnLen} completed</Text>)
                         : marking === false ? (<Text style={styles.markingFalse}>{wrong} is incorrect</Text>)
@@ -232,6 +259,9 @@ function PractiseScreen() {
     );
 }
 
+/**
+ * Stylesheet
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

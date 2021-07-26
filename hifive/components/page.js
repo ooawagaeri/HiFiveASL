@@ -2,7 +2,12 @@ import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, Text, Image } from 'react-native';
 
-
+/**
+ * Main portion of welcome page.
+ * @param {string} title
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Page = ({ title }) => {
     return (
         <LinearGradient

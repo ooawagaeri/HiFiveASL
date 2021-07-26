@@ -21,7 +21,10 @@ function CameraScreen() {
     const iconPosition = useRef(false);
     
     const isFocused = useIsFocused();
-    
+
+    /**
+     * Upon render, request camera permissions.
+     */
     useEffect(() => {
         if (isFocused) {
             (async () => {
@@ -37,7 +40,10 @@ function CameraScreen() {
 
     }, [isFocused]);
 
-
+    /**
+     * Play/Stop button for live translation.
+     * @returns {Promise<void>}
+     */
     const takePicture = async () => {
         if (camera) {
             if (!previewVisible) {
@@ -56,6 +62,11 @@ function CameraScreen() {
         }
     }
 
+    /**
+     * POST user image.
+     * GET response from API (corresponding letter)
+     * @param result (photo data)
+     */
     const postASL = (result) => {
         let localUri = result.uri;
         let filename = localUri.split('/').pop();
@@ -115,8 +126,10 @@ function CameraScreen() {
                 <Text style={QStyles.prompt}>Take a picture showing us the sign language{'\n'}letter to translate! Use your right hand and begin!</Text>
             </LinearGradient>
             <View style={styles.cameraContainer}>
+                {/*isFocused prevents camera feed from not rendering upon navigating other screens*/}
                 {isFocused &&
                 <Camera ref={ref => setCamera(ref)} style={styles.fixedRatio} type={type}>
+                    {/*Button for flip camera*/}
                     <View style={styles.flip}>
                         <Button icon={<Ionicons name="md-camera-reverse-outline" size={40} color="white"/>}
                                 type={"clear"}
@@ -130,6 +143,7 @@ function CameraScreen() {
                         />
                     </View> 
                 </Camera>}
+                {/*Show "Translating..."*/}
                 {loading && 
                 <View style={QStyles.loading}>
                     <ActivityIndicator size="large" color="#f2f2f2" />
@@ -137,7 +151,8 @@ function CameraScreen() {
                         Translating . . .
                     </Text>
                 </View>
-                }    
+                }
+                {/*Render play/stop button*/}
                 <View style={styles.shutter}>
                     <Button icon={<FontAwesome5 name= {buttonIcon} size={40} color="white"/>}
                         type={"clear"}
@@ -158,6 +173,9 @@ function CameraScreen() {
         );
     }
 
+/**
+ * Stylesheet
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

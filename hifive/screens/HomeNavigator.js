@@ -17,7 +17,11 @@ const QuizStack = createStackNavigator();
 const TransStack = createStackNavigator();
 const VideosStack = createStackNavigator();
 
-
+/**
+ * Camera screen component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function CamStackScreen() {
     return (
         <CamStack.Navigator headerMode="none">
@@ -26,6 +30,11 @@ function CamStackScreen() {
     );
 }
 
+/**
+ * Quiz screen component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function QuizStackScreen() {
     return (
         <QuizStack.Navigator headerMode="none">
@@ -34,14 +43,24 @@ function QuizStackScreen() {
     );
 }
 
+/**
+ * Translation screen component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function TransStackScreen() {
     return (
         <TransStack.Navigator headerMode="none">
-            <TransStack.Screen name="Dictionary Look Up" component={TranslatorScreen}/>
+            <TransStack.Screen name="Text to Sign" component={TranslatorScreen}/>
         </TransStack.Navigator>
     );
 }
 
+/**
+ * Practise screen component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function PracStackScreen() {
     return (
         <PracStack.Navigator headerMode="none">
@@ -50,6 +69,11 @@ function PracStackScreen() {
     );
 }
 
+/**
+ * Resources component
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function VideosStackScreen() {
     return (
         <VideosStack.Navigator headerMode="none">
@@ -58,6 +82,10 @@ function VideosStackScreen() {
     );
 }
 
+/**
+ * React Native Bottom Tab
+ * @type {import("@react-navigation/native").TypedNavigator<Record<string, object | undefined>, TabNavigationState<Record<string, object | undefined>>, BottomTabNavigationOptions, BottomTabNavigationEventMap, typeof BottomTabNavigator>}
+ */
 const Tab = createBottomTabNavigator();
 
 const Home = () => {

@@ -23,15 +23,28 @@ function QuizScreen() {
     let multipleC = []
     let holdMultiple= []
 
+    /**
+     * Upon render, load question.
+     */
     useEffect(() => {
         getQns();
     }, []);
 
+    /**
+     * To derive a random number (for randomising question)
+     * @param {int} min
+     * @param {int} max
+     * @returns {int} random number
+     */
     function getRandNumber(min, max){
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    // GET question
+    /**
+     * GET question from API in the form of a json file.
+     * json sorts images by alphabetical order so we need to sort to the order of letters in the question.
+     * Multiple choice option also derived from json file.
+     */
     function getQns() {
         fetch(QUIZ_CHOICE, {
             method:"GET"
@@ -59,6 +72,11 @@ function QuizScreen() {
         });
     }
 
+    /**
+     * Sort alphabetically sorted response json to order specified in question.
+     * @param {string} ans
+     * @param {array} image
+     */
     function sortLetter(ans,image) {
         holdLetters=[]
         let i;
@@ -73,6 +91,10 @@ function QuizScreen() {
         setLetters(holdLetters)
     }
 
+    /**
+     * Add multiple choice options to array for use in flatlist
+     * @param {array} choices
+     */
     function arrangeChoices(choices) {
         holdMultiple=[]
         let i;
@@ -82,6 +104,12 @@ function QuizScreen() {
         setChoices(holdMultiple)
     }
 
+    /**
+     * Return ASL image with its letter as title.
+     * @param {array} data
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Slide({ data }) {
         return (
             <View
@@ -97,6 +125,12 @@ function QuizScreen() {
         );
     }
 
+    /**
+     * Pagination dot that updates according to the slide of images.
+     * @param index
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Pagination({ index }) {
         return (
             <View style={styles.pagination} pointerEvents="none">
@@ -117,6 +151,12 @@ function QuizScreen() {
         );
     }
 
+    /**
+     * Calculation of index of the current state of slideshow.
+     * Returns a scrollable flatlist of images with its title and pagination dot.
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Carousel() {
         const [index, setIndex] = useState(0);
         const indexRef = useRef(index);
@@ -146,10 +186,18 @@ function QuizScreen() {
             </View>
         )}
 
+    /**
+     * To render slide function for flatlist.
+     * @type {function({item: *})}
+     */
     const renderItem = useCallback(function renderItem({ item }) {
         return <Slide data={item}/>;
     }, []);
 
+    /**
+     * Marking of user input
+     * @param {string} selectedOption
+     */
     const validateAns = (selectedOption) => {
         setCurrentOption(selectedOption);
         setAns(question);
@@ -160,9 +208,22 @@ function QuizScreen() {
         }
         else setMarking(false)
     }
+
+    /**
+     * To render choices for multiple choice flatlist.
+     * @param {json} item
+     * @returns {JSX.Element}
+     */
     const renderChoice = ({ item }) => (
         <Choice option={item.choice} />
     );
+
+    /**
+     * Multiple choice option which will indicate the correct answer after user complete the question.
+     * @param {string} option
+     * @returns {JSX.Element}
+     * @constructor
+     */
     const Choice = ({ option }) => (
         <TouchableOpacity
             onPress={()=> validateAns(option)}
@@ -236,11 +297,14 @@ function QuizScreen() {
                 <View style={styles.rectangle}/>
                 <Text style={QStyles.prompt}>Choose in the letter corresponding to this sign!</Text>
                 <View style={{alignItems:"center"}}>
+                    {/*Generate question images*/}
                     <Carousel styles={QStyles.carousel}/>
+                    {/*To indicate if question comes with slide of images*/}
                     {question.length===1
                         ? null
                         : <MaterialCommunityIcons name="gesture-swipe-horizontal" size={24} color="black" />
                     }
+                    {/*Generate options*/}
                     <FlatList
                         data={choicesArr}
                         horizontal={false}
@@ -248,12 +312,14 @@ function QuizScreen() {
                         keyExtractor={option => option.id}
                         numColumns={2}
                     />
+                    {/*Indicates whether user answer is correct/wrong*/}
                     <View style={QStyles.correct}>
                         {marking === false ? (<Text style={styles.markingFalse}>Wrong answer!</Text>)
                                     : marking === true ? (<Text style={styles.markingTrue}>Correct!</Text>)
                                         : null
                         }
                     </View>
+                    {/*Next question button*/}
                     <View style={QStyles.bottom}>
                         {next === true
                         ? <Button titleStyle={styles.butText} title="Next Question" onPress={() => getQns()}/>
@@ -264,6 +330,9 @@ function QuizScreen() {
         </View>
     )}
 
+/**
+ * Stylesheet
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, useWindowDimensions } from 'react-native';
-
 import RoundedButton from './RoundedButton.js';
 
+/**
+ * Footer button on welcome page.
+ * @param backgroundColor
+ * @param rightButtonLabel
+ * @param rightButtonPress
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Footer = ({backgroundColor,
                 rightButtonLabel = false,
                 rightButtonPress = false}) => {

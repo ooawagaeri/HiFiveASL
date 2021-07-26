@@ -4,6 +4,9 @@ import {Text, View, StyleSheet, FlatList, TouchableOpacity, Image, Linking} from
 import { Thumbnail } from "react-native-thumbnail-video";
 import { MediaQuery } from "react-native-responsive";
 
+/**
+ * data for youtube resources
+ */
 const DATA = [
     {id: 1, url: 'https://www.youtube.com/watch?v=betAZeKRpR8',
     caption: "The Story of ASL"},
@@ -15,6 +18,9 @@ const DATA = [
     caption: "Dos and Don'ts of Interacting with the Deaf Community [CC]"}
 ]
 
+/**
+ * data for web resources
+ */
 const BLOGDATA = [
     {id: 1,
         banner:require('../assets/collated.jpg'),
@@ -26,6 +32,12 @@ const BLOGDATA = [
     caption: "Lingvano\nWebsite teaching ASL beyond finger spelling"},
 ]
 
+/**
+ * Render Youtube videos with thumbnail and caption
+ * @param {json} item
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Vid = ({item}) => {
     return (
         <View style={styles.videoDes}>
@@ -36,6 +48,12 @@ const Vid = ({item}) => {
     )
 }
 
+/**
+ * Render online resources with thumbnail and caption
+ * @param {json} item
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Link = ({item}) => {
     return (
         <TouchableOpacity onPress={()=>{ Linking.openURL(item.url)}}>
@@ -69,6 +87,7 @@ function VideosScreen() {
                         <Text style={{fontWeight: "bold"}}>Videos to aid your ASL learning.</Text>
                         <Text>{"\n"}Scroll and click on the thumbnail to play!</Text>
                     </Text>
+                    {/*Scrollable flatlist for youtube resources*/}
                     <FlatList data={DATA} renderItem={Vid} keyExtractor={(item) => item.id.toString()}/>
                 </View>
                 <View style={{flex:0.5, alignContent:'center'}}>
@@ -76,12 +95,16 @@ function VideosScreen() {
                         <Text style={{fontWeight: "bold"}}>Other online resources / references.</Text>
                         <Text>{"\n"}Scroll and click on to be redirected to the site!</Text>
                     </Text>
+                    {/*Scrollable flatlist for web resources*/}
                     <FlatList data={BLOGDATA} renderItem={Link} keyExtractor={(item) => item.id.toString()}/>
                 </View>
             </LinearGradient>
         </View>
     )}
 
+/**
+ * Stylesheet
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,

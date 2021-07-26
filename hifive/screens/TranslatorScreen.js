@@ -15,7 +15,12 @@ function TranslatorScreen() {
     let holdLetters =[]
     let holdImage = []
 
-    // POST user response and return is_correct
+
+    /**
+     * POST user input.
+     * GET unsorted json file of corresponding images.
+     * Assign variable letter with sorted data.
+     */
     function checkAns() {
         fetch(TRANSLATOR_API + ans,{
             method:"GET"
@@ -41,6 +46,9 @@ function TranslatorScreen() {
         setSub(false)
     }, []);
 
+    /**
+     * Clearing user input.
+     */
     function clearInput(){
         setAns("")
         setLetters([])
@@ -48,7 +56,12 @@ function TranslatorScreen() {
         setSub(false)
     }
 
-
+    /**
+     * Sort alphabetically sorted response json to order specified in user input.
+     * @param {string} ans
+     * @param {array} image(unsorted json)
+     * set variable letters as sorted json
+     */
     function sortLetter(ans,image) {
         holdLetters=[]
         let i;
@@ -63,6 +76,12 @@ function TranslatorScreen() {
         setLetters(holdLetters)
     }
 
+    /**
+     * Return ASL image with its letter as title.
+     * @param {array} data
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Slide({ data }) {
         return (
             <View
@@ -80,6 +99,12 @@ function TranslatorScreen() {
         );
     }
 
+    /**
+     * Pagination dot that updates according to the slide of images.
+     * @param index
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Pagination({ index }) {
         return (
             <View style={styles.pagination} pointerEvents="none">
@@ -100,6 +125,12 @@ function TranslatorScreen() {
         );
     }
 
+    /**
+     * Calculation of index of the current state of slideshow.
+     * Returns a scrollable flatlist of images with its title and pagination dot.
+     * @returns {JSX.Element}
+     * @constructor
+     */
     function Carousel() {
         const [index, setIndex] = useState(0);
         const indexRef = useRef(index);
@@ -129,6 +160,10 @@ function TranslatorScreen() {
             </View>
         )}
 
+    /**
+     * To render slide function for flatlist.
+     * @type {function({item: *})}
+     */
     const renderItem = useCallback(function renderItem({ item }) {
         return <Slide data={item} />;
     }, []);
@@ -143,16 +178,19 @@ function TranslatorScreen() {
                 <Text style={styles.header}>TEXT-TO-SIGN</Text>
                 <View style={styles.rectangle}/>
                 <Text style={QStyles.prompt}>Key in a letter or word to translate into ASL{"\n"}Swipe the mirrored pictures!{"\n"}</Text>
+                {/*User input textbox*/}
                 <TextInput
                     style={styles.input}
                     onChangeText={setAns}
                     value={ans}
                     placeholder="Letter/Word"
                 />
+                {/*Buttons*/}
                 <View style={styles.submitButton}>
                     <Button buttonStyle={{paddingLeft:30, paddingRight:30}} titleStyle={styles.butText} title="Submit" onPress={() => checkAns()}/>
                     <Button buttonStyle={{paddingLeft:30, paddingRight:30, marginLeft:"3%"}} titleStyle={styles.butText} title="Clear" onPress={() => clearInput()}/>
                 </View>
+                {/*Indicator of no entry, invalid entry or render images*/}
                 {(ans === '' && submitted==false) ? (<Text style={styles.markingNull}>Nothing submitted</Text>)
                     : (isWord === false) ? (<Text style={styles.noSuchWord}>No such word</Text>)
                         : <Carousel/>
@@ -162,6 +200,9 @@ function TranslatorScreen() {
     )
 }
 
+/**
+ * Stylesheet
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
