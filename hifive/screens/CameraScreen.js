@@ -2,8 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { Root, Popup } from 'popup-ui'
-import { Alert, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { Root, Popup } from "popup-ui";
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { Button } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
 import { MediaQueryStyleSheet } from "react-native-responsive";
@@ -118,95 +125,96 @@ function CameraScreen() {
 
   return (
     <Root>
-    <View style={styles.container}>
-      <LinearGradient
-        colors={["#feb157", "#ffd26c"]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={styles.top}
-      >
-        <Text style={styles.header}>SIGN-TO-TEXT</Text>
-        <View style={styles.rectangle} />
-        <TouchableOpacity
-            style={{position: "absolute", marginTop: "12%", right: "7%"}}
+      <View style={styles.container}>
+        <LinearGradient
+          colors={["#feb157", "#ffd26c"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.top}
+        >
+          <Text style={styles.header}>SIGN-TO-TEXT</Text>
+          <View style={styles.rectangle} />
+          <TouchableOpacity
+            style={{ position: "absolute", marginTop: "12%", right: "7%" }}
             onPress={() =>
               Popup.show({
-                type: 'Warning',
-                title: 'Tips for Best Accuracy',
+                type: "Warning",
+                title: "Tips for Best Accuracy",
                 textBody:
-                 'A well-light room,\nSteady image,\nEmpty background, &nFollow the gestures closely!',
-                buttontext: 'Continue',
+                  "A well-light room,\nSteady image,\nEmpty background, &nFollow the gestures closely!",
+                buttontext: "Continue",
                 callback: () => Popup.hide(),
               })
-            }>
-             <FontAwesome5 name="question-circle" size={30} color={'white'}/>
-          </TouchableOpacity>
-        <Text style={QStyles.prompt}>
-          Take a picture showing us the sign language{"\n"}letter to translate!
-          Use your right hand and begin!
-        </Text>
-      </LinearGradient>
-      <View style={styles.cameraContainer}>
-        {/*isFocused prevents camera feed from not rendering upon navigating other screens*/}
-        {isFocused && (
-          <Camera
-            ref={(ref) => setCamera(ref)}
-            style={styles.fixedRatio}
-            type={type}
+            }
           >
-            {/*Button for flip camera*/}
-            <View style={styles.flip}>
-              <Button
-                icon={
-                  <Ionicons
-                    name="md-camera-reverse-outline"
-                    size={40}
-                    color="white"
-                  />
-                }
-                type={"clear"}
-                buttonStyle={{ justifyContent: "flex-start" }}
-                onPress={() => {
-                  setType(
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                  );
-                }}
-              />
+            <FontAwesome5 name="question-circle" size={30} color={"white"} />
+          </TouchableOpacity>
+          <Text style={QStyles.prompt}>
+            Take a picture showing us the sign language{"\n"}letter to
+            translate! Use your right hand and begin!
+          </Text>
+        </LinearGradient>
+        <View style={styles.cameraContainer}>
+          {/*isFocused prevents camera feed from not rendering upon navigating other screens*/}
+          {isFocused && (
+            <Camera
+              ref={(ref) => setCamera(ref)}
+              style={styles.fixedRatio}
+              type={type}
+            >
+              {/*Button for flip camera*/}
+              <View style={styles.flip}>
+                <Button
+                  icon={
+                    <Ionicons
+                      name="md-camera-reverse-outline"
+                      size={40}
+                      color="white"
+                    />
+                  }
+                  type={"clear"}
+                  buttonStyle={{ justifyContent: "flex-start" }}
+                  onPress={() => {
+                    setType(
+                      type === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back
+                    );
+                  }}
+                />
+              </View>
+            </Camera>
+          )}
+          {/*Show "Translating..."*/}
+          {loading && (
+            <View style={QStyles.loading}>
+              <ActivityIndicator size="large" color="#f2f2f2" />
+              <Text style={QStyles.loadingtText}>Translating . . .</Text>
             </View>
-          </Camera>
-        )}
-        {/*Show "Translating..."*/}
-        {loading && (
-          <View style={QStyles.loading}>
-            <ActivityIndicator size="large" color="#f2f2f2" />
-            <Text style={QStyles.loadingtText}>Translating . . .</Text>
+          )}
+          {/*Render play/stop button*/}
+          <View style={styles.shutter}>
+            <Button
+              icon={<FontAwesome5 name={buttonIcon} size={40} color="white" />}
+              type={"clear"}
+              buttonStyle={{ justifyContent: "center" }}
+              onPress={() => {
+                iconPosition.current = !iconPosition.current;
+                takePicture();
+              }}
+            />
           </View>
-        )}
-        {/*Render play/stop button*/}
-        <View style={styles.shutter}>
-          <Button
-            icon={<FontAwesome5 name={buttonIcon} size={40} color="white" />}
-            type={"clear"}
-            buttonStyle={{ justifyContent: "center" }}
-            onPress={() => {
-              iconPosition.current = !iconPosition.current;
-              takePicture();
-            }}
-          />
         </View>
+        <View style={styles.whitebox} />
+        <LinearGradient
+          colors={["#feb157", "#ffd26c"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.bottom}
+        >
+          <Text style={styles.ansText}>{name}</Text>
+        </LinearGradient>
       </View>
-      <View style={styles.whitebox} />
-      <LinearGradient
-        colors={["#feb157", "#ffd26c"]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={styles.bottom}
-      >
-        <Text style={styles.ansText}>{name}</Text>
-      </LinearGradient>
-    </View>
     </Root>
   );
 }
