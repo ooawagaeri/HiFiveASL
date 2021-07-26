@@ -10,7 +10,23 @@ import os
 
 
 class CustomCNN(nn.Module):
+    """
+    Custom convolution neural network class
+    Attributes:
+        conv1 : torch.Conv2d
+        conv2 : torch.Conv2d
+        conv3 : torch.Conv2d
+        conv4 : torch.Conv2d
+        fc1 : torch.Linear
+        fc2 : torch.Linear
+        pool : torch.MaxPool2d
+    Methods:
+        forward(self, x): Feeds images through several layer aka Feed-Forward network
+    """
     def __init__(self, lb_path):
+        """
+        Constructs CustomCNN object.
+        """
         super(CustomCNN, self).__init__()
         # Computes a 2-D convolution
         self.conv1 = nn.Conv2d(3, 16, 5)
@@ -31,8 +47,14 @@ class CustomCNN(nn.Module):
         # better assumptions / predictions
         self.pool = nn.MaxPool2d(2, 2)
 
-    # Feed-forward network. Feeds img through several layer
     def forward(self, x):
+        """
+        Feeds images through several layer aka Feed-Forward network
+        Parameters:
+            x (torch.Tensor) : Input tensor
+        Returns:
+            x (torch.Tensor) : Output tensor
+        """
         # Applies the rectified linear unit function element-wise
         x = self.pool(func.relu(self.conv1(x)))
         x = self.pool(func.relu(self.conv2(x)))

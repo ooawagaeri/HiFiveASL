@@ -30,8 +30,12 @@ epochs = 12
 random_seed = 69
 
 
-# Set random_seed for reproducible results
 def set_seed(seed=42):
+    """
+    Set random_seed for reproducible results
+    Parameters:
+        seed (int): RNG Seed
+    """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -68,7 +72,6 @@ test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
 
 # Initialize CNN w/ computation device
 model = cnn_models.CustomCNN(input_pkl).to(device)
-# print(f"\nCNN model: {model}")
 
 # Get total_correct number of parameters from model
 total_params = sum(p.numel() for p in model.parameters())
@@ -87,6 +90,14 @@ criterion = nn.CrossEntropyLoss()
 
 # Train function for training and making prediction
 def train(current_model, data_loader):
+    """
+    Training of model with given set of data where predictions are compared with expected result
+    Parameters:
+        current_model (CustomCNN): CNN Model
+        data_loader (torch.DataLoader): Dataset loaded
+    Returns:
+        train_loss, train_accuracy (float, float): Training loss and accuracy of cycle
+    """
     print('Training')
     # Initialize training
     current_model.train()
@@ -124,6 +135,14 @@ def train(current_model, data_loader):
 
 # Validation function
 def validate(current_model, data_loader):
+    """
+    Validation of current model against another dataset
+    Parameters:
+        current_model (CustomCNN): CNN Model
+        data_loader (torch.DataLoader): Dataset loaded
+    Returns:
+        validate_loss, validate_accuracy (float, float): Validation loss and accuracy of cycle
+    """
     print('Validating')
     current_model.eval()
     # Keep track of sum of loss and accuracy
@@ -154,20 +173,29 @@ def validate(current_model, data_loader):
         return validate_loss, validate_accuracy
 
 
+# Storing of graph values
 training_loss, training_accuracy = [], []
 validation_loss, validation_accuracy = [], []
 
 start = time.time()
+
 # Iterate number of epochs times
 for epoch in range(epochs):
+    # Current iteration
     print(f"Epoch {epoch + 1} of {epochs}")
+
+    # Train
     train_epoch_loss, train_epoch_accuracy = train(model, train_loader)
+
+    # Validate
     val_epoch_loss, val_epoch_accuracy = validate(model, test_loader)
-    # Append training and validation points for graph
+
+    # Plot training and validation points for graph
     training_loss.append(train_epoch_loss)
     training_accuracy.append(train_epoch_accuracy)
     validation_loss.append(val_epoch_loss)
     validation_accuracy.append(val_epoch_accuracy)
+
 end = time.time()
 
 # Accuracy graph
