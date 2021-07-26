@@ -4,7 +4,6 @@ Used to converted and process query sets and model into JSON formats
 """
 
 from rest_framework import serializers
-from PIL import Image
 from .tensor import custom_CNN
 from .models import *
 
@@ -44,28 +43,6 @@ def square_crop(img):
         img = img[offset:(height - offset), :, :]
 
     return img
-
-
-def convert_warm_temp(img):
-    """
-    Changes the colour temperature of given image.
-    Parameters:
-        img (cv2.Mat): Target image
-    Returns:
-        (cv2.Mat): Cropped background image
-    """
-    # CV2 to PIL Image
-    temp_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    temp_image = Image.fromarray(temp_image)
-
-    # 7500 Kelvin Temperature
-    r, g, b = (235, 238, 255)
-    matrix = (r / 255.0, 0.0, 0.0, 0.0,
-              0.0, g / 255.0, 0.0, 0.0,
-              0.0, 0.0, b / 255.0, 0.0)
-
-    # Apply new temperature and convert to numpy/cv2 matrix
-    return np.array(temp_image.convert('RGB', matrix))
 
 
 # Augmentation pipeline resize
@@ -115,7 +92,6 @@ class ASLSerializer(serializers.ModelSerializer):
 
         # Preprocess image in 1:1 and natural temperature
         image = square_crop(image)
-        image = convert_warm_temp(image)
 
         # Transform image into Tensor
         image = aug(image=np.array(image))['image']

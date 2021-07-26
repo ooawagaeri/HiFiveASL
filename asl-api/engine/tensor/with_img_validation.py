@@ -9,8 +9,9 @@ import cv2
 import joblib
 import numpy as np
 import torch
-import custom_CNN
+from PIL import Image
 
+import custom_CNN
 
 model_inuse = "_8000"
 # Directory of test images
@@ -24,6 +25,28 @@ aug = albumentations.Compose([
 ])
 
 
+def convert_warm_temp(img):
+    """
+    Changes the colour temperature of given image.
+    Parameters:
+        img (cv2.Mat): Target image
+    Returns:
+        (cv2.Mat): Cropped background image
+    """
+    # CV2 to PIL Image
+    temp_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    temp_image = Image.fromarray(temp_image)
+
+    # 7500 Kelvin Temperature
+    r, g, b = (235, 238, 255)
+    matrix = (r / 255.0, 0.0, 0.0, 0.0,
+              0.0, g / 255.0, 0.0, 0.0,
+              0.0, 0.0, b / 255.0, 0.0)
+
+    # Apply new temperature and convert to numpy/cv2 matrix
+    return np.array(temp_image.convert('RGB', matrix))
+
+
 def inspect(image_path, expected):
     """
     Predicts letter of given image and compares against the expected outcome
@@ -35,6 +58,7 @@ def inspect(image_path, expected):
     """
     # Load image from directory
     image = cv2.imread(image_path)
+    # image = convert_warm_temp(image)
 
     # Transform image into Tensor
     image = aug(image=np.array(image))['image']
