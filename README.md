@@ -35,6 +35,7 @@ An Orbital NUS Project involving computer vision, machine learning and visual de
 ## Tech Stack
 
 HI Five uses an assortment of environments and open source projects to develop this application:
+
 - [Expo] - A publicly available framework and platform for React applications and publication.
 - [React Native] - A JavaScript framework for writing native-like mobile applications on iOS and Android platforms
 - [Kamatera] - A cloud-based platform for server deployments, hosting the Django server container
@@ -116,6 +117,7 @@ HI Five requires [Node.js 12 LTS or greater] to operate the frontend interface.
 cd hifive
 npm install
 ```
+
 2. Navigate to node_modules > react-native-thumbnail-video > src > components > thumbnail.js
 
 3. Comment out the UNSAGE_componentWillUpdate() function
@@ -127,12 +129,13 @@ npm install
 ```sh
 npm start
 ```
+
 5. After opening the Expo CLI web interface, scan the provided QR Code using the Expo Go on both the [App Store] and [Google Play]
 
 <br/>
 
-
 ## Backend Installation
+
 HI Five requires [Anaconda 3] or [Docker] to operate the backend API.
 
 <h3>Anaconda Version</h3>
@@ -145,6 +148,7 @@ conda config --add channels pytorch
 conda install --file requirements-conda.txt
 pip install -r requirements.txt
 ```
+
 2. Alternatively, via environment.yml by creating a new environment
 
 ```
@@ -157,7 +161,6 @@ conda activate venv
 ```sh
 python manage.py runserver <your ip address>:8000
 ```
-
 
 <h3>Docker Version</h3>
 
@@ -179,14 +182,16 @@ docker run -p 8000:8000 -e PORT=8000 django-asl:latest
 ```sh
 127.0.0.1:8000
 ```
+
 or
+
 ```sh
 127.0.0.1:8000
 ```
 
 ## Production Deployment
 
-<h3>Expo.io</h3>  
+<h3>Expo.io</h3>
 
 Expo is a publicly available framework and platform for React applications. In addition to serving as a programming
 platform, Expo provides an in-house publishing service.
@@ -197,23 +202,23 @@ You can visit the publication at: https://expo.io/@ooawagaeri24/hi-five
 For Android users:
 
 To use the published Expo application, you will need to download Expo Go from the [Google Play] and scan the QR code
-(above) to run the app using Expo’s mobile client: https://expo.io/client  
+(above) to run the app using Expo’s mobile client: https://expo.io/client
 
 For IOS users:
 
 On top of downloading the Expo Go from the [App Store], you will need to login into our testing account
 (due to Apple security regulations) before scanning the QR code (above) to run the app using Expo’s mobile client.
 
->Username: hifive
+> Username: hifive
 >
->Password: testing123
+> Password: testing123
 
 <h3>Kamatera</h3>
 
 Kamatera is a service which offers flexible cloud-based solutions for developers and web app developers. Similar to
 Amazon Web Services EC2, Kamatera Express provides cloud computing environments.
 
-If you are using a Kamatera server, do open your machine's PORT 80  or respective port as your URL endpoint would
+If you are using a Kamatera server, do open your machine's PORT 80 or respective port as your URL endpoint would
 differ from this projects.
 
 For a live preview of the backend
@@ -229,11 +234,10 @@ Some subdomain URLs you can use to access the various functions are:
 - Text-To-Sign: http://45-126-126-89.cloud-xip.io/api/gesture/
 - Pop-Quiz: http://45-126-126-89.cloud-xip.io/api/quizChoice/
 
-
 ---
 
 Disclaimer: Do not POST, DELETE, or PUT the given URLS. These are for demonstration purposes only, as any unnecessary
- modification could jeopardize the functionality of the server.
+modification could jeopardize the functionality of the server.
 
 To insert or modify at your own leisure, do install the application at our Github and run it in your own environment.
 
@@ -243,15 +247,14 @@ To insert or modify at your own leisure, do install the application at our Githu
 
 MIT
 
-
 [//]: #
-   [Expo]: <https://expo.io/>
-   [React Native]: <https://reactnative.dev/>
-   [Django REST Framework]: <https://www.django-rest-framework.org/>
-   [Python]: <https://www.python.org/>
-   [Kamatera]: <https://www.kamatera.com/express/compute/>
-   [Docker]: <https://www.docker.com/>
-   [Node.js 12 LTS or greater]: <http://nodejs.org>
-   [Anaconda 3]: <https://www.anaconda.com/>
-   [App Store]:<https://itunes.apple.com/app/apple-store/id982107779>
-   [Google Play]:<https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www>
+[expo]: https://expo.io/
+[react native]: https://reactnative.dev/
+[django rest framework]: https://www.django-rest-framework.org/
+[python]: https://www.python.org/
+[kamatera]: https://www.kamatera.com/express/compute/
+[docker]: https://www.docker.com/
+[node.js 12 lts or greater]: http://nodejs.org
+[anaconda 3]: https://www.anaconda.com/
+[app store]: https://itunes.apple.com/app/apple-store/id982107779
+[google play]: https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www
