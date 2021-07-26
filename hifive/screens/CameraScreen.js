@@ -37,6 +37,7 @@ function CameraScreen() {
     setButtonIcon("play");
     setLoading(false);
     iconPosition.current = false;
+    Popup.hide();
   }, [isFocused]);
 
   /**
