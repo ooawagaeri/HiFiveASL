@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Camera } from "expo-camera";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { Alert, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { Root, Popup } from 'popup-ui'
+import { Alert, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { Button } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
 import { MediaQueryStyleSheet } from "react-native-responsive";
@@ -115,6 +116,7 @@ function CameraScreen() {
   }
 
   return (
+    <Root>
     <View style={styles.container}>
       <LinearGradient
         colors={["#feb157", "#ffd26c"]}
@@ -124,6 +126,20 @@ function CameraScreen() {
       >
         <Text style={styles.header}>SIGN-TO-TEXT</Text>
         <View style={styles.rectangle} />
+        <TouchableOpacity
+            style={{position: "absolute", marginTop: "12%", right: "7%"}}
+            onPress={() =>
+              Popup.show({
+                type: 'Warning',
+                title: 'Tips for Best Accuracy',
+                textBody:
+                 'A well-light room,\nSteady image,\nEmpty background, &nFollow the gestures closely!',
+                buttontext: 'Continue',
+                callback: () => Popup.hide(),
+              })
+            }>
+             <FontAwesome5 name="question-circle" size={30} color={'white'}/>
+          </TouchableOpacity>
         <Text style={QStyles.prompt}>
           Take a picture showing us the sign language{"\n"}letter to translate!
           Use your right hand and begin!
@@ -190,6 +206,7 @@ function CameraScreen() {
         <Text style={styles.ansText}>{name}</Text>
       </LinearGradient>
     </View>
+    </Root>
   );
 }
 
