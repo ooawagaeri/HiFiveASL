@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import React from "react";
+import { Text, TouchableOpacity } from "react-native";
 
 /**
  * Rounded button used in the footer page
@@ -9,16 +9,18 @@ import { Text, TouchableOpacity } from 'react-native';
  * @constructor
  */
 const RoundedButton = ({ label, onPress }) => {
-    return (
-        <TouchableOpacity
-            style={{ alignItems: 'center', justifyContent: 'center' }}
-            onPress={onPress}
-        >
-            <Text style={{ fontSize: 22, color: 'white', fontFamily:"FuturaPTDemi" }}>
-                {label}
-            </Text>
-        </TouchableOpacity>
-    );
+  return (
+    <TouchableOpacity
+      style={{ alignItems: "center", justifyContent: "center" }}
+      onPress={onPress}
+    >
+      <Text
+        style={{ fontSize: 22, color: "white", fontFamily: "FuturaPTDemi" }}
+      >
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
 };
 
 export default RoundedButton;

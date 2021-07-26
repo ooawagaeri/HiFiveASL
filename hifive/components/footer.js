@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, useWindowDimensions } from 'react-native';
-import RoundedButton from './RoundedButton.js';
+import React from "react";
+import { View, useWindowDimensions } from "react-native";
+import RoundedButton from "./RoundedButton.js";
 
 /**
  * Footer button on welcome page.
@@ -10,28 +10,30 @@ import RoundedButton from './RoundedButton.js';
  * @returns {JSX.Element}
  * @constructor
  */
-const Footer = ({backgroundColor,
-                rightButtonLabel = false,
-                rightButtonPress = false}) => {
-    const windowWidth = useWindowDimensions().width;
-    const HEIGHT = windowWidth * 0.21;
-    const FOOTER_PADDING = windowWidth * 0.1;
+const Footer = ({
+  backgroundColor,
+  rightButtonLabel = false,
+  rightButtonPress = false,
+}) => {
+  const windowWidth = useWindowDimensions().width;
+  const HEIGHT = windowWidth * 0.21;
+  const FOOTER_PADDING = windowWidth * 0.1;
 
-    return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                height: HEIGHT,
-                backgroundColor,
-                opacity: 0.6,
-                alignItems: 'center',
-                paddingHorizontal: FOOTER_PADDING
-            }}
-        >
-            <RoundedButton label={rightButtonLabel} onPress={rightButtonPress} />
-        </View>
-    );
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "flex-end",
+        height: HEIGHT,
+        backgroundColor,
+        opacity: 0.6,
+        alignItems: "center",
+        paddingHorizontal: FOOTER_PADDING,
+      }}
+    >
+      <RoundedButton label={rightButtonLabel} onPress={rightButtonPress} />
+    </View>
+  );
 };
 
 export default Footer;
