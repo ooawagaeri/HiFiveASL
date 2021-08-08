@@ -75,8 +75,10 @@ function QuizScreen() {
       })
       .catch(() => {
         setLoading(false);
-        Alert.alert("Server is Inactive",
-        "The server has been deactivated since Aug 2021. To try this application, please download the server at:\n\nhttps://github.com/ooawagaeri/orbital-asl-application.");
+        Alert.alert(
+          "Server is Inactive",
+          "The server has been deactivated since Aug 2021. To try this application, please download the server at:\n\nhttps://github.com/ooawagaeri/orbital-asl-application."
+        );
       });
   }
 
