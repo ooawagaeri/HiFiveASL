@@ -8,12 +8,11 @@ import albumentations
 import cv2
 import joblib
 import numpy as np
-import torch
 from PIL import Image
+from all_custom_CNN import *
 
-import custom_CNN
-
-model_inuse = "_8000"
+label_inuse = "_8000_powerhouse"
+model_inuse = "_8000_resnet_30"
 # Directory of test images
 # Kaggle Dan is non-trained dataset
 input_path = "../../../../Datasets/kaggle_gestures_dan"
@@ -23,6 +22,10 @@ input_path = "../../../../Datasets/kaggle_gestures_dan"
 aug = albumentations.Compose([
     albumentations.Resize(224, 224, always_apply=True)
 ])
+
+# Set computation device to CPU or GPU (if available)
+device = ('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(f"Running on computation device: {device}")
 
 
 def convert_warm_temp(img):
@@ -75,9 +78,11 @@ def inspect(image_path, expected):
 
 
 # Load label binarizer and model
-lb = joblib.load(f'labels/lb_alpha{model_inuse}.pkl')
-model = custom_CNN.CustomCNN(f"labels/lb_alpha{model_inuse}.pkl").cuda()
+lb = joblib.load(f'labels/lb_alpha{label_inuse}.pkl')
+model = resnet50(len(lb.classes_), device)
 model.load_state_dict(torch.load(f'models/model_alpha{model_inuse}.pth'))
+model.eval()
+
 print('Model loaded')
 
 # Keep track of all correct and total attempts

@@ -4,7 +4,7 @@ Used to converted and process query sets and model into JSON formats
 """
 
 from rest_framework import serializers
-from .tensor import custom_CNN
+from .tensor.all_custom_CNN import resnet50
 from .models import *
 
 import albumentations
@@ -54,12 +54,15 @@ aug = albumentations.Compose([
 device = 'cpu'
 
 # Load label binarizer and model
-model_name = '_8000'
-lb = joblib.load(f'engine/tensor/labels/lb_alpha{model_name}.pkl')
-model = custom_CNN.CustomCNN(f"engine/tensor/labels/lb_alpha{model_name}.pkl").to(device)
-model.load_state_dict(torch.load(f'engine/tensor/models/model_alpha{model_name}.pth',
-                                 map_location=device))
+label_inuse = "_8000_powerhouse"
+model_inuse = "_8000_resnet_30"
 
+# Load label binarizer and model
+lb = joblib.load(f'engine/tensor/labels/lb_alpha{label_inuse}.pkl')
+model = resnet50(len(lb.classes_), device)
+model.load_state_dict(torch.load(f'engine/tensor/models/model_alpha{model_inuse}.pth',
+                                 map_location=device))
+model.eval()
 
 class ASLSerializer(serializers.ModelSerializer):
     """

@@ -3,13 +3,17 @@ with_camera.py
 Used to conduct basic testing given camera feed on trained model
 """
 
-import torch
 import joblib
 import numpy as np
 import cv2
-import custom_CNN
+from all_custom_CNN import *
 
-model_inuse = "_8000"
+label_inuse = "_8000_powerhouse"
+model_inuse = "_8000_resnet_30"
+
+# Set computation device to CPU or GPU (if available)
+device = ('cuda:0' if torch.cuda.is_available() else 'cpu')
+print(f"Running on computation device: {device}")
 
 
 def hand_area(img):
@@ -26,11 +30,13 @@ def hand_area(img):
 
 
 # Load label binarizer and model
-lb = joblib.load(f'labels/lb_alpha{model_inuse}.pkl')
-model = custom_CNN.CustomCNN(f"labels/lb_alpha{model_inuse}.pkl").cuda()
-model.load_state_dict(torch.load(f'models/model_alpha{model_inuse}.pth'))
+lb = joblib.load(f'labels/lb_alpha{label_inuse}.pkl')
+model = resnet50(len(lb.classes_), device)
 
-print(model)
+model.load_state_dict(torch.load(f'models/model_alpha{model_inuse}.pth'))
+model.eval()
+
+# print(model)
 print('Loading model...')
 
 # Capture webcam

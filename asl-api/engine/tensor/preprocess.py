@@ -8,7 +8,7 @@ import random
 import cv2
 from tqdm import tqdm
 
-num_images = 8000
+num_images = 4316
 training_path = '../../../../Datasets/custom_gestures/train'
 output_path = '../../../../Datasets/images/preprocessed_image'
 
@@ -27,6 +27,8 @@ for index, sub_path in tqdm(enumerate(training_sub_paths), total=len(training_su
     all_images = os.listdir(f"{training_path}/{sub_path}")
 
     size = len(all_images)
+    # print(size)
+    # continue
 
     # Create subdirectories in output path
     os.makedirs(f"{output_path}/{sub_path}", exist_ok=True)

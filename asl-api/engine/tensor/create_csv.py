@@ -11,8 +11,8 @@ from sklearn.preprocessing import LabelBinarizer
 from tqdm import tqdm
 from imutils import paths
 
-model_name = '_8000'
-input_path = '../../../../Datasets/images/preprocessed_image'
+model_name = '_8000_powerhouse'
+input_path = '../../../../Datasets/images/preprocessed_image_8000'
 output_csv = f"labels/data_alpha{model_name}.csv"
 output_pkl = f"labels/lb_alpha{model_name}.pkl"
 

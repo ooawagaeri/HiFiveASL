@@ -2,9 +2,11 @@
 train.py
 Used to train on dataset images and generate model
 """
-
+import os
 import random
 import time
+
+import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -14,20 +16,21 @@ import torch.optim as optim
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-import custom_CNN as cnn_models
+from all_custom_CNN import resnet50
 from asl_image_dataset import ASLImageDataset
 
 model_name = '_8000'
-input_csv = f"labels/data_alpha{model_name}.csv"
-input_pkl = f"labels/lb_alpha{model_name}.pkl"
-output_model = f"models/model_alpha{model_name}.pth"
-output_accuracy = f"diagrams/accuracy_alpha{model_name}.png"
-output_loss = f"diagrams/loss_alpha{model_name}.png"
+input_csv = f"labels/data_alpha{model_name}_powerhouse.csv"
+input_pkl = f"labels/lb_alpha{model_name}_powerhouse.pkl"
+output_model = f"models/model_alpha{model_name}_resnet_30.pth"
+output_accuracy = f"diagrams/accuracy_alpha{model_name}_resnet_30.png"
+output_loss = f"diagrams/loss_alpha{model_name}_resnet_30.png"
 
 # Number of training cycles / pass
-epochs = 12
+epochs = 30
 # Random generator seed
 random_seed = 69
+learning_rate = 0.0005
 
 
 def set_seed(seed=42):
@@ -70,8 +73,10 @@ test_data = ASLImageDataset(xtest, ytest)
 train_loader = DataLoader(train_data, batch_size=32, shuffle=True)
 test_loader = DataLoader(test_data, batch_size=32, shuffle=False)
 
+classes = len(joblib.load(os.getcwd() + "/" + input_pkl).classes_)
+
 # Initialize CNN w/ computation device
-model = cnn_models.CustomCNN(input_pkl).to(device)
+model = resnet50(classes, device)
 
 # Get total_correct number of parameters from model
 total_params = sum(p.numel() for p in model.parameters())
@@ -83,9 +88,13 @@ print(f"Number of trainable parameters: {total_trainable_params:,}")
 
 # Adam optimization algorithm (stochastic gradient descent) to
 # update network weights in training data
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+# optimizer = optim.Adam([{'params': model.features[-1].parameters()},
+#                         {'params': model.classifier.parameters()}], lr=0.0005)
+
 # Cross Entropy Loss function to solve classification problem
 criterion = nn.CrossEntropyLoss()
+# criterion = nn.NLLLoss()
 
 
 # Train function for training and making prediction
@@ -206,7 +215,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.savefig(output_accuracy)
-plt.show()
+# plt.show()
 
 # Loss graph
 plt.figure(figsize=(10, 7))
@@ -216,7 +225,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
 plt.savefig(output_loss)
-plt.show()
+# plt.show()
 
 # Save model as PyTorch model
 print('Saving trained model...')

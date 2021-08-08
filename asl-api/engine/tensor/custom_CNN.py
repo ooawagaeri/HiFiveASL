@@ -23,7 +23,7 @@ class CustomCNN(nn.Module):
     Methods:
         forward(self, x): Feeds images through several layer aka Feed-Forward network
     """
-    def __init__(self, lb_path):
+    def __init__(self, lb_len):
         """
         Constructs CustomCNN object.
         """
@@ -34,12 +34,9 @@ class CustomCNN(nn.Module):
         self.conv3 = nn.Conv2d(32, 64, 3)
         self.conv4 = nn.Conv2d(64, 128, 5)
 
-        # Load binarized labels
-        lb = joblib.load(os.getcwd() + "/" + lb_path)
-
         # Performs linear transformation on data
         self.fc1 = nn.Linear(128, 256)
-        self.fc2 = nn.Linear(256, len(lb.classes_))
+        self.fc2 = nn.Linear(256, lb_len)
 
         # Applies 2D max_images pooling over img
         # Calculates maximum value in each patch of the feature map and
