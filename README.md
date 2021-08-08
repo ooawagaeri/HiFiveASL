@@ -43,7 +43,7 @@ HI Five uses an assortment of environments and open source projects to develop t
 - [Django REST Framework] - A REST framework for building APIs to transfer information to and fro frontend and backend
 - [Python] - Backend of the application, using Torch and Keras to generate and train a predictive ASL model
 
-<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/program_flow.png?raw=true" width="760">
+<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/program_flow.png?raw=true">
 
 ## UML Diagram
 
@@ -51,7 +51,17 @@ HI Five uses an assortment of environments and open source projects to develop t
 
 HI Five's backend system representation of its classes, properties, actions, and object connections.
 
-<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/model_uml.png?raw=true" width="760">
+<img src="https://github.com/ooawagaeri/orbital-asl-application/blob/main/README%20Resources/model_uml.png?raw=true">
+
+
+## Dataset
+
+In total, the final model of which our ASL translation was trained on were 172,819 images. Primarily consisting of the images from Kaggle
+Akash, Augusto, Bikash, Jordi, Kapil, Tristan and SigNN Team. This custom dataset is a collation of all alphabets, “nothing” (no hand
+inside image) and background substituted hand images.
+
+To download our custom dataset, click <a href="https://drive.google.com/file/d/1xULHHcMaQfecc1yivM2ZEQW0PRgjCRQU/view?usp=sharing">here</a>.
+
 
 ## Included Folders
 
